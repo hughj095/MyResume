@@ -1,5 +1,5 @@
-# This program inputs the response from the Mashvisor apartment rate API per state, city and zip (traditional and airbnb)
-#   and outputs an organized dataframe
+# This program inputs the json response from the Mashvisor apartment rate API per state, city and zip (traditional and airbnb)
+#   and outputs the data in an organized dataframe
 
 import requests
 import pandas as pd
