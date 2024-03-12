@@ -3,7 +3,6 @@
 
 import requests
 import pandas as pd
-import openpyxl
 
 url = "https://mashvisor-api.p.rapidapi.com/rental-rates"
 
