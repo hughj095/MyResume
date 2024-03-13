@@ -71,7 +71,7 @@ print(df)
 # Twilio info to text me daily updates (using Windows Scheduler for a 4pm Eastern program run and text)
 message = client.messages.create(
     body= f"Portfolio total after close today is ${total}",
-    from_='+12202341958',
+    from_='+18334029267',
     to='+18453723892'
 )
 message.sid
