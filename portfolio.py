@@ -45,6 +45,13 @@ for ticker in df['Ticker']:
 print(df)
 
 # Calculate total in each row and total portfolio
+stock_value = []
+for index in df.iterrows():
+    value = row['Shares'] * row['Close']
+    stock_value.append(value)
+df['Total'] = stock_value
+
+print(df)
 
 # Twilio info to text me daily updates
 
