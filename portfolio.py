@@ -16,7 +16,7 @@ TWILIO_AUTH_TOKEN = 'token here'
 account_sid = TWILIO_ACCOUNT_SID
 auth_token = TWILIO_AUTH_TOKEN
 proxy_client = TwilioHttpClient()   
-client = Client(account_sid, auth_token, http_client=proxy_client)
+client = Client(account_sid, auth_token, http_client=proxy_client) # may not need http_client tag
 
 # Create empty list of csv columns
 ticker_column = []
