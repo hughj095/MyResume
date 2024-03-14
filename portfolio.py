@@ -44,13 +44,12 @@ for ticker in df['Ticker']:
     url = f'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={ticker}&interval=5min&apikey={AV_API_KEY}'
     r = requests.get(url)
     data = r.json()
-    print(data)
     time = data['Time Series (5min)']
     for timestamp, values in time.items():
         if '4. close' in values:
             close = values['4. close']
             break
-    df.iloc[x, 2] = close
+    df.loc[x, 2] = close
     x += 1
 
 # Check final df
