@@ -5,7 +5,6 @@
 import requests
 import csv
 import pandas as pd
-import os
 from twilio.rest import Client
 from twilio.http.http_client import TwilioHttpClient
 import requests
