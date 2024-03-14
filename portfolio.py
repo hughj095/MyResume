@@ -45,7 +45,7 @@ for ticker in df['Ticker']:
     r = requests.get(url)
     data = r.json()
     time = data['Time Series (5min)']
-    for timestamp, values in time.items():
+    for timestamp, values in time.items(): # may not need timestamp
         if '4. close' in values:
             close = values['4. close']
             break
@@ -62,7 +62,7 @@ for index in df.iterrows():
     stock_value.append(value)
 df['Total'] = stock_value
 total = df['Total'].sum()
-df.loc[len(df)] = total
+df.loc[len(df),2] = total
 
 # Check final df
 print(df)
