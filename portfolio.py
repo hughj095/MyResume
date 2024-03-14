@@ -7,7 +7,6 @@ import csv
 import pandas as pd
 from twilio.rest import Client
 from twilio.http.http_client import TwilioHttpClient
-import requests
 
 AV_API_KEY = 'LNR6C1L773RCAOFY'
 TWILIO_ACCOUNT_SID = 'account sid here'
