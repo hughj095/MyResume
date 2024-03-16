@@ -50,14 +50,17 @@ for ticker in df['Ticker']:
     df.loc[x, 2] = close
     x += 1
 
-df = df.rename(columns={'2': 'Close'})
+df = df.rename(columns={2: 'Close'})
+df['Close'] = df['Close'].astype(float).round(2)
+df['Shares'] = df['Shares'].astype(float).round(2)
 print(df)
 
 # Calculate total stock value in each row and total portfolio value
+print(df.columns)
 df['Shares'] = pd.to_numeric(df['Shares'], errors='coerce')
 df['Total'] = df['Shares'] * df['Close']
 total = df['Total'].sum()
-df.loc[len(df),2] = total
+df.loc[len(df),'Total'] = total
 
 # Check final df
 print(df)
