@@ -16,11 +16,20 @@ auth_token = TWILIO_AUTH_TOKEN
 proxy_client = TwilioHttpClient()   
 client = Client(account_sid, auth_token, http_client=proxy_client) # may not need http_client tag
 
+ticker = 'DG'
 url = f'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={ticker}&interval=5min&apikey={AV_API_KEY}'
 r = requests.get(url)
 data = r.json()
-df = pd.DataFrame(data['Time Series (5min)'])
+df = pd.DataFrame(data['Time Series (5min)']).T
 
-print(df)
+#print(df)
+df['4. close'] = pd.to_numeric(df['4. close'])
+marker = []
+for close in df['4. close']:
+    if close > 153:
+        marker.append('bull')
+    else: marker.append(0)
+df['Marker'] = marker
 
-
+highprice = df[df['Marker'] == 'bull']
+print(highprice[['4. close', '5. volume']])
