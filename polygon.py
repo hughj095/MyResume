@@ -4,12 +4,12 @@ import pandas as pd
 API_KEY = 'hldKpOcQ9ago1ZA83XRyRQ1tFG5uokBa'
 ticker = 'AAPL'
 multiplier = '1'
-timespan = 'day'
-start = '2023-01-09'
-end = '2023-01-09'
+timespan = 'minute'
+start = '2024-03-18'
+end = '2024-03-18'
 split_adjust = 'true'
 sort = 'asc'
-limit = '120'
+limit = '1'
 
 
 url = f'https://api.polygon.io/v2/aggs/ticker/{ticker}/range/{multiplier}/{timespan}/{start}/{end}?adjusted={split_adjust}&' \
