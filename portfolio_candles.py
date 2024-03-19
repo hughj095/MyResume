@@ -26,10 +26,18 @@ df = pd.DataFrame(data['Time Series (5min)']).T
 df['4. close'] = pd.to_numeric(df['4. close'])
 marker = []
 for close in df['4. close']:
-    if close > 153:
+    if close > 155:
         marker.append('bull')
     else: marker.append(0)
 df['Marker'] = marker
 
-highprice = df[df['Marker'] == 'bull']
-print(highprice[['4. close', '5. volume']])
+for i in range(2,len(df)-2):
+    if (
+            df.iloc[i]["2. high"] >= df.iloc[i - 1]["2. high"]
+            and df.iloc[i]["2. high"] >= df.iloc[i - 2]["2. high"]
+            and df.iloc[i]["2. high"] >= df.iloc[i + 1]["2. high"]
+            and df.iloc[i]["2. high"] >= df.iloc[i + 2]["2. high"]
+        ):
+        df.loc[i, "Resistance"] = "resistance"
+
+df.to_csv(r'C:\Users\johnm\OneDrive\Desktop\df.csv', index=True)
