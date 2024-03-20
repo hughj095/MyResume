@@ -38,6 +38,7 @@ for i in range(2,len(df)-2):
             and df.iloc[i,1] >= df.iloc[i + 1,1]
             and df.iloc[i,1] >= df.iloc[i + 2,1]
         ):
-        df.loc[i, 7] = "resistance"
+            df.loc[i, 7] = "resistance"
+df.rename(columns = {7:"Resistance"})
 
 df.to_csv(r'C:\Users\johnm\OneDrive\Desktop\df.csv', index=True)
