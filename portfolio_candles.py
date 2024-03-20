@@ -31,14 +31,15 @@ for close in df['4. close']:
     else: marker.append(0)
 df['Marker'] = marker
 
-for i in range(2,len(df)-2):
+df['new_index'] = range(len(df))
+for i in df['close']:
     if (
             df.iloc[i,1] >= df.iloc[i - 1,1]
             and df.iloc[i,1] >= df.iloc[i - 2,1]
             and df.iloc[i,1] >= df.iloc[i + 1,1]
             and df.iloc[i,1] >= df.iloc[i + 2,1]
         ):
-            df.loc[i, 7] = "resistance"
-df.rename(columns = {7:"Resistance"})
+            df.loc[i, "Resistance"] = "resistance"
+#df.rename({'8':'Resistance'})
 
 df.to_csv(r'C:\Users\johnm\OneDrive\Desktop\df.csv', index=True)
