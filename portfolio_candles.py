@@ -33,7 +33,7 @@ df['Marker'] = marker
 
 for i in range(2,len(df)-2):
     if (
-            df.iloc[i]["2. high"] >= df.iloc[i - 1]["2. high"]
+            df.iloc[i,1] >= df.iloc[i - 1,1]
             and df.iloc[i]["2. high"] >= df.iloc[i - 2]["2. high"]
             and df.iloc[i]["2. high"] >= df.iloc[i + 1]["2. high"]
             and df.iloc[i]["2. high"] >= df.iloc[i + 2]["2. high"]
