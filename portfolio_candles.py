@@ -34,10 +34,10 @@ df['Marker'] = marker
 for i in range(2,len(df)-2):
     if (
             df.iloc[i,1] >= df.iloc[i - 1,1]
-            and df.iloc[i]["2. high"] >= df.iloc[i - 2]["2. high"]
-            and df.iloc[i]["2. high"] >= df.iloc[i + 1]["2. high"]
-            and df.iloc[i]["2. high"] >= df.iloc[i + 2]["2. high"]
+            and df.iloc[i,1] >= df.iloc[i - 2,1]
+            and df.iloc[i,1] >= df.iloc[i + 1,1]
+            and df.iloc[i,1] >= df.iloc[i + 2,1]
         ):
-        df.loc[i, "Resistance"] = "resistance"
+        df.loc[i, 7] = "resistance"
 
 df.to_csv(r'C:\Users\johnm\OneDrive\Desktop\df.csv', index=True)
