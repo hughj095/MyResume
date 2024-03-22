@@ -17,6 +17,7 @@ auth_token = TWILIO_AUTH_TOKEN
 proxy_client = TwilioHttpClient()   
 client = Client(account_sid, auth_token, http_client=proxy_client) # may not need http_client tag
 
+# function to find slope and intercept of a trend
 def calculate_slope_and_intercept(x1, y1, x2, y2):
     # Calculate slope
     x1_minutes = x1.hour * 60 + x1.minute
@@ -28,14 +29,14 @@ def calculate_slope_and_intercept(x1, y1, x2, y2):
     
     return slope, intercept
 
-
+# temporarily looking at one stock to test program
 ticker = 'DG'
 url = f'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={ticker}&interval=5min&apikey={AV_API_KEY}'
 r = requests.get(url)
 data = r.json()
 df = pd.DataFrame(data['Time Series (5min)']).T
 
-#print(df)
+# mark stock as in bull territory above a certain price
 df['4. close'] = pd.to_numeric(df['4. close'])
 marker = []
 for close in df['4. close']:
@@ -44,6 +45,7 @@ for close in df['4. close']:
     else: marker.append(0)
 df['Marker'] = marker
 
+# mark a stock as having resistance at the peak of a candle's close among four others
 df['Resistance'] = ''
 df['new_index'] = range(len(df))
 for i in df['new_index']:
@@ -55,6 +57,7 @@ for i in df['new_index']:
         ):
             df.iloc[i, 6] = "resistance"
 
+# convert string time to time time
 df['Time'] = ''
 for i in df.index:
     date_string = i
@@ -62,7 +65,8 @@ for i in df.index:
     date_time_obj = datetime.strptime(date_string, date_format)
     time_value = date_time_obj.time()
     df.loc[i,'Time'] = time_value
-     
+
+# mark the slope and intercept of a trendline with resistance at two peaks
 df['Resistance Trend'] = ''
 for i in range(1, len(df['Resistance'])):
      if df.iloc[i,6] == 'resistance':
