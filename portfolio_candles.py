@@ -38,6 +38,9 @@ df = pd.DataFrame(data['Time Series (5min)']).T
 
 # mark stock as in bull territory above a certain price
 df['4. close'] = pd.to_numeric(df['4. close'])
+df['1. open'] = pd.to_numeric(df['1. open'])
+df['2. high'] = pd.to_numeric(df['2. high'])
+df['3. low'] = pd.to_numeric(df['3. low'])
 marker = []
 for close in df['4. close']:
     if close > 155:
@@ -90,6 +93,21 @@ for i in df['new_index']:
             df.iloc[i, 11] = "support"
 
 # redefine resistance and support using high and low candlesticks
+    # shrinking candles and long wicks (bear)
+df['Shrink C Long W'] = ''
+for i in df['new_index']: 
+    if (
+            i >= 2 
+            and i < len(df) - 2
+            and (df.iloc[i,3] - df.iloc[i,0] < df.iloc[i-1,3] - df.iloc[i - 1,0])
+            and (df.iloc[i-1,3] - df.iloc[i-1,0] < df.iloc[i-2,3] - df.iloc[i-2,0])
+            # long wick is high minus abs of close minus open is greater than 2x abs of close minus open
+            and df.iloc[i,3] > df.iloc[i,1] 
+            and df.iloc[i,1] - df.iloc[i,3] > df.iloc[i,3] - df.iloc[i,0]
+            and df.iloc[i-1,1] - df.iloc[i-1,3] > df.iloc[i-1,3] - df.iloc[i-1,0]
+        ):
+            df.iloc[i, 12] = "shrinking candle, long wick"
+
 # look at other candlestick indicators
             
 # incorporate fibonaci levels at lows and highs
