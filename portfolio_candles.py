@@ -95,6 +95,7 @@ for i in df['new_index']:
 # redefine resistance and support using high and low candlesticks
     # shrinking candles and long wicks (bear)
 df['Shrink C Long W'] = ''
+slope = calculate_slope_and_intercept(df.iloc[i, 8], df.iloc[i, 3], df.iloc[i-1, 8], df.iloc[i-1, 3])[0]
 for i in df['new_index']: 
     if (
             i >= 2 
@@ -105,8 +106,10 @@ for i in df['new_index']:
             and df.iloc[i,3] > df.iloc[i,1] 
             and df.iloc[i,1] - df.iloc[i,3] > df.iloc[i,3] - df.iloc[i,0]
             and df.iloc[i-1,1] - df.iloc[i-1,3] > df.iloc[i-1,3] - df.iloc[i-1,0]
+            # add reversal trade in uptrend where red candle closes below Slope line (short stock)
+            and (df.iloc[i+2,3] < slope or df.iloc[i+2,3] < slope)
         ):
-            df.iloc[i, 12] = "shrinking candle, long wick"
+            df.iloc[i, 12] = "shrinking candle, long wick, reversal"
 
 # look at other candlestick indicators
             
