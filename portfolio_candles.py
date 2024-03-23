@@ -91,11 +91,12 @@ for i in df['new_index']:
             and df.iloc[i,4] <= df.iloc[i + 2,4]
         ):
             df.iloc[i, 11] = "support"
+    
 
 # redefine resistance and support using high and low candlesticks
     # shrinking candles and long wicks (bear)
-df['Shrink C Long W'] = ''
-slope = calculate_slope_and_intercept(df.iloc[i, 8], df.iloc[i, 3], df.iloc[i-1, 8], df.iloc[i-1, 3])[0]
+df['Shrink C Long W bear'] = ''
+slope = calculate_slope_and_intercept(df.iloc[i, 8], df.iloc[i, 3], df.iloc[i-1, 8], df.iloc[i-1, 3]) #deleted [0]
 for i in df['new_index']: 
     if (
             i >= 2 
@@ -106,10 +107,28 @@ for i in df['new_index']:
             and df.iloc[i,3] > df.iloc[i,1] 
             and df.iloc[i,1] - df.iloc[i,3] > df.iloc[i,3] - df.iloc[i,0]
             and df.iloc[i-1,1] - df.iloc[i-1,3] > df.iloc[i-1,3] - df.iloc[i-1,0]
-            # add reversal trade in uptrend where red candle closes below Slope line (short stock)
-            and (df.iloc[i+2,3] < slope or df.iloc[i+2,3] < slope)
+            # add reversal trade in uptrend where previously was a resistance in last 30 mins (short stock)
+            and any(x == 'resistance' for x in df.loc[i:i+6, 'Resistance'])
         ):
-            df.iloc[i, 12] = "shrinking candle, long wick, reversal"
+            df.iloc[i, 12] = "shrinking candle, long wick, reversal bear"
+
+# Shrinking candle, long wick, bull
+df['Shrink C Long W bull'] = ''
+slope = calculate_slope_and_intercept(df.iloc[i, 8], df.iloc[i, 3], df.iloc[i-1, 8], df.iloc[i-1, 3]) #deleted [0]
+for i in df['new_index']: 
+    if (
+            i >= 2 
+            and i < len(df) - 2
+            and (df.iloc[i,0] - df.iloc[i,3] < df.iloc[i-1,0] - df.iloc[i - 1,3])
+            and (df.iloc[i-1,0] - df.iloc[i-1,3] < df.iloc[i-2,0] - df.iloc[i-2,3])
+            # long wick is low minus (open minus close) is greater than open minus close
+            and df.iloc[i,0] > df.iloc[i,3] 
+            and df.iloc[i,3] - df.iloc[i,2] > df.iloc[i,0] - df.iloc[i,3]
+            and df.iloc[i-1,3] - df.iloc[i-1,2] > df.iloc[i-1,0] - df.iloc[i-1,3]
+            # add reversal trade in downtrend where previously was support in last 30 mins (buy stock)
+            and any(x == 'support' for x in df.loc[i:i+6, 'Support'])
+        ):      
+            df.iloc[i, 13] = "shrinking candle, long wick, reversal bull"
 
 # look at other candlestick indicators
             
