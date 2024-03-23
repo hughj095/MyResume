@@ -67,13 +67,37 @@ for i in df.index:
     df.loc[i,'Time'] = time_value
 
 # mark the slope and intercept of a trendline with resistance at two peaks
-df['Resistance Trend'] = ''
-for i in range(1, len(df['Resistance'])):
+df['Slope'] = ''
+df['Intercept'] = ''
+for i in range(1, len(df['new_index'])):
      if df.iloc[i,6] == 'resistance':
           for x in range(i+1, len(df['Resistance'])):
                if df.iloc[x,6] == 'resistance':
                     slope, intercept = calculate_slope_and_intercept(df.iloc[i,8],i,df.iloc[x,8],x)
-                    df.loc[i,"Resistance Trend"] = (slope, intercept)                    
+                    df.iloc[i,9] = slope
+                    df.iloc[i,10] = intercept             
+
+# find support levels using candlesticks
+df['Support'] = ''
+for i in df['new_index']:
+    if (
+            i >= 2 and i < len(df) - 2
+            and df.iloc[i,4] <= df.iloc[i - 1,4]
+            and df.iloc[i,4] <= df.iloc[i - 2,4]
+            and df.iloc[i,4] <= df.iloc[i + 1,4]
+            and df.iloc[i,4] <= df.iloc[i + 2,4]
+        ):
+            df.iloc[i, 11] = "support"
+
+# redefine resistance and support using high and low candlesticks
+# look at other candlestick indicators
+            
+# incorporate fibonaci levels at lows and highs
+            
+# define when is a buy opportunity
+            
+
+
 
 
 df.to_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\df.csv', index=True)
