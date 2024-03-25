@@ -134,6 +134,11 @@ for i in df['new_index']:
             df.iloc[i, 13] = "shrinking candle, long wick, reversal bull"
 
 # look at other candlestick indicators
+            
+
+
+
+
 # volume indicator
 df['volume_indicator'] = ''
 for i in range(len(df)):
@@ -146,6 +151,8 @@ for i in range(len(df)):
             
 # incorporate fibonaci levels at lows and highs
             
+
+
 # define when is a buy opportunity
             
 
