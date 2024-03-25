@@ -36,11 +36,14 @@ r = requests.get(url)
 data = r.json()
 df = pd.DataFrame(data['Time Series (5min)']).T
 
-# mark stock as in bull territory above a certain price
+# convert strings to numeric
 df['4. close'] = pd.to_numeric(df['4. close'])
 df['1. open'] = pd.to_numeric(df['1. open'])
 df['2. high'] = pd.to_numeric(df['2. high'])
 df['3. low'] = pd.to_numeric(df['3. low'])
+df['5. volume'] = pd.to_numeric(df['5. volume'])
+
+# mark stock as in bull territory above a certain price
 marker = []
 for close in df['4. close']:
     if close > 155:
@@ -131,6 +134,15 @@ for i in df['new_index']:
             df.iloc[i, 13] = "shrinking candle, long wick, reversal bull"
 
 # look at other candlestick indicators
+# volume indicator
+df['volume_indicator'] = ''
+for i in range(len(df)):
+    if i < 6 or i > len(df) - 7:
+        continue  # If the index is too close to the beginning or end, skip
+    current_value = df.at[df.index[i], '5. volume']
+    surrounding_values = df.iloc[i-6:i+7]['5. volume']  # 6 before and 6 after (total 12)
+    if current_value == surrounding_values.max():
+        df.at[df.index[i], 'volume_indicator'] = 'high volume'
             
 # incorporate fibonaci levels at lows and highs
             
