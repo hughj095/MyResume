@@ -59,7 +59,7 @@ for i in df['new_index']:
             df.iloc[i,4] >= df.iloc[i - 1,4]
             and df.iloc[i,4] >= df.iloc[i - 2,4]
             and df.iloc[i,4] >= df.iloc[i + 1,4]
-            and df.iloc[i,4] >= df.iloc[i + 2,4]
+            and (i < len(df)-2 and df.iloc[i,4] >= df.iloc[i + 2,4])
         ):
             df.iloc[i, 6] = "resistance"
 
@@ -129,12 +129,23 @@ for i in df['new_index']:
             and df.iloc[i,3] - df.iloc[i,2] > df.iloc[i,0] - df.iloc[i,3]
             and df.iloc[i-1,3] - df.iloc[i-1,2] > df.iloc[i-1,0] - df.iloc[i-1,3]
             # add reversal trade in downtrend where previously was support in last 30 mins (buy stock)
-            and any(x == 'support' for x in df.loc[i:i+6, 'Support'])
+            # and any(x == 'support' for x in df.loc[i:i+6, 'Support'])
         ):      
             df.iloc[i, 13] = "shrinking candle, long wick, reversal bull"
 
 # look at other candlestick indicators
             
+# Double bottom momentum: two close prices in a span of twelve are the lowest of twelve AND are similar in price AND flank both 
+# sides of the high price of twelve, showing support
+            
+## need to look at next candle for a increased close
+for i in range(len(df)):
+    if i < len(df) - 11:
+        window = df['4. close'].iloc[i:i + 12]  # Get the window of 12 values including the current cell
+        min_values_indices = window.nsmallest(2).index  # Get indices of two minimum values within the window
+        min_value_1, min_value_2 = window[min_values_indices]  # Get the values of the two minimums
+        if df.iloc[i,3] == min_value_1 or df.iloc[i,3] == min_value_2:
+                df.iloc[i, 14] = "double bottom"
 
 
 
