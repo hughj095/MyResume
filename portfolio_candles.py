@@ -137,15 +137,21 @@ for i in df['new_index']:
             
 # Double bottom momentum: two close prices in a span of twelve are the lowest of twelve AND are similar in price AND flank both 
 # sides of the high price of twelve, showing support
-            
-## need to look at next candle for a increased close
+df['Double Bottom'] = ''
 for i in range(len(df)):
     if i < len(df) - 11:
         window = df['4. close'].iloc[i:i + 12]  # Get the window of 12 values including the current cell
         min_values_indices = window.nsmallest(2).index  # Get indices of two minimum values within the window
         min_value_1, min_value_2 = window[min_values_indices]  # Get the values of the two minimums
-        if df.iloc[i,3] == min_value_1 or df.iloc[i,3] == min_value_2:
-                df.iloc[i, 14] = "double bottom"
+        if (
+            df.iloc[i,3] == min_value_1 or df.iloc[i,3] == min_value_2
+            and df.iloc[i-1,3] > df.iloc[i,3]
+        ):
+            df.iloc[i, 14] = "double bottom"
+
+# Slope and intercept of a support level
+        
+
 
 
 
