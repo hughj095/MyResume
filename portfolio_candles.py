@@ -43,12 +43,14 @@ df['2. high'] = pd.to_numeric(df['2. high'])
 df['3. low'] = pd.to_numeric(df['3. low'])
 df['5. volume'] = pd.to_numeric(df['5. volume'])
 
-# mark stock as in bull territory above a certain price
+# mark stock as in bull territory if current price is daily high
 marker = []
-for close in df['4. close']:
-    if close > 155:
-        marker.append('bull')
-    else: marker.append(0)
+max_close = max(df['4. close'])
+for close in reversed(df['4. close']):
+    if close == max_close:
+        marker.insert(0, 'bull')
+    else:
+        marker.insert(0, 0)
 df['Marker'] = marker
 
 # mark a stock as having resistance at the peak of a candle's close among four others
@@ -173,6 +175,7 @@ for i in range(len(df)):
 #   local low or high, mark as a fib level           
 
 
+# could incorporate 50 DMA, but need another API pull
 
 
 # define when is a buy opportunity
@@ -182,6 +185,6 @@ for i in range(len(df)):
 
 # build a bank file of buy stocks, prices, shares, times, target and sell prices, executions, and bankroll
         
-        
+
 
 df.to_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\df.csv', index=True)
