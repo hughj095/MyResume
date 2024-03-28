@@ -180,5 +180,8 @@ for i in range(len(df)):
 
 
 
+# build a bank file of buy stocks, prices, shares, times, target and sell prices, executions, and bankroll
+        
+        
 
 df.to_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\df.csv', index=True)
