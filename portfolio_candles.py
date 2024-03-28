@@ -150,11 +150,13 @@ for i in range(len(df)):
             df.iloc[i, 14] = "double bottom"
 
 # Slope and intercept of a support level
-        
-
-
-
-
+for i in range(1, len(df['new_index'])):
+     if df.iloc[i,11] == 'support':
+          for x in range(i+1, len(df['Support'])):
+               if df.iloc[x,11] == 'support':
+                    slope, intercept = calculate_slope_and_intercept(df.iloc[i,8],i,df.iloc[x,8],x)
+                    df.iloc[i,9] = slope
+                    df.iloc[i,10] = intercept        
 
 # volume indicator
 df['volume_indicator'] = ''
@@ -167,7 +169,10 @@ for i in range(len(df)):
         df.at[df.index[i], 'volume_indicator'] = 'high volume'
             
 # incorporate fibonaci levels at lows and highs
-            
+#   find the low and high of a 4 hour period, and mark the fib levels within that period, if fib levels are a 
+#   local low or high, mark as a fib level           
+
+
 
 
 # define when is a buy opportunity
