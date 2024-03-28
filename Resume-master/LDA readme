@@ -1,0 +1,7 @@
+LDA (Linear Descriminant Analysis) projects a feature space in 1 dimension lower than original
+  while maintaining class-discriminatory information.
+  
+LDA is supervised learning
+
+LDA is better (more accurate) when comparing multiple variables
+

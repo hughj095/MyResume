@@ -1,0 +1,22 @@
+Boltzman Machines are undirected models.  They do not have a start and finish point.  There are hidden nodes and visible nodes.
+And each are connected to every node.  There is an input layer (visible nodes), but no output layer.  Each node, regardless if hidden
+    or visible, they each generate data.
+Because each node is fully connected to every node, Boltzman machines have an advantage of modeling unsupervised errors, outliers, and abnormal 
+  behavior in the model.  The final product is a model of the system.
+
+The Boltzman equation come from physics.  It is a probability of a certain state (i) of a system.  It is a probability of energy determining the state of the system.
+    So the higher the energy, the lower the probabilty of a certain system state.  They are inversely related.  For example, gas molecules spread out in a closed 
+    room which minimizes the total energy state.
+
+Each hidden node represents and is trained on certain features.  Such as Oscar, Drama, Action, Tarantino and Hanks in a Boltzman machine for movies.
+    Only certain nodes are activated if their input node have those certain features.
+
+Weights are adjusted in Boltzmans by Contrastive Divergence.  Where the input nodes change and re-input re-constructed values, different from the original inputs.
+    This is called Gibbs Sampling.  It does this over and over until the model appears identical to the inputs, and it reaches the lowest amount of 
+    "energy state".  Thus the model is trained on the inputs.
+
+A Deep Belief Network (DBN) are Restricted Botlzman Machines stacked on top of each other.  There is no direction in the top layer, but all other layers weigh and adjust towards the input layer.  
+
+A Deep Botlzman Machine, there are no specified directional adjustments.  It is potentially used for more detailed features.
+
+

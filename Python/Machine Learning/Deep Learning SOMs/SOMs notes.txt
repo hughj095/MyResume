@@ -1,0 +1,19 @@
+SOMs - Self Organizing Maps
+
+Many imputs through a matrix of weights, outputting a 2D output.
+It organizes data clusters into 2D groups, based on many inputs.
+Example, ranking quality of living by country, based on health score, education score, inflation, etc.
+
+SOMs are different such that the weights are a characteristic of the node itself.  There are no activation functions.
+  It uses the Eucledian distance to find which node is closest to the input values.
+  Then the weights of the node are updated.
+
+SOMs retain the topology and integrity of the data and nodes in relation to each other.
+SOMs reveal correlations that we do not expect.
+SOMs classify data without supervision.
+SOMs don't require a target vector or back-propogation
+
+SOMs organize themselves based on similar features of each output value, thus grouping like items together
+
+
+

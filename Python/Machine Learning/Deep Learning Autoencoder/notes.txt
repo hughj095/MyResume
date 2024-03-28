@@ -1,0 +1,35 @@
+Auto-encoders, like Deep Boltzman Machines, are used for recommendation systems
+
+It is a directed-type of network, where workflows move from left to right towards an output node.  They take less computing space because the input layer is not saved.
+
+the Input layer is encoded into the hidden layer, then decoded into the output layer.
+
+The hidden nodes sum a total as the output.  It then applies the Softmax function, which thus outputs the identical values of the input nodes.
+
+Training an Auto-Encoder:
+  input vector is set as all ratings for each unique user.
+  use the Sigmoid function to input a vector of lower dimensions, including weights W and bias b
+  decode z the vector function
+  compute the reconstruction error and minimize it
+  propogate back through the model and adjust the weights
+
+Too many hidden nodes would be bad and less accurate models would result.  Therefore you want sparse hidden nodes.
+
+De-Noising replaces, at random, some of the input node values, which thus makes the model more accurate.
+
+Stacked Auto-encoders have more than one hidden layers.
+
+Stacked Auto-encoders are not the same as Deep Auto-encoders.
+
+Deep Auto-encoders are directed, but are like RBMs stacked on top of each other.
+
+
+
+
+
+
+
+  
+
+
+

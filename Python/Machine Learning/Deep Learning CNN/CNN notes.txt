@@ -1,0 +1,33 @@
+# CNNs are used for image classification
+
+# A black and white image of 2x2 pixels is a 2D Array (0 to 255 for each pixel)
+# A colored image is a 3D array (0 to 255 x3) The 3 is R-G-B.
+
+# Convolution multiplies pixels with 1s by a feature detector to filter pixels and creates many 
+#    feature maps of fewer pixels.  The purpose is to keep/magnify image features with fewer pixels.
+# Examples of feature detectors are Edge Detect, or Sharpen, or Blur, Emboss, etc.
+
+# ReLU or Rectified Linear Units, applies the Rectifier function in order to break up linearity, or 
+#  only output non-negative values.  For example in a black and white image, it would filter out the  
+#  darker pixels, thus reducing image size.
+
+# Pooling further reduces the image pixel by only taking the max value of a set of pixels into one pixel.  
+#   So a set of pixels values 2, 3, and 4 would output only one pixel of value 4.
+
+# Flattening takes in the pooling layer images and outputs the input layer of the future ANN.
+
+# Full Connection adds a full ANN to the initial steps of the CNN, which includes the input layer,
+#  the Fully Connected layer (Hidden Layers) and the output layer and output values.
+
+# For image classification, the CNN trains the fully connected neurons on which classification they
+#  probably represent, then the test data uses those neurons to determine which class to choose with
+#  a probability.
+
+# Softmax and Cross-Entropy
+#  The Softmax Function takes two or more output values and changes them to add up to 1 (or make them a probability)
+#  Cross-Entropy in an error function that uses logrithm to emphasize the small changes in low value neurons (only for classification)
+#  in Regression it is better to use mean-squared error.
+
+
+
+

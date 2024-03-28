@@ -1,0 +1,34 @@
+# An ANN is an attempt to simulate the network of neurons that make up a human brain so that the computer 
+#   will be able to learn things and make decisions in a humanlike manner.  Each "neuron" in an ANN takes 
+#   an input value, makes a caluculation with an Activation Function, back-propogates to adjust a weight value for future calculations,
+#   and finally produces an output value.
+
+# Activation Functions in the Neuron:
+  # Threshold Function - outputs a 1 or 0 (yes or no)
+  # Sigmoid Function - Probability between 0 and 1.  Used in Logistic Regression. USed in the Output Layer often. 
+  # Rectifier Function - most popular, 0 then increases at a slope.  Used in the Hidden Layer often.
+  # Hyperbolic Tangent - Probability between -1 and 1.
+
+# The purpose is to minimize the Cost function value.  AKA Back-Propogation.
+
+# Gradient Discent is necessary to calculate the lowest Cost function because there are too many combinations
+#  of dimensions for even the fastest super-computer to handle.  Gradient Discent finds the y value when the slope 
+#  is zero (which is the lowest cost value).
+
+# Stochastic Gradient Disscent adjusts the weights row by row for each record, while regulrr Gradient Disscent 
+#  adjusts the weights after all records and field are inputted and calcuations are made.  It is much more volitile 
+#  than regular Gradient Disscent and much more likely to find the global minimum.  It is also much faster to calculate.
+
+# Back-propogation 
+
+# Step 1: randomize the initials weights (close to zero, but not zero)
+# Step 2: Dataset is input into the input layer, one field/record per input node
+# Step 3: The weights affect the input values, and the activation formulas preduct the first y 
+ # values
+# Step 4: Compare the predicted result to the actual training data result
+# Step 5: Back-propogation and update the weights using the Cost function
+# Step 6: Repeat steps 1-5, update the weights after each observation (Reinforcement Learning),
+    # or update the weights after a batch of observations (Batch Learning)
+
+
+

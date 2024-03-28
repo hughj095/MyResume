@@ -1,0 +1,13 @@
+# The residual sum of squares is the ordinary least squared value which builds the regression model line
+
+R**2 = 1 - (residual sum of squares/total sum of squares)
+
+Therefore R**2 the closer it is to 1, the more accurate the model
+
+1 is a perfect fit
+0.9 is a very good model
+0.7 is not great
+0.4 is terrible
+
+Adjusted R Squared accounts for new independent variables
+

@@ -1,0 +1,88 @@
+# This code creates an RNN (Recurrent Neural Network) and predicts stock prices
+
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+
+# import just the training set, so no actual data affects the model
+dataset_train = pd.read_csv('Google_Stock_Price_Train.csv')
+# range from 1 to 2 ensures an array is created, not just a one column vector, but the 2 column is excluded
+training_set = dataset_train.iloc[:, 1:2].values
+
+# Feature Scaling
+# MinMaxScalar is the normalization of the training_set, giving a result between 0 and 1
+from sklearn.preprocessing import MinMaxScaler
+sc = MinMaxScaler(feature_range = (0, 1))
+training_set_scaled = sc.fit_transform(training_set)
+
+# Creating a data structure with 60 timesteps and 1 output (60 previous financial days)
+X_train = []
+y_train = []
+# start at 60 because you are taking the last 60 days from the 60th day
+for i in range(60, 1258):
+    X_train.append(training_set_scaled[i-60:i, 0])
+    y_train.append(training_set_scaled[i, 0])
+X_train, y_train = np.array(X_train), np.array(y_train)
+
+# reshaping into a 3D array (Stock prices, timesteps, number of indicators)
+X_train = np.reshape(X_train, (X_train.shape[0], X_train.shape[1], 1))
+
+# from tensorflow
+from keras.models import Sequential
+from keras.layers import Dense
+from keras.layers import LSTM
+from keras.layers import Dropout
+
+# initialize the RNN
+regressor = Sequential()
+
+# first LSTM layer and dropout regularization.  Dropout regularization avoids over-fitting.
+regressor.add(LSTM(units = 50, return_sequences = True, input_shape = (X_train.shape[1], 1)))
+regressor.add(Dropout(0.2))
+
+# second layer and dropout regulation
+regressor.add(LSTM(units = 50, return_sequences = True))
+regressor.add(Dropout(0.2))
+
+# third layer, with 50 neurons, return sequence is true becuase will have another layer
+regressor.add(LSTM(units = 50, return_sequences = True))
+regressor.add(Dropout(0.2))
+
+# fourth layer, no more hidden layer
+regressor.add(LSTM(units = 50))
+regressor.add(Dropout(0.2))
+
+# output layer, only one neuron output
+regressor.add(Dense(units = 1))
+
+# compile the RNN
+regressor.compile(optimizer = 'adam', loss = 'mean_squared_error')
+
+# fit to training set
+regressor.fit(X_train, y_train, epochs = 100, batch_size = 32)
+
+# Get the real stock price (test data)
+dataset_test = pd.read_csv('Google_Stock_Price_Test.csv')
+real_stock_price = dataset_test.iloc[:, 1:2].values
+
+# Predict the stock price
+dataset_total = pd.concat((dataset_train['Open'], dataset_test['Open']), axis = 0)
+inputs = dataset_total[len(dataset_total) - len(dataset_test) - 60:].values
+inputs = inputs.reshape(-1,1)
+inputs = sc.transform(inputs)
+X_test = []
+for i in range(60, 80):
+    X_test.append(inputs[i-60:i, 0])
+X_test = np.array(X_test)
+X_test = np.reshape(X_test, (X_test.shape[0], X_test.shape[1], 1))
+predicted_stock_price = regressor.predict(X_test)
+predicted_stock_price = sc.inverse_transform(predicted_stock_price)
+
+# visualize the results
+plt.plot(real_stock_price, color = 'red', label = 'Real Google Stock Price')
+plt.plot(predicted_stock_price, color = 'blue', label = 'Predicted Google Stock Price')
+plt.title('Google Stock Price Prediction')
+plt.xlabel('Time')
+plt.ylabel('Google Stock Price')
+plt.legend()
+plt.show()

@@ -1,0 +1,6 @@
+Classification is used to determine business churn, or which customers stay or leave--it identifies the category of a data point.
+Other varieties are computer vision classification, logistic regression etc.
+
+Logistic Regression predicts a categorical dependent variable.  For instance you may have to determine which product a customer buys based on historical purchases
+
+

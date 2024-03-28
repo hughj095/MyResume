@@ -1,0 +1,25 @@
+RNN - Recurrent Neural Networks
+LSTM - Long Short-term Memory
+
+RNN is for short-term learning (brain frontal lobe), unlike ANN for longterm memory, or CNN for visual memory (occipital).  Parietal lobe is for spatial, balance, perspective.
+
+RNN the hidden layer loops back onto itself, creating multiple more hidden layers and many outputs.
+
+One-to-many: one input, multiple hidden layers and multiple outputs
+Many-to-one: sentiment analysis, input multiple texts, output one output as positive or negative
+Many-to-many: many inputs, many outputs, such as translation of text from one language to another.  
+
+RNN is necessary for remembering outputs of hidden layers to derive the next level of outputs.  Such as remembering the beginning plot of a movie to understand
+  the final plot.
+
+Vanishing Gradient: weights used in the past get smaller and smaller everytime you update them, AND they are feeding their own outputs, which could negatively 
+  affect the whole network.  The solution to this is Exploding Gradient, which truncates backpropogation.  Or Penalities, Gradient Clipping, weight initialization,
+  echo-state networks, or LSTMs (Long Short-Term Memory) networks.
+
+LSTM - Long Short-term Memory
+Three inputs and two outputs.  Each neuron has a series of valves and functions.  The valves either forget the back-propogation weights due to distance from its input
+  layer, or adjusts the weights accordingly.  
+
+
+
+

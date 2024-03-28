@@ -1,0 +1,71 @@
+import tensorflow as tf
+from keras.preprocessing.image import ImageDataGenerator
+tf.__version__
+
+# Preprocessing Training Set
+# You want to avoid over-fitting the training set.  Therefore you must transform the training set images.
+# Target size is 64x64 pixels
+train_datagen = ImageDataGenerator(rescale = 1./255,
+                                   shear_range = 0.2,
+                                   zoom_range = 0.2,
+                                   horizontal_flip = True)
+training_set = train_datagen.flow_from_directory('dataset/training_set',
+                                                 target_size = (64, 64),
+                                                 batch_size = 32,
+                                                 class_mode = 'binary')
+
+# Preprocessing Test Set
+# Do not transform the test set images, but you must feature scale them
+# Target size is 64x64 pixels
+
+test_datagen = ImageDataGenerator(rescale = 1./255)
+test_set = test_datagen.flow_from_directory('dataset/test_set',
+                                            target_size = (64, 64),
+                                            batch_size = 32,
+                                            class_mode = 'binary')
+# Initialize the CNN
+cnn = tf.keras.models.Sequential()
+
+# Add the first convolutional layer
+# using the ReLU or Rectified Linear Units function to reduce image size (excludes non-negative pixels)
+# Input shape is 64x64 pixels x3 colors RGB
+cnn.add(tf.keras.layers.Conv2D(filters=32, kernel_size=3, activation='relu', input_shape=[64, 64, 3]))
+
+# Pooling layer.  Pool size is 2x2.  Strides is also 2, else there would be overlapping
+cnn.add(tf.keras.layers.MaxPool2D(pool_size=2, strides=2))
+
+# Second Convolutional layer, does not need input shape
+cnn.add(tf.keras.layers.Conv2D(filters=32, kernel_size=3, activation='relu'))
+cnn.add(tf.keras.layers.MaxPool2D(pool_size=2, strides=2))
+
+# Flattening
+cnn.add(tf.keras.layers.Flatten())
+
+# Add full connection layer with Dense function with 128 neurons
+cnn.add(tf.keras.layers.Dense(units=128, activation='relu'))
+
+# Add output layer with sigmoid activation function (for binary classification)
+cnn.add(tf.keras.layers.Dense(units=1, activation='sigmoid'))
+
+# Compile the CNN
+cnn.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy'])
+
+# Fit in order to train the CNN on the training set.  And evaluate on the Test set
+cnn.fit(x = training_set, validation_data = test_set, epochs = 25)
+
+# Make a prediction on a test set image
+import numpy as np
+from keras.preprocessing import image
+test_image = image.load_img('dataset/single_prediction/cat_or_dog_1.jpg', target_size = (64, 64))
+test_image = image.img_to_array(test_image)
+# must use expand dims function because training images were in batches
+test_image = np.expand_dims(test_image, axis = 0)
+# updated with 255.0
+result = cnn.predict(test_image/255.0)
+training_set.class_indices
+if result[0][0] > 0.5:
+  prediction = 'dog'
+else:
+  prediction = 'cat'
+
+print(prediction)
