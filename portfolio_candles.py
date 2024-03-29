@@ -45,13 +45,13 @@ df['5. volume'] = pd.to_numeric(df['5. volume'])
 
 # mark stock as in bull territory if current price is daily high
 marker = []
-max_close = max(df['4. close'])
-for close in reversed(df['4. close']):
-    if close == max_close:
-        marker.insert(0, 'bull')
-    else:
-        marker.insert(0, 0)
-df['Marker'] = marker
+# max_close = max(df['4. close'])
+# for close in reversed(df['4. close']):
+#     if close == max_close:
+#         marker.insert(0, 'bull')
+#     else:
+#         marker.insert(0, 0)
+df['Marker'] = ''
 
 # mark a stock as having resistance at the peak of a candle's close among four others
 df['Resistance'] = ''
@@ -172,7 +172,32 @@ for i in range(len(df)):
             
 # incorporate fibonaci levels at lows and highs
 #   find the low and high of a 4 hour period, and mark the fib levels within that period, if fib levels are a 
-#   local low or high, mark as a fib level           
+#   local low or high, mark as a fib level
+df['Fib Level'] = ''
+for i in range(len(df)):
+    if df.iloc[i]['new_index'] < len(df) - 48:
+        x = int(i) + 48
+        ylist = []
+        for y in df.iloc[i:x+1]['4. close'].values:
+            ylist.append(y)
+        min_close = min(ylist)
+        max_close = max(ylist)
+    else: 
+        ylist = []
+        for z in range(df.iloc[i]['4. close'].float(),df.iloc[len(df)-1]['4. close'].float()): ##### EDIT HERE
+            ylist.append(z)
+        min_close = min(ylist)
+        max_close = max(ylist)
+    fib23_6 = (max_close-min_close)*0.236
+    fib38_2 = (max_close-min_close)*0.382
+    fib50   = (max_close-min_close)*0.5
+    fib61_8 = (max_close-min_close)*0.618
+    fib78_6 = (max_close-min_close)*0.786
+    fiblist = [fib23_6,fib38_2,fib50,fib61_8,fib78_6]
+    if df.iloc[i]['4. close'] in fiblist:
+        df.iloc[i,'Fib Level'] = f'Fib Level {i in fiblist}'
+            
+                
 
 
 # could incorporate 50 DMA, but need another API pull
