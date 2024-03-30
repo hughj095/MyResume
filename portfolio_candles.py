@@ -8,6 +8,7 @@ import pandas as pd
 from twilio.rest import Client
 from twilio.http.http_client import TwilioHttpClient
 from datetime import datetime
+import numpy as np
 
 AV_API_KEY = 'LNR6C1L773RCAOFY'
 TWILIO_ACCOUNT_SID = 'account sid here'
@@ -184,18 +185,20 @@ for i in range(len(df)):
         max_close = max(ylist)
     else: 
         ylist = []
-        for z in range(df.iloc[i]['4. close'].float(),df.iloc[len(df)-1]['4. close'].float()): ##### EDIT HERE
+        df_subset = df.iloc[49:].copy()
+        for z in df_subset['4. close']:
             ylist.append(z)
         min_close = min(ylist)
         max_close = max(ylist)
-    fib23_6 = (max_close-min_close)*0.236
-    fib38_2 = (max_close-min_close)*0.382
-    fib50   = (max_close-min_close)*0.5
-    fib61_8 = (max_close-min_close)*0.618
-    fib78_6 = (max_close-min_close)*0.786
+    fib23_6 = round((max_close-min_close)*0.236 + min_close,2)
+    fib38_2 = round((max_close-min_close)*0.382 + min_close,2)
+    fib50   = round((max_close-min_close)*0.5 + min_close,2)
+    fib61_8 = round((max_close-min_close)*0.618 + min_close,2)
+    fib78_6 = round((max_close-min_close)*0.786 + min_close,2)
     fiblist = [fib23_6,fib38_2,fib50,fib61_8,fib78_6]
     if df.iloc[i]['4. close'] in fiblist:
-        df.iloc[i,'Fib Level'] = f'Fib Level {i in fiblist}'
+        fib_index = fiblist.index(df.iloc[i]['4. close'])
+        df.iloc[i,16] = fiblist[fib_index]
             
                 
 
