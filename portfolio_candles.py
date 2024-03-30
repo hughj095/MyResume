@@ -200,7 +200,9 @@ for i in range(len(df)):
         fib_index = fiblist.index(df.iloc[i]['4. close'])
         df.iloc[i,16] = fiblist[fib_index]
             
-                
+####### Do another candlestick indicator
+
+
 
 
 # could incorporate 50 DMA, but need another API pull
