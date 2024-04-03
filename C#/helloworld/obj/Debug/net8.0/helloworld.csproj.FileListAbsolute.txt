@@ -1,0 +1,5 @@
+c:\Users\johnm\OneDrive\Desktop\MyResume\C#\helloworld\obj\Debug\net8.0\helloworld.GeneratedMSBuildEditorConfig.editorconfig
+c:\Users\johnm\OneDrive\Desktop\MyResume\C#\helloworld\obj\Debug\net8.0\helloworld.AssemblyInfoInputs.cache
+c:\Users\johnm\OneDrive\Desktop\MyResume\C#\helloworld\obj\Debug\net8.0\helloworld.AssemblyInfo.cs
+c:\Users\johnm\OneDrive\Desktop\MyResume\C#\helloworld\obj\Debug\net8.0\helloworld.csproj.CoreCompileInputs.cache
+c:\Users\johnm\OneDrive\Desktop\MyResume\C#\helloworld\obj\Debug\net8.0\helloworld.sourcelink.json
