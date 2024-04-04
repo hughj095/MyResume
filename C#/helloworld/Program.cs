@@ -1,5 +1,5 @@
 ﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+
 
 using System;
 
@@ -7,6 +7,7 @@ class Program
 {
     static void Main(string[] args)
     {
+        Console.WriteLine("Hello, World!");
         // Prompt the user to enter their name
         Console.WriteLine("Please enter your name:");
 
@@ -21,3 +22,4 @@ class Program
         Console.ReadKey();
     }
 }
+

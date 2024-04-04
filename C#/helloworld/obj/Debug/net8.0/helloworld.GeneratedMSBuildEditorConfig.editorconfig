@@ -8,6 +8,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = helloworld
-build_property.ProjectDir = c:\Users\johnm\OneDrive\Desktop\MyResume\C#\helloworld\
+build_property.ProjectDir = C:\Users\johnm\OneDrive\Desktop\MyResume\C#\helloworld\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
