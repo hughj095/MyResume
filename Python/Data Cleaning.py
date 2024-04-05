@@ -31,6 +31,15 @@ df.fillna(0, inplace=True)
 df['date_added'] = pd.to_datetime(df['date_added'], format='mixed')
 df['release_year'] = pd.to_datetime(df['release_year'], format='%Y')
 
-df.to_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\Python\netflix_titles_cleaned.csv')
+# Check for dupes
+print(f'number of duplicated rows: {df.duplicated().sum()}')
 
-print('all set!')
+
+
+#df = df.strip()
+
+
+
+# df.to_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\Python\netflix_titles_cleaned.csv')
+
+# print('all set!')
