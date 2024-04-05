@@ -30,3 +30,7 @@ df.fillna(0, inplace=True)
 # Cast certain columns from string to dates and integers to dates
 df['date_added'] = pd.to_datetime(df['date_added'], format='mixed')
 df['release_year'] = pd.to_datetime(df['release_year'], format='%Y')
+
+df.to_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\Python\netflix_titles_cleaned.csv')
+
+print('all set!')
