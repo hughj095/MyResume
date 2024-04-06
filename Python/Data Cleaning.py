@@ -35,9 +35,19 @@ df['release_year'] = pd.to_datetime(df['release_year'], format='%Y')
 print(f'number of duplicated rows: {df.duplicated().sum()}')
 
 
+def has_spaces(element):
+    if isinstance(element,str):
+        return element != element.strip()
+    else: return False
 
-#df = df.strip()
+# Apply the function to each elemet in the DataFrame
+result = df.applymap(has_spaces)
+print(result)
 
+
+count_result = result.sum()
+###### Count number of Trues in the df
+print(f'{count_result} elements were stripped')
 
 
 # df.to_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\Python\netflix_titles_cleaned.csv')
