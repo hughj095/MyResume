@@ -1,6 +1,5 @@
 ### imports and variables
 import requests
-import pprint
 import pandas as pd
 
 TICKER = 'AAPL'
@@ -49,16 +48,27 @@ for i in range(len(df)):
             df.iloc[i, 8] = "support"
 
 # Did latest resistance break above previous resistance level?
-
-
-# Did latest support break below previous resistance level?
-
-
-
-#df.to_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\df.csv')
+df['Break'] = '' # column 9
+x = 0
+count = 0
+for i in range(len(df)):
+    if df.iloc[i,8] == "resistance":
+        count += 1
+    if (
+        df.iloc[i,8] == "resistance"
+        and df.iloc[i,3] > df.iloc[x,3] 
+        and count > 1
+        ):
+            df.iloc[i,9] = "break"
+            x = i
 
 # order placement, goal posts and transaction history
 
-# notifications
+# if support then buy, while buy, if resistance + break then hold, if resistance then sell, if support then hold
 
+
+
+
+# notifications
+df.to_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\df.csv')
 # testing and alerts
