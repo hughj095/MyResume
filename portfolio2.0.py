@@ -30,7 +30,8 @@ def buy_stock(TICKER, strike_price, buy_time, SHARES):
                 'Total': [strike_price*SHARES]}
     df_transactions = pd.DataFrame(buy_data)
     df_transactions.to_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\transactions.csv', mode='a', header=False, index=False)
-    
+
+def sell_stock(TICKER, sell_price, sell_time, SHARES):
 
 ### API pull data
 
@@ -112,7 +113,7 @@ while buy == True:
                 sell_price = df.iloc[i,3]
                 sell_time = df.iloc[i,6]
                 buy = False
-                # sale function
+                sell_stock(TICKER, sell_stock, sell_time, SHARES)
         break
 
 
