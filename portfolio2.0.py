@@ -30,8 +30,29 @@ def buy_stock(TICKER, strike_price, buy_time, SHARES):
                 'Total': [strike_price*SHARES]}
     df_transactions = pd.DataFrame(buy_data)
     df_transactions.to_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\transactions.csv', mode='a', header=False, index=False)
+    hold_stock(df_transactions, buy)
+
+def hold_stock(df_transactions, buy):
+    sell = False
+    while buy == True:
+        # start timer to match multiplier and interval
+        # if nearing timer then:
+            # run API and
+            for i in range(len(df)):
+                if df.iloc[i,8] == 'resistance' and df.iloc[i,9] == '' and buy_time < df.iloc[i,6]:
+                    sell = True
+                    sell_price = df.iloc[i,3]
+                    df_transactions.iloc[i,5] = sell_price
+                    sell_time = df.iloc[i,6]
+                    buy = False
+                    sell_stock(TICKER, sell_stock, sell_time, SHARES)
+            # if time is 3:55pm then sell
+
+     
 
 def sell_stock(TICKER, sell_price, sell_time, SHARES):
+    # sell stock
+    # 
 
 ### API pull data
 
@@ -102,19 +123,7 @@ for i in range(len(df)):
         buy_time = df.iloc[i,6]
         buy_stock(TICKER, strike_price, buy_time, SHARES)
 
-sell = False
-while buy == True:
-    # start timer to match multiplier and interval
-    # if nearing timer then:
-        # run API and
-        for i in range(len(df)):
-            if df.iloc[i,8] == 'resistance' and df.iloc[i,9] == '' and buy_time < df.iloc[i,6]:
-                sell = True
-                sell_price = df.iloc[i,3]
-                sell_time = df.iloc[i,6]
-                buy = False
-                sell_stock(TICKER, sell_stock, sell_time, SHARES)
-        break
+
 
 
 
