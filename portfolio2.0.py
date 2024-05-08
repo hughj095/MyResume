@@ -19,6 +19,7 @@ def get_ticker_data(TICKER, MULTIPLIER, TIMESPAN, DATESTART, DATEEND, APIKEY):
     response = requests.get(url)
     if response.status_code == 200:
         data = response.json()
+        print('pulled API')
         return data
     else:
         print('Error:', response.status_code, response.content)
@@ -26,6 +27,7 @@ def get_ticker_data(TICKER, MULTIPLIER, TIMESPAN, DATESTART, DATEEND, APIKEY):
 
 def timer(minutes):
     seconds = minutes * 60
+    print('started timer')
     while seconds:
         mins, secs = divmod(seconds, 60)
         time.sleep(1)
@@ -75,6 +77,7 @@ def technicals(data):
                 df.iloc[i,9] = "break"
                 x = i
     df.to_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\df.csv')
+    print('saved df in technicals')
     for i in range(len(df)):
         if df.iloc[i,8] == 'support':
             strike_price = df.iloc[i,3]
@@ -96,31 +99,34 @@ def buy_stock(TICKER, strike_price, buy_time, SHARES, current_time, df):
                 'Net': '',
                 'Current Time': ''}
     df_transactions = pd.DataFrame(buy_data)
+    print('finished buy')
     hold_stock(df_transactions, current_time, SHARES, strike_price, df, buy_time)
 
 # HOLD STOCK AND RE-PULL API DATA.  SELL WHEN NEW INDICATORS APPROVE.
 def hold_stock(df_transactions, current_time, SHARES, strike_price, df, buy_time):
     sell = False
-    current_time = datetime.datetime.now().time()
-    while current_time < datetime.time(15, 54) and current_time < datetime.time(9, 30):
-        data = get_ticker_data(TICKER, MULTIPLIER, TIMESPAN, DATESTART, DATEEND, APIKEY)
-        technicals(data)
-        df.to_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\df.csv')
-        x=0
-        for i in range(len(df)):
-            if df.iloc[i,8] == 'resistance' and df.iloc[i,9] == '' and buy_time < df.iloc[i,6]:
-                sell_time = df.iloc[i,6]
-                sell_price = df.iloc[i,3]
-                sell_stock(df_transactions, sell_time, sell_price, SHARES, current_time, strike_price, x)
-                x+=1
-                sell = True
-                buy = False
-                sell_stock(TICKER, df_transactions, SHARES, strike_price, sell_time, current_time=current_time, sell_price=df.iloc[i,3])
-        timer(5)    
-    sell_stock(TICKER, df_transactions, SHARES, strike_price, current_time, sell_time='EOD',sell_price=df.iloc[i,3])
+    for i in range(len(df)):
+        if df.iloc[i,8] == 'resistance' and df.iloc[i,9] == '' and buy_time < df.iloc[i,6]:
+            sell_time = df.iloc[i,6]
+            sell_price = df.iloc[i,3]
+            sell = True
+            buy = False
+            x=0
+            sell_stock(TICKER, df_transactions, SHARES, strike_price, x, sell_time, current_time, sell_price)
+            x+=1
+            print('returned from selling')
+            current_time = datetime.datetime.now().time()
+            while current_time < datetime.time(15, 54) and current_time > datetime.time(9, 30) and sell == False:
+                data = get_ticker_data(TICKER, MULTIPLIER, TIMESPAN, DATESTART, DATEEND, APIKEY)
+                technicals(data)
+                df.to_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\df.csv')
+                print('saved df in hold function')
+                timer(5)
+                print('finished timer')
+            sell_stock(TICKER, df_transactions, SHARES, strike_price, x, current_time, sell_time, sell_price)
 
 # SELL STOCK           
-def sell_stock(df_transactions, sell_time, sell_price, SHARES, current_time, strike_price, x):
+def sell_stock(TICKER, df_transactions, SHARES, strike_price, x, sell_time, current_time, sell_price):
     df_transactions.iloc[x,5] = sell_price
     df_transactions.iloc[x,6] = sell_time
     df_transactions.iloc[x,7] = sell_price * SHARES
@@ -131,7 +137,7 @@ def sell_stock(df_transactions, sell_time, sell_price, SHARES, current_time, str
 ### PULL OR RE-PULL API DATA.  EXIT WHEN OUTSIDE OF MARKET OPEN TIME.
 current_time = datetime.datetime.now().time()
 print(current_time)
-while current_time < datetime.time(15, 54) and current_time < datetime.time(9, 30):
+while current_time < datetime.time(15, 54) and current_time > datetime.time(9, 30):
     data = get_ticker_data(TICKER, MULTIPLIER, TIMESPAN, DATESTART, DATEEND, APIKEY)
     technicals(data)
     
