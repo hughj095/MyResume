@@ -35,7 +35,7 @@ def timer(minutes):
         if seconds == 0: break
 
 # TECHNICALS AND INDICATORS
-def technicals(data):
+def technicals(data, held):
     df = pd.DataFrame(data['results'])
     df['c'] = df['c'].astype(float)
     for i in range(len(df)):
@@ -79,7 +79,7 @@ def technicals(data):
     df.to_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\df.csv')
     print('saved df in technicals')
     for i in range(len(df)):
-        if df.iloc[i,8] == 'support':
+        if df.iloc[i,8] == 'support' and held == False:
             strike_price = df.iloc[i,3]
             buy = True
             buy_time = df.iloc[i,6]
@@ -99,6 +99,7 @@ def buy_stock(TICKER, strike_price, buy_time, SHARES, current_time, df):
                 'Net': '',
                 'Current Time': ''}
     df_transactions = pd.DataFrame(buy_data)
+    held = True
     print('finished buy')
     hold_stock(df_transactions, current_time, SHARES, strike_price, df, buy_time)
 
@@ -116,13 +117,15 @@ def hold_stock(df_transactions, current_time, SHARES, strike_price, df, buy_time
             x+=1
             print('returned from selling')
             current_time = datetime.datetime.now().time()
-            while current_time < datetime.time(15, 54) and current_time > datetime.time(9, 30) and sell == False:
-                data = get_ticker_data(TICKER, MULTIPLIER, TIMESPAN, DATESTART, DATEEND, APIKEY)
-                technicals(data)
-                df.to_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\df.csv')
-                print('saved df in hold function')
-                timer(5)
-                print('finished timer')
+        elif current_time > datetime.time(15, 54) and current_time > datetime.time(9, 30) and sell == False:
+            #data = get_ticker_data(TICKER, MULTIPLIER, TIMESPAN, DATESTART, DATEEND, APIKEY)
+            #technicals(data)
+            df.to_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\df.csv')
+            print('saved df in hold function')
+            timer(5)
+            print('finished timer')
+            break
+        else: # if end of day then sell
             sell_stock(TICKER, df_transactions, SHARES, strike_price, x, current_time, sell_time, sell_price)
 
 # SELL STOCK           
@@ -132,14 +135,15 @@ def sell_stock(TICKER, df_transactions, SHARES, strike_price, x, sell_time, curr
     df_transactions.iloc[x,7] = sell_price * SHARES
     df_transactions.iloc[x,8] = df_transactions.iloc[x,7] - df_transactions.iloc[x,4]
     df_transactions.iloc[x,9] = current_time
+    held = False
     df_transactions.to_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\transactions.csv', mode='a', header=False, index=False)
 
 ### PULL OR RE-PULL API DATA.  EXIT WHEN OUTSIDE OF MARKET OPEN TIME.
 current_time = datetime.datetime.now().time()
 print(current_time)
-while current_time < datetime.time(15, 54) and current_time > datetime.time(9, 30):
+while current_time > datetime.time(15, 54) and current_time > datetime.time(9, 30):
     data = get_ticker_data(TICKER, MULTIPLIER, TIMESPAN, DATESTART, DATEEND, APIKEY)
-    technicals(data)
+    technicals(data, held)
     
 
 
