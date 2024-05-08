@@ -2,6 +2,7 @@
 import requests
 import pandas as pd
 import datetime
+import time
 import numpy as np
 
 TICKER = 'AAPL'
@@ -22,6 +23,14 @@ def get_ticker_data(TICKER, MULTIPLIER, TIMESPAN, DATESTART, DATEEND, APIKEY):
     else:
         print('Error:', response.status_code, response.content)
         return None
+
+def timer(minutes):
+    seconds = minutes * 60
+    while seconds:
+        mins, secs = divmod(seconds, 60)
+        time.sleep(1)
+        seconds -= 1
+        if seconds == 0: break
 
 # TECHNICALS AND INDICATORS
 def technicals(data):
@@ -93,7 +102,7 @@ def buy_stock(TICKER, strike_price, buy_time, SHARES, current_time, df):
 def hold_stock(df_transactions, current_time, SHARES, strike_price, df, buy_time):
     sell = False
     current_time = datetime.datetime.now().time()
-    while current_time > datetime.time(15, 54) and current_time > datetime.time(9, 30):
+    while current_time < datetime.time(15, 54) and current_time < datetime.time(9, 30):
         data = get_ticker_data(TICKER, MULTIPLIER, TIMESPAN, DATESTART, DATEEND, APIKEY)
         technicals(data)
         df.to_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\df.csv')
@@ -106,8 +115,9 @@ def hold_stock(df_transactions, current_time, SHARES, strike_price, df, buy_time
                 x+=1
                 sell = True
                 buy = False
-                sell_stock(TICKER, df_transactions, SHARES, strike_price, sell_time=sell_time,  current_time=current_time, sell_price=df.iloc[i,3])
-    sell_stock(TICKER, df_transactions, SHARES, strike_price, sell_time=sell_time, current_time=current_time, sell_price=df.iloc[i,3])
+                sell_stock(TICKER, df_transactions, SHARES, strike_price, sell_time, current_time=current_time, sell_price=df.iloc[i,3])
+        timer(5)    
+    sell_stock(TICKER, df_transactions, SHARES, strike_price, current_time, sell_time='EOD',sell_price=df.iloc[i,3])
 
 # SELL STOCK           
 def sell_stock(df_transactions, sell_time, sell_price, SHARES, current_time, strike_price, x):
@@ -120,7 +130,8 @@ def sell_stock(df_transactions, sell_time, sell_price, SHARES, current_time, str
 
 ### PULL OR RE-PULL API DATA.  EXIT WHEN OUTSIDE OF MARKET OPEN TIME.
 current_time = datetime.datetime.now().time()
-while current_time > datetime.time(15, 54) and current_time > datetime.time(9, 30):
+print(current_time)
+while current_time < datetime.time(15, 54) and current_time < datetime.time(9, 30):
     data = get_ticker_data(TICKER, MULTIPLIER, TIMESPAN, DATESTART, DATEEND, APIKEY)
     technicals(data)
     
