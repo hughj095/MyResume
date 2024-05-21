@@ -1,5 +1,14 @@
 # Portfolio
-Portfolio of Projects
+
+# Web Scraping Projects
+Under the Python folder, please see the Selenium Folder for "NBA Scores and Line Scraper.py".  This file showcases my use of XPaths to scrape live NBA score and time data into Pandas dataframes, and combines them with live score line bet amounts from RISportsBet.com.  Ultimately predicting a score and a bet amount based on a projected score window.
+
+  Thank you!
+
+
+
+
+# Other Projects
 
 "ceasar cipher" is a simple text algorithm
 
