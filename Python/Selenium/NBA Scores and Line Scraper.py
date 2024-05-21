@@ -13,8 +13,8 @@ import smtplib, ssl
 executable_path = r'C:\Users\johnm\OneDrive\Documents\Udemy Python and R Code\Python Code\chromedriver.exe'
 
 #SportsBetRI Browser
-username = "hughesjm314@gmail.com"
-password = "John08sports$"
+username = "x@gmail.com"
+password = "pword"
 driver = webdriver.Chrome(executable_path) 
 driver.get('https://sportsbetrhodeisland.com/sports')
 driver.maximize_window()
@@ -281,8 +281,8 @@ driver.close()
 smtpServer = "smtp.gmail.com"
 port = 587
 context = ssl.create_default_context()
-emailSender = "hughesjm314@gmail.com"
-password = "John08gmail%"
+emailSender = "x@gmail.com"
+password = "pword"
 myEmail = "john.m.hughes84@outlook.com"
 emailRecipients = [myEmail] 
 if int(avgptsmin4) > 5.8:
