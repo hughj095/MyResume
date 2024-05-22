@@ -196,6 +196,9 @@ def scan():
         get_ticker_data(MULTIPLIER, TIMESPAN, DATESTART, DATEEND, APIKEY)
         print('starting technicals')
         technicals(data)
+    if held == True:
+        # start on 2nd df to ask if stock should sell
+        pass
     print(f'balance ${budget}')
     timer(1)
 
