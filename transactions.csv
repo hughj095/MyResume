@@ -1,2 +1,2 @@
-Ticker,Strike Price,Buy Time,Shares,Buy Total,Sell Price,Sell Time,Total,Net,Current Time
-TEST,170,1.71191E+12,5,850,171,1.71192E+12,855,5,1.71192E+12
+Ticker,Strike Price,Buy Time,Shares,Buy Total,Sell Price,Sell Time,Total,Net,Current Time,Stop Loss
+,,,,,,,,,,

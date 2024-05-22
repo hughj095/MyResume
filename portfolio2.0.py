@@ -6,13 +6,15 @@ import time
 import numpy as np
 from twilio.rest import Client
 from twilio.http.http_client import TwilioHttpClient
+from PreviousWeekday import PreviousWeekday  # custom Class in folder
+
 
 MULTIPLIER = '1'
 TIMESPAN = 'minute'
-DATESTART = '2024-05-17' ##### get yesterday from datetime as a string in yyyy-mm-dd
-DATEEND = '2024-05-17'
 APIKEY = 'hldKpOcQ9ago1ZA83XRyRQ1tFG5uokBa'
 SHARES = 4
+DATESTART = str(PreviousWeekday().get_yesterday())
+DATEEND = DATESTART
 
 TWILIO_ACCOUNT_SID = 'account sid here'
 TWILIO_AUTH_TOKEN = 'token here'
@@ -33,6 +35,7 @@ buy_data = {'Ticker': '',
             'Current Time': '',
             'Stop Loss': ''}
 df_transactions = pd.DataFrame(buy_data, index=[0])
+df_transactions.to_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\transactions.csv', index=False)
 
 held = False
 buy_time = ''
@@ -49,8 +52,6 @@ def get_ticker_data(MULTIPLIER, TIMESPAN, DATESTART, DATEEND, APIKEY):
         print('Error:', response.status_code, response.content)
         return None
 
-
-
 def timer(minutes):
     seconds = minutes * 60
     print('started timer')
@@ -65,10 +66,10 @@ def technicals(data):
     global x, held, df, buy_time
     df = pd.DataFrame(data['results'])
     df['c'] = df['c'].astype(float)
-    for i in range(len(df)):  #####TRY CHANGING ENTIRE COLUMN TO DATETIME
+    for i in range(len(df)):  ##### DOESNT WORK, TRY CHANGING ENTIRE COLUMN TO DATETIME
         df.iloc[i,6] = int(np.int64(df.iloc[i,6]))
         date_time = datetime.datetime.fromtimestamp(df.iloc[i,6]/1000)
-        pd.to_datetime(date_time)
+        df.iloc[i,6] = pd.to_datetime(date_time)
 
     df['Resistance/Support'] = ''   # column 8
     for i in range(len(df)-1):
@@ -137,6 +138,7 @@ def buy_stock(strike_price):
     budget = df_budget.iloc[0,0]
     df_budget.to_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\portfolio_budget.csv', index=False)
     print('finished buy')
+    print(f'balance ${budget}')
 
 # HOLD STOCK AND RE-PULL API DATA.  SELL WHEN NEW INDICATORS APPROVE.
 def hold_stock():
@@ -200,7 +202,7 @@ def scan():
 
 current_time = datetime.datetime.now().time()
 print(current_time)
-while current_time < datetime.time(15, 54) and current_time < datetime.time(9, 30):  
+while current_time > datetime.time(15, 54) and current_time > datetime.time(9, 30):  
     scan()
 
 print('out of time')
