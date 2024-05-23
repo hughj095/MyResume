@@ -5,7 +5,10 @@ Under the Python folder, please see the Selenium Folder for "NBA Scores and Line
 
   Thank you!
 
+# AI Projects
 
+Under the Synapse AI Nodebot folder is a functional product I developed to upgrade municipal websites as a custom embedible ChatGPT, trained on their respective town/city
+  data.  For example if I wanted to lookup my trash pickup day at my specific address, Nodebot would respond accurately based on the training data fed to OpenAIs API.
 
 
 # Other Projects
