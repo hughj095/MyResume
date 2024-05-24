@@ -1,7 +1,7 @@
 ### imports, variables and functions
+import datetime
 import requests
 import pandas as pd
-import datetime
 import time
 import numpy as np
 from twilio.rest import Client
