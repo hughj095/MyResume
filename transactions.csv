@@ -1,2 +1,5 @@
 Ticker,Strike Price,Buy Time,Shares,Buy Total,Sell Price,Sell Time,Total,Net,Current Time,Stop Loss
 ,,,,,,,,,,
+AMZN,183.1,1716422220000.0,4.0,732.4,,,,,,181.269
+,,,,,,,,,,
+AMZN,183.1,1716422220000.0,4.0,732.4,183.1,1716422160000.0,732.4,0.0,07:43:25.537071,stop loss
