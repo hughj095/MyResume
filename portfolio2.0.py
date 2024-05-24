@@ -8,7 +8,6 @@ from twilio.rest import Client
 from twilio.http.http_client import TwilioHttpClient
 from PreviousWeekday import PreviousWeekday  # custom Class in folder
 
-
 MULTIPLIER = '1'
 TIMESPAN = 'minute'
 APIKEY = 'hldKpOcQ9ago1ZA83XRyRQ1tFG5uokBa'
@@ -40,6 +39,8 @@ df_transactions = pd.DataFrame(buy_data, index=[0])
 df_transactions.to_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\transactions.csv', index=False)
 
 held = False
+df_dailyhistory = pd.read_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\portfolio_dailyhistory.csv')
+budget = df_dailyhistory.iloc[len(df_dailyhistory)-1,1] # yesterday's ending balance
 buy_time = ''
 
 # API DATA PULL
@@ -216,7 +217,7 @@ def scan():
 
 current_time = datetime.datetime.now().time()
 print(current_time)
-while current_time < datetime.time(15, 54) and current_time < datetime.time(9, 30):  
+while current_time < datetime.time(15, 54) and current_time > datetime.time(9, 30):  
     scan()
     current_time = datetime.datetime.now().time()
     print(current_time)
@@ -226,13 +227,16 @@ print('out of time')
 # Daily Balance Summary
 if current_time > datetime.time(16,00):
     df_dailyhistory = pd.read_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\portfolio_dailyhistory.csv')
-    if df_dailyhistory[len(df_dailyhistory),0] == datetime.date.today():
+    if df_dailyhistory.iloc[len(df_dailyhistory)-1,0] != datetime.date.today().strftime('%Y-%m-%d'):
+        df_dailyhistory.loc[len(df_dailyhistory),0] = [datetime.date.today(), None]
+        df_dailyhistory.iloc[len(df_dailyhistory)-1,1] = budget
+        df_dailyhistory.to_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\portfolio_dailyhistory.csv', index=False)
     # notifications
-        message = client.messages.create(
-            body= f"Portfolio total after close today is ${budget}",
-            from_='+18334029267',
-            to='+18453723892'
-            )
-        message.sid
+    message = client.messages.create(
+        body= f"Portfolio total after close today is ${budget}",
+        from_='+18334029267',
+        to='+18453723892'
+        )
+    message.sid
 
 # testing and alerts
