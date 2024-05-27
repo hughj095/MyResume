@@ -162,8 +162,8 @@ def hold_stock():
         sell_stock()
     elif current_time < datetime.time(15, 54) and current_time > datetime.time(9, 30) and sell == False:
         data = get_ticker_data(TICKER, MULTIPLIER, TIMESPAN, DATESTART, DATEEND, APIKEY)
-        technicals(data)
         df.to_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\df.csv', index = False)
+        pass
     else: # if end of day then sell
         sell_time = df.iloc[1,6]
         sell_price = df.iloc[1,3]
