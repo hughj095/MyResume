@@ -6,13 +6,13 @@ from ib_insync import *
 
 # Connect to Interactive Brokers TWS or IB Gateway
 ib = IB()
-ib.connect('127.0.0.1', 7497, clientId=1)  # Change clientId if needed
+ib.connect('127.0.0.1', 7497, clientId=1)  # Change clientId if needed  
 
 # Define the stock you want to trade
-stock = Stock('IBM', 'NYSE', 'USD')
+stock = Stock('AAPL', 'SMART', 'USD') 
 
 # Define the order
-'''order = MarketOrder('BUY', 10)  # Buy 10 shares
+'''order = MarketOrder('BUY', 10)  # Buy 10 shares 
 
 # Place the order
 trade = ib.placeOrder(stock, order)
@@ -31,7 +31,19 @@ print(f'Order Status: {trade.orderStatus.status}')'''
 for item in account_summary:
     if item.tag == 'AvailableFunds':
         print(f'{item.account}: Available Funds = {item.value} {item.currency}')'''
+def onTick(ticker):
+    print(f"Bid: {ticker.bid}, Ask: {ticker.ask}, Last: {ticker.last}")
 
+# Request real-time market data
+ticker = ib.reqMktData(stock, '', False, False)
+ticker.updateEvent += onTick
+
+# Keep the script running to continuously receive data
+try:
+    while True:
+        ib.sleep(1)
+except KeyboardInterrupt:
+    print("Interrupted by user")
 
 
 # Disconnect from IB
