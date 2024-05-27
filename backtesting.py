@@ -32,9 +32,7 @@ df_ticker = pd.read_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\stocks.csv')
 for TICKER in df_ticker['stocks']:
     get_ticker_data(MULTIPLIER, TIMESPAN, DATESTART, DATEEND, APIKEY)
     df_hist = pd.DataFrame(data['results'])
-    df_hist = df_hist.iloc[0]  #### take first index 0 but maintain number format
-    df_hist['Ticker'] = TICKER
-    df_hist = df_hist[['Ticker', 'v', 'vw', 'o', 'c', 'h', 'l', 't', 'n']]
+    df_hist = df_hist.iloc[0]
     continue
 # Take first minute
 Timer.timer(TIMER_INTERVAL)
