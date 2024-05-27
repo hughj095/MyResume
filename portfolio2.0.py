@@ -173,6 +173,7 @@ def hold_stock():
 def sell_stock():
     global x, TICKER, df_transactions, SHARES, strike_price, sell_time, current_time, sell_price, held, df_budget, budget, stop_loss
     print('start of sell function')
+    ### ADD TRANSACTION_ID HERE
     df_transactions.iloc[x,5] = sell_price
     df_transactions.iloc[x,6] = sell_time
     df_transactions.iloc[x,7] = sell_price * SHARES
@@ -238,5 +239,3 @@ if current_time > datetime.time(16,00):
         to='+18453723892'
         )
     message.sid
-
-# testing and alerts
