@@ -197,6 +197,7 @@ def scan():
     df_budget = pd.read_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\portfolio_budget.csv')
     budget = df_budget.iloc[0,0]
     for stock in df_stocks['stocks']:
+        
         TICKER = stock
         print(TICKER)
         get_ticker_data(MULTIPLIER, TIMESPAN, DATESTART, DATEEND, APIKEY)

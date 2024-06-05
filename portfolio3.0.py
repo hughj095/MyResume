@@ -11,8 +11,27 @@ from ib_insync import *
 ib = IB()
 ib.connect('127.0.0.1', 7497, clientId=1)  # Change clientId if needed 
 
+df1 = pd.DataFrame(columns=['Time','Ticker','Bid','Close','Ask'])
+df2 = pd.DataFrame(columns=['Time','Ticker','Bid','Close','Ask'])
+df3 = pd.DataFrame(columns=['Time','Ticker','Bid','Close','Ask'])
+df4 = pd.DataFrame(columns=['Time','Ticker','Bid','Close','Ask'])
+df5 = pd.DataFrame(columns=['Time','Ticker','Bid','Close','Ask'])
+df6 = pd.DataFrame(columns=['Time','Ticker','Bid','Close','Ask'])
+
+dfs = [df1, df2, df3, df4, df5, df6]
+ib.reqMarketDataType(3)  # Delayed market data 15 mins, change to 1 for live data
+
 # functions
 
+# fetch new data
+def fetch_new_data(symbol):
+    tickerSymbol = Stock(f'{symbol}', 'SMART', 'USD') 
+    TICKER = tickerSymbol
+    print(TICKER)
+    ticker = ib.reqMktData(symbol, '', False, False)
+    ib.sleep(1)
+    new_data = [datetime.datetime.now().time(), ticker.contract.symbol, ticker.bid, ticker.close, ticker.ask]
+    return new_data
 # technicals
 
 # buy
@@ -28,14 +47,16 @@ def scan():
     df_stocks = pd.read_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\stocks.csv')
     df_budget = pd.read_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\portfolio_budget.csv')
     budget = df_budget.iloc[0,0]
-    for stock in df_stocks['stocks']:
-        TICKER = stock
-        print(TICKER)
-        get_ticker_data(MULTIPLIER, TIMESPAN, DATESTART, DATEEND, APIKEY)
-        print('starting technicals')
-        technicals(data)
-        if held == True:
-            break
+    for i, symbol in enumerate(df_stocks):
+        # Fetch new data for the stock
+        new_data = fetch_new_data(symbol)
+        # Append the new data to the corresponding dataframe
+        dfs[i] = pd.concat([dfs[i], new_data], ignore_index=True)
+        print(df[i])
+    print('starting technicals')
+    technicals(data)
+    if held == True:
+        break
     print(f'balance ${budget}')
     ib.sleep(60)
     # delete after go live with IB

@@ -25,6 +25,7 @@ while not trade.isDone():
 
 df = pd.DataFrame(columns=['Time','Ticker','Bid','Close','Ask'])
 ib.reqMarketDataType(3)
+
 ticker = ib.reqMktData(stock, '', False, False)
 ib.sleep(1)
 data = [datetime.datetime.now().time(), ticker.contract.symbol, ticker.bid, ticker.close, ticker.ask]
