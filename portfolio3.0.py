@@ -45,9 +45,11 @@ def scan():
     global x, held, TICKER, budget, df_budget, data, df, df_transactions, stop_loss
     #data = pd.read_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\df.csv')
     df_stocks = pd.read_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\stocks.csv')
+    stocks_list = df_stocks.values.tolist()
+    stocks_list = [str(x) for x in stocks_list]
     df_budget = pd.read_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\portfolio_budget.csv')
     budget = df_budget.iloc[0,0]
-    for i, symbol in enumerate(df_stocks):
+    for symbol in stocks_list:
         # Fetch new data for the stock
         new_data = fetch_new_data(symbol)
         # Append the new data to the corresponding dataframe
@@ -56,7 +58,7 @@ def scan():
     print('starting technicals')
     technicals(data)
     if held == True:
-        break
+        pass
     print(f'balance ${budget}')
     ib.sleep(60)
     # delete after go live with IB
