@@ -26,12 +26,12 @@ ib.reqMarketDataType(3)  # Delayed market data 15 mins, change to 1 for live dat
 # fetch new data
 def fetch_new_data(symbol):
     tickerSymbol = Stock(f'{symbol}', 'SMART', 'USD') 
-    TICKER = tickerSymbol
-    print(TICKER)
-    ticker = ib.reqMktData(symbol, '', False, False)
-    ib.sleep(1)
-    new_data = [datetime.datetime.now().time(), ticker.contract.symbol, ticker.bid, ticker.close, ticker.ask]
-    return new_data
+    ticker = ib.reqHistoricalData(contract = tickerSymbol, endDateTime = '', durationStr='1 D', 
+                              barSizeSetting = '1 min', whatToShow='TRADES', useRTH=False, keepUpToDate=True)
+    ticker = ticker[-5:]
+    df = pd.DataFrame([vars(bar) for bar in ticker])
+    df['Stock'] = tickerSymbol.symbol
+    return df
 # technicals
 
 # buy
@@ -45,18 +45,16 @@ def scan():
     global x, held, TICKER, budget, df_budget, data, df, df_transactions, stop_loss
     #data = pd.read_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\df.csv')
     df_stocks = pd.read_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\stocks.csv')
-    stocks_list = df_stocks.values.tolist()
-    stocks_list = [str(x) for x in stocks_list]
     df_budget = pd.read_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\portfolio_budget.csv')
     budget = df_budget.iloc[0,0]
-    for symbol in stocks_list:
+    stock_dataframes = {}
+    for symbol in df_stocks['stocks']:
         # Fetch new data for the stock
-        new_data = fetch_new_data(symbol)
-        # Append the new data to the corresponding dataframe
-        dfs[i] = pd.concat([dfs[i], new_data], ignore_index=True)
-        print(df[i])
+        stock_data = fetch_new_data(symbol)
+        stock_dataframes[symbol] = stock_data
     print('starting technicals')
-    technicals(data)
+    for each df in stock_dataframes:
+        technicals(df)
     if held == True:
         pass
     print(f'balance ${budget}')
@@ -75,7 +73,7 @@ def scan():
 
 current_time = datetime.datetime.now().time()
 print(current_time)
-while current_time < datetime.time(15, 54) and current_time > datetime.time(9, 30):  
+while current_time > datetime.time(15, 54) and current_time > datetime.time(9, 30):  
     scan()
     current_time = datetime.datetime.now().time()
     print(current_time)

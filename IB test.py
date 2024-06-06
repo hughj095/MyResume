@@ -26,10 +26,17 @@ while not trade.isDone():
 df = pd.DataFrame(columns=['Time','Ticker','Bid','Close','Ask'])
 ib.reqMarketDataType(3)
 
-ticker = ib.reqMktData(stock, '', False, False)
+'''ticker = ib.reqMktData(stock, '', False, False)
 ib.sleep(1)
 data = [datetime.datetime.now().time(), ticker.contract.symbol, ticker.bid, ticker.close, ticker.ask]
 df.loc[len(df)] = data
+print(df)'''
+
+ticker = ib.reqHistoricalData(contract = stock, endDateTime = '', durationStr='1 D', 
+                              barSizeSetting = '1 min', whatToShow='TRADES', useRTH=False, keepUpToDate=True)
+ticker = ticker[-5:]
+df = pd.DataFrame([vars(bar) for bar in ticker])
+df['Stock'] = stock.symbol
 print(df)
 
 '''# Print order status
