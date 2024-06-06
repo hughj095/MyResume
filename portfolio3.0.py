@@ -7,6 +7,7 @@ import numpy as np
 from twilio.rest import Client
 from twilio.http.http_client import TwilioHttpClient
 from ib_insync import *
+from technicals import Technicals  # custom class
 
 ib = IB()
 ib.connect('127.0.0.1', 7497, clientId=1)  # Change clientId if needed 
@@ -45,7 +46,7 @@ def scan():
         stock_dataframes[symbol] = stock_data
     print('starting technicals')
     for df in stock_dataframes:
-        technicals(df)
+        Technicals.technicals(df)
     if held == True:
         pass
     print(f'balance ${budget}')
