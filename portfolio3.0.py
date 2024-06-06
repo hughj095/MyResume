@@ -10,16 +10,7 @@ from ib_insync import *
 
 ib = IB()
 ib.connect('127.0.0.1', 7497, clientId=1)  # Change clientId if needed 
-
-df1 = pd.DataFrame(columns=['Time','Ticker','Bid','Close','Ask'])
-df2 = pd.DataFrame(columns=['Time','Ticker','Bid','Close','Ask'])
-df3 = pd.DataFrame(columns=['Time','Ticker','Bid','Close','Ask'])
-df4 = pd.DataFrame(columns=['Time','Ticker','Bid','Close','Ask'])
-df5 = pd.DataFrame(columns=['Time','Ticker','Bid','Close','Ask'])
-df6 = pd.DataFrame(columns=['Time','Ticker','Bid','Close','Ask'])
-
-dfs = [df1, df2, df3, df4, df5, df6]
-ib.reqMarketDataType(3)  # Delayed market data 15 mins, change to 1 for live data
+ib.reqMarketDataType(1)  # Live data, change to 3 for delayed prices
 
 # functions
 
@@ -53,7 +44,7 @@ def scan():
         stock_data = fetch_new_data(symbol)
         stock_dataframes[symbol] = stock_data
     print('starting technicals')
-    for each df in stock_dataframes:
+    for df in stock_dataframes:
         technicals(df)
     if held == True:
         pass
