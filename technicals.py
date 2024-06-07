@@ -5,7 +5,7 @@ import config # config file for global variables
 from sell import Sell # custom class
 
 class Technicals:
-    def technicals(df, ib):
+    def technicals(df, ib, stock_dataframes):
         global held
         df['close'] = df['close'].astype(float)
         df['Resistance/Support'] = ''   # column 9

@@ -41,7 +41,7 @@ def scan():
         stock_dataframes[symbol] = stock_data
     print('starting technicals')
     for ticker, df in stock_dataframes.items():
-        Technicals.technicals(df, ib)
+        Technicals.technicals(df, ib, stock_dataframes)
     print(f'balance ${BUDGET}')
     ib.sleep(60)
 
