@@ -44,26 +44,24 @@ print(f'Order Status: {trade.orderStatus.status}')'''
 
 # Request account summary
 account_summary = ib.accountSummary()
-
 # Print available funds (TotalCashValue)
-'''for item in account_summary:
+for item in account_summary:
     if item.tag == 'AvailableFunds':
         print(f'{item.account}: Available Funds = {item.value} {item.currency}')
 
-positions = ib.positions()
-
+### CURRENT POSITIONS
+'''positions = ib.positions()
 for pos in positions:
     print(f'Account: {pos.account}, Symbol: {pos.contract.symbol},' +
           f'Position: {round(pos.position,0)}, Average Cost: {round(pos.avgCost,2)},' +
           f'Value: {round(pos.avgCost * pos.position,2)}')'''
-    
-executions = ib.reqExecutions(ExecutionFilter())
 
-# Print execution details
+### TRANSACTION DETAIL
+'''executions = ib.reqExecutions(ExecutionFilter())
 for e in executions:
     print(f'Account: {e.execution.acctNumber}, Symbol: {e.contract.symbol}, '
           f'Side: {e.execution.side}, Shares: {e.execution.shares}, '
-          f'Price: {e.execution.price}, Time: {e.execution.time}')
+          f'Price: {e.execution.price}, Time: {e.execution.time}')'''
     
 '''def onTick(ticker):
     print(f"Bid: {ticker.bid}, Ask: {ticker.ask}, Last: {ticker.last}")''''''
