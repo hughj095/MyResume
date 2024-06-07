@@ -10,7 +10,7 @@ class Buy:
         if total > BUDGET:
             print('out of money')
             return 'exited early'
-        stock = Stock(f'{df.iloc[0,8]}', 'SMART', 'USD') 
+        stock = Stock(f'{df.iloc[2,8]}', 'SMART', 'USD') 
         order = MarketOrder('BUY', SHARES)  
         trade = ib.placeOrder(stock, order)
         while not trade.isDone():

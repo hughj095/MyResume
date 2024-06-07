@@ -1,8 +1,7 @@
 from ib_insync import *
 
 class Sell:
-    def sell_stock(sell_ticker, ib):
-        global x, TICKER, df_transactions, SHARES, strike_price, sell_time, current_time, sell_price, held, df_budget, budget, stop_loss
+    def sell_stock(sell_ticker, ib, df_budget):
         print('start of sell function')
         positions = ib.positions()
         for pos in positions:

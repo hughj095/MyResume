@@ -44,8 +44,7 @@ class Technicals:
         print('saved df in technicals')
         df = df[len(df)-5:len(df)]
         df = df.reset_index(drop=True)
-        #### IDENTIFY HERE WHICH STOCK ARE HELD
-        if df.iloc[2,9] == 'support' and config.held == False:
+        if df.iloc[2,9] == 'support':
             config.strike_price = df.iloc[2,4]
             df_budget = pd.read_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\portfolio_budget.csv')
             BUDGET = df_budget.iloc[0,0]
@@ -54,8 +53,6 @@ class Technicals:
             buy_time = df.iloc[len(df)-3,0] 
             Buy.buy_stock(SHARES, BUDGET, df, ib, df_budget)
         else:
-            for ticker, df in stock_dataframes.items():
-                print(df)
-                if df.iloc[12,9] == 'resistance' and df.iloc[12,9] == '':
-                    sell_ticker = df.iloc[12,8]
-                    Sell.sell_stock(sell_ticker)
+            if df.iloc[2,9] == 'resistance' and df.iloc[2,10] == '':
+                sell_ticker = df.iloc[2,8]
+                Sell.sell_stock(sell_ticker, ib, df_budget)
