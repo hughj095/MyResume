@@ -1,15 +1,13 @@
-import datetime
 import pandas as pd
 import numpy as np
-from hold import Hold # custom class
 from buy import Buy # custom class
-import config
+import config # config file for global variables
+from sell import Sell # custom class
 
 class Technicals:
     def technicals(df, ib):
         global held
         df['close'] = df['close'].astype(float)
-
         df['Resistance/Support'] = ''   # column 9
         for i in range(len(df)-1):
             if (
@@ -19,8 +17,7 @@ class Technicals:
                     and (i < len(df)-2 and df.iloc[i,4] >= df.iloc[i + 2,4])
                 ):
                     df.iloc[i, 9] = "resistance"
-
-        for i in range(len(df)-1):   #### MAY NEED TO INDENT AGAIN
+        for i in range(len(df)-1):   
             if (
                     i >= 2 and i < len(df) - 2
                     and df.iloc[i,4] <= df.iloc[i - 1,4]
@@ -29,7 +26,6 @@ class Technicals:
                     and df.iloc[i,4] <= df.iloc[i + 2,4]
                 ):
                     df.iloc[i, 9] = "support"
-
         df['Break'] = '' # column 9
         count = 0
         for i in range(len(df)-1):
@@ -48,9 +44,8 @@ class Technicals:
         print('saved df in technicals')
         df = df[len(df)-5:len(df)]
         df = df.reset_index(drop=True)
-        if config.held == True:
-            Hold.hold_stock()
-        elif df.iloc[2,9] == 'support' and config.held == False:
+        #### IDENTIFY HERE WHICH STOCK ARE HELD
+        if df.iloc[2,9] == 'support' and config.held == False:
             config.strike_price = df.iloc[2,4]
             df_budget = pd.read_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\portfolio_budget.csv')
             BUDGET = df_budget.iloc[0,0]
@@ -59,4 +54,8 @@ class Technicals:
             buy_time = df.iloc[len(df)-3,0] 
             Buy.buy_stock(SHARES, BUDGET, df, ib, df_budget)
         else:
-            pass
+            for ticker, df in stock_dataframes.items():
+                print(df)
+                if df.iloc[12,9] == 'resistance' and df.iloc[12,9] == '':
+                    sell_ticker = df.iloc[12,8]
+                    Sell.sell_stock(sell_ticker)
