@@ -11,10 +11,10 @@ ib = IB()
 ib.connect('127.0.0.1', 7497, clientId=1)  # Change clientId if needed  
 
 # Define the stock you want to trade
-stock = Stock('AAPL', 'SMART', 'USD') 
+'''stock = Stock('DELL', 'SMART', 'USD')
 
 # Define the order
-'''order = MarketOrder('BUY', 10)  # Buy 10 shares 
+order = MarketOrder('SELL', 12)
 
 # Place the order
 trade = ib.placeOrder(stock, order)
@@ -23,8 +23,8 @@ trade = ib.placeOrder(stock, order)
 while not trade.isDone():
     ib.waitOnUpdate()'''
 
-df = pd.DataFrame(columns=['Time','Ticker','Bid','Close','Ask'])
-ib.reqMarketDataType(3)
+#df = pd.DataFrame(columns=['Time','Ticker','Bid','Close','Ask'])
+#ib.reqMarketDataType(3)
 
 '''ticker = ib.reqMktData(stock, '', False, False)
 ib.sleep(1)
@@ -32,25 +32,33 @@ data = [datetime.datetime.now().time(), ticker.contract.symbol, ticker.bid, tick
 df.loc[len(df)] = data
 print(df)'''
 
-ticker = ib.reqHistoricalData(contract = stock, endDateTime = '', durationStr='1 D', 
+'''ticker = ib.reqHistoricalData(contract = stock, endDateTime = '', durationStr='1 D', 
                               barSizeSetting = '1 min', whatToShow='TRADES', useRTH=False, keepUpToDate=True)
 ticker = ticker[-5:]
 df = pd.DataFrame([vars(bar) for bar in ticker])
 df['Stock'] = stock.symbol
-print(df)
+print(df)'''
 
 '''# Print order status
 print(f'Order Status: {trade.orderStatus.status}')'''
 
 # Request account summary
-'''account_summary = ib.accountSummary()
+account_summary = ib.accountSummary()
 
 # Print available funds (TotalCashValue)
 for item in account_summary:
     if item.tag == 'AvailableFunds':
-        print(f'{item.account}: Available Funds = {item.value} {item.currency}')'''
+        print(f'{item.account}: Available Funds = {item.value} {item.currency}')
+
+positions = ib.positions()
+
+for pos in positions:
+    print(f'Account: {pos.account}, Symbol: {pos.contract.symbol},' +
+          f'Position: {round(pos.position,0)}, Average Cost: {round(pos.avgCost,2)},' +
+          f'Value: {round(pos.avgCost * pos.position,2)}')
+    
 '''def onTick(ticker):
-    print(f"Bid: {ticker.bid}, Ask: {ticker.ask}, Last: {ticker.last}")
+    print(f"Bid: {ticker.bid}, Ask: {ticker.ask}, Last: {ticker.last}")''''''
 
 # Request real-time market data
 ticker = ib.reqMktData(stock, '', False, False)

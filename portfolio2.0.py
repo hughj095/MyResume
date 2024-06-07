@@ -16,6 +16,8 @@ DATESTART = str(PreviousWeekday().get_yesterday())
 DATEEND = DATESTART
 IB_USER = 'algodaddy08'
 IB_PASS = 'xLsW_EyDgxDL8gD'
+PAPER_USER = 'ozdnxc345'
+PAPER_PASS = 'John08paper$'
 
 TWILIO_ACCOUNT_SID = 'account sid here'
 TWILIO_AUTH_TOKEN = 'token here'

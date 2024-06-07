@@ -7,7 +7,7 @@ class Hold:
         global x, df_transactions, current_time, SHARES, strike_price, df, buy_time, held, stop_loss, sell_price, sell_time
         sell = False
         df_transactions = pd.read_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\transactions.csv')
-        if df.iloc[1,8] == 'resistance' and df.iloc[1,9] == '' and buy_time < df.iloc[1,6]:  ### BUY TIME MAY NOT BE NECESSARY
+        if df.iloc[1,8] == 'resistance' and df.iloc[1,9] == '' and buy_time < df.iloc[1,6]:  ### DF NOT DEFINED
             sell_time = df.iloc[1,6]
             sell_price = df.iloc[1,3]
             sell = True

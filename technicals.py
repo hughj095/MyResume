@@ -6,7 +6,7 @@ from buy import Buy # custom class
 import config
 
 class Technicals:
-    def technicals(df):
+    def technicals(df, ib):
         global held
         df['close'] = df['close'].astype(float)
 
@@ -57,6 +57,6 @@ class Technicals:
             SHARES = np.floor(BUDGET/6/config.strike_price)
             buy = True
             buy_time = df.iloc[len(df)-3,0] 
-            Buy.buy_stock(SHARES, BUDGET, df)
+            Buy.buy_stock(SHARES, BUDGET, df, ib, df_budget)
         else:
             pass

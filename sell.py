@@ -1,5 +1,5 @@
 class Sell:
-    def sell_stock():
+    def sell_stock(sell_ticker):
         global x, TICKER, df_transactions, SHARES, strike_price, sell_time, current_time, sell_price, held, df_budget, budget, stop_loss
         print('start of sell function')
         ### ADD TRANSACTION_ID HERE
