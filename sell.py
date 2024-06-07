@@ -1,19 +1,23 @@
+from ib_insync import *
+
 class Sell:
-    def sell_stock(sell_ticker):
+    def sell_stock(sell_ticker, ib):
         global x, TICKER, df_transactions, SHARES, strike_price, sell_time, current_time, sell_price, held, df_budget, budget, stop_loss
         print('start of sell function')
-        ### ADD TRANSACTION_ID HERE
-        df_transactions.iloc[x,5] = sell_price
-        df_transactions.iloc[x,6] = sell_time
-        df_transactions.iloc[x,7] = sell_price * SHARES
-        df_transactions.iloc[x,8] = df_transactions.iloc[x,7] - df_transactions.iloc[x,4]
-        df_transactions.iloc[x,9] = current_time
-        if sell_price < 0.99 * strike_price:
-            df_transactions.iloc[x,10] = 'stop loss'
-            stop_loss = True
-        print(f'sold {TICKER}') 
+        positions = ib.positions()
+        for pos in positions:
+            if pos.contract.symbol == sell_ticker:
+                SHARES = pos.position
+        stock = Stock(f'{sell_ticker}', 'SMART', 'USD')
+        order = MarketOrder('SELL', SHARES)
+        trade = ib.placeOrder(stock, order)
+        while not trade.isDone():
+            ib.waitOnUpdate()
+        print(f'sold {sell_ticker}') 
         held = False
-        df_transactions.to_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\transactions.csv', mode='a', header=False, index=False)
-        budget = budget + sell_price * SHARES
-        df_budget.iloc[0,0] = budget
+        account_summary = ib.accountSummary()
+        for item in account_summary:
+            if item.tag == 'AvailableFunds':
+                print(f'{item.account}: Available Funds = {item.value} {item.currency}')
+        df_budget.iloc[0,0] = item.value
         df_budget.to_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\portfolio_budget.csv', index=False)
