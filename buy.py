@@ -11,7 +11,7 @@ class Buy:
             print('out of money')
             ###### BREAK OUT OF A FUNCTION HERE AND GO BACK TO START
         ### ACTUAL BUY HERE
-        ib = IB()
+        '''ib = IB()
         stock = Stock(f'{df.iloc[0,8]}', 'SMART', 'USD') 
         order = MarketOrder('BUY', 10)  # Buy 10 shares 
         trade = ib.placeOrder(stock, order)
@@ -21,7 +21,7 @@ class Buy:
         account_summary = ib.accountSummary()
         for item in account_summary:
             if item.tag == 'AvailableFunds':
-                print(f'{item.account}: Available Funds = {item.value} {item.currency}')
+                print(f'{item.account}: Available Funds = {item.value} {item.currency}')'''
 
         x = len(df_transactions)
         df_transactions.loc[x, 'Ticker'] = df.iloc[0,8]
