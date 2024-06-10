@@ -48,6 +48,9 @@ class Technicals:
             config.strike_price = df.iloc[2,4]
             df_budget = pd.read_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\portfolio_budget.csv')
             BUDGET = df_budget.iloc[0,0]
+            if BUDGET < 100:
+                 print('low on budget')
+                 return
             SHARES = np.floor(BUDGET/6/config.strike_price)
             buy = True
             buy_time = df.iloc[len(df)-3,0] 
