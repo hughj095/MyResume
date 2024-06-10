@@ -6,6 +6,7 @@ from twilio.rest import Client
 from twilio.http.http_client import TwilioHttpClient
 from ib_insync import *
 from technicals import Technicals  # custom class
+import config
 
 ib = IB()
 ib.connect('127.0.0.1', 7497, clientId=1)
@@ -47,10 +48,8 @@ def scan():
 
 # summary and notifications
 def send_text():
-    TWILIO_ACCOUNT_SID = 'account sid here'
-    TWILIO_AUTH_TOKEN = 'token here'
-    account_sid = TWILIO_ACCOUNT_SID
-    auth_token = TWILIO_AUTH_TOKEN
+    account_sid = config.TWILIO_ACCOUNT_SID
+    auth_token = config.TWILIO_AUTH_TOKEN
     proxy_client = TwilioHttpClient()   
     client = Client(account_sid, auth_token, http_client=proxy_client) # may not need http_client tag
     account_summary = ib.accountSummary()
