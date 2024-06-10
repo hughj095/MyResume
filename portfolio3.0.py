@@ -30,6 +30,7 @@ def fetch_new_data(symbol):
 # scan
 def scan():
     global x, held, TICKER, budget, data, df, df_transactions, stop_loss
+    low = None
     #data = pd.read_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\df.csv')
     df_stocks = pd.read_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\stocks.csv')
     account_summary = ib.accountSummary()
@@ -42,7 +43,9 @@ def scan():
         stock_dataframes[symbol] = stock_data
     print('starting technicals')
     for ticker, df in stock_dataframes.items():
-        Technicals.technicals(df, ib, stock_dataframes)
+        result = Technicals.technicals(df, ib, stock_dataframes)
+        if result == low:
+            return low
     print(f'balance ${BUDGET}')
     ib.sleep(60)
 

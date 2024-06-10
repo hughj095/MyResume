@@ -7,6 +7,7 @@ from sell import Sell # custom class
 class Technicals:
     def technicals(df, ib, stock_dataframes):
         global held
+        low = None
         df['close'] = df['close'].astype(float)
         df['Resistance/Support'] = ''   # column 9
         for i in range(len(df)-1):
@@ -50,7 +51,7 @@ class Technicals:
             BUDGET = df_budget.iloc[0,0]
             if BUDGET < 100:
                  print('low on budget')
-                 return
+                 return low
             SHARES = np.floor(BUDGET/6/config.strike_price)
             buy = True
             buy_time = df.iloc[len(df)-3,0] 
