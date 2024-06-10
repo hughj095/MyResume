@@ -11,10 +11,10 @@ ib = IB()
 ib.connect('127.0.0.1', 7497, clientId=1)  # Change clientId if needed  
 
 # Define the stock you want to trade
-'''stock = Stock('DELL', 'SMART', 'USD')
+'''stock = Stock('AAPL', 'SMART', 'USD')
 
 # Define the order
-order = MarketOrder('SELL', 12)
+order = MarketOrder('SELL', 5188)
 
 # Place the order
 trade = ib.placeOrder(stock, order)
@@ -50,18 +50,18 @@ for item in account_summary:
         print(f'{item.account}: Available Funds = {item.value} {item.currency}')
 
 ### CURRENT POSITIONS
-'''positions = ib.positions()
+positions = ib.positions()
 for pos in positions:
     print(f'Account: {pos.account}, Symbol: {pos.contract.symbol},' +
           f'Position: {round(pos.position,0)}, Average Cost: {round(pos.avgCost,2)},' +
-          f'Value: {round(pos.avgCost * pos.position,2)}')'''
+          f'Value: {round(pos.avgCost * pos.position,2)}')
 
 ### TRANSACTION DETAIL
-'''executions = ib.reqExecutions(ExecutionFilter())
+executions = ib.reqExecutions(ExecutionFilter())
 for e in executions:
     print(f'Account: {e.execution.acctNumber}, Symbol: {e.contract.symbol}, '
           f'Side: {e.execution.side}, Shares: {e.execution.shares}, '
-          f'Price: {e.execution.price}, Time: {e.execution.time}')'''
+          f'Price: {e.execution.price}, Time: {e.execution.time}')
     
 '''def onTick(ticker):
     print(f"Bid: {ticker.bid}, Ask: {ticker.ask}, Last: {ticker.last}")''''''

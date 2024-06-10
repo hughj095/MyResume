@@ -36,7 +36,7 @@ def scan():
     account_summary = ib.accountSummary()
     for item in account_summary:
         if item.tag == 'AvailableFunds':
-            BUDGET = item.value
+            BUDGET_ib = item.value
     stock_dataframes = {}
     for symbol in df_stocks['stocks']:
         stock_data = fetch_new_data(symbol)
@@ -46,7 +46,7 @@ def scan():
         result = Technicals.technicals(df, ib, stock_dataframes)
         if result == low:
             return low
-    print(f'balance ${BUDGET}')
+    print(f'balance ${BUDGET_ib}')
     ib.sleep(60)
 
 # summary and notifications
