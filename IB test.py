@@ -8,13 +8,13 @@ import datetime
 
 # Connect to Interactive Brokers TWS or IB Gateway
 ib = IB()
-ib.connect('127.0.0.1', 7497, clientId=1)  # Change clientId if needed  
+ib.connect('127.0.0.1', 7497, clientId=1)  # Change port for real money and clientId if needed  
 
 # Define the stock you want to trade
-'''stock = Stock('AAPL', 'SMART', 'USD')
+'''stock = Stock('DELL', 'SMART', 'USD')
 
 # Define the order
-order = MarketOrder('SELL', 5188)
+order = MarketOrder('SELL', 398)
 
 # Place the order
 trade = ib.placeOrder(stock, order)
@@ -57,11 +57,11 @@ for pos in positions:
           f'Value: {round(pos.avgCost * pos.position,2)}')
 
 ### TRANSACTION DETAIL
-executions = ib.reqExecutions(ExecutionFilter())
+'''executions = ib.reqExecutions(ExecutionFilter())
 for e in executions:
     print(f'Account: {e.execution.acctNumber}, Symbol: {e.contract.symbol}, '
           f'Side: {e.execution.side}, Shares: {e.execution.shares}, '
-          f'Price: {e.execution.price}, Time: {e.execution.time}')
+          f'Price: {e.execution.price}, Time: {e.execution.time}')'''
     
 '''def onTick(ticker):
     print(f"Bid: {ticker.bid}, Ask: {ticker.ask}, Last: {ticker.last}")''''''
