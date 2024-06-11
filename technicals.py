@@ -50,7 +50,7 @@ class Technicals:
             config.strike_price = df.iloc[2,4]
             if BUDGET_ib < 100:
                  print('low on budget')
-            SHARES = np.floor(BUDGET_ib/25/config.strike_price)
+            SHARES = np.floor(BUDGET_ib/30/config.strike_price)
             Buy.buy_stock(SHARES, df, ib, BUDGET_ib)
         elif current_time > datetime.time(15, 54):
              Sell.sell_stock(sell_ticker, ib, df)

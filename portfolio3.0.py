@@ -27,15 +27,14 @@ def fetch_new_data(symbol):
 
 # scan
 def scan():
-    #data = pd.read_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\df.csv')
-    df_stocks = pd.read_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\stocks.csv')
+    df_stocks = pd.read_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\fortune100_stock_symbols.csv')
     account_summary = ib.accountSummary()
     for item in account_summary:
         if item.tag == 'AvailableFunds':
             BUDGET_ib = float(item.value)
     stock_dataframes = {}
     print('pulling data')
-    for symbol in df_stocks['stocks']:
+    for symbol in df_stocks['Stock Symbol']:
         stock_data = fetch_new_data(symbol)
         stock_dataframes[symbol] = stock_data
     print('starting technicals')
@@ -50,7 +49,7 @@ def scan():
         print(f'Account: {pos.account}, Symbol: {pos.contract.symbol},' +
           f'Position: {round(pos.position,0)}, Average Cost: {round(pos.avgCost,2)},' +
           f'Value: {round(pos.avgCost * pos.position,2)}')
-    ib.sleep(60)
+    #ib.sleep(60)
 
 # summary and notifications
 def send_text():

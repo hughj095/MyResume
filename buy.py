@@ -12,9 +12,12 @@ class Buy:
             return 'exited early'
         print('start of buy function')
         stock = Stock(f'{df.iloc[2,8]}', 'SMART', 'USD') 
-        order = LimitOrder('BUY', SHARES, lmtPrice = config.strike_price*1.003, tif='GTC' )   
+        order = MarketOrder('BUY', SHARES)   
         trade = ib.placeOrder(stock, order)
-        print(f'Buying {stock}, ${float(SHARES*config.strike_price)}')
+        print(f'Buying {stock}, ${config.strike_price}, ${float(SHARES*config.strike_price)}')
+        positions = ib.positions()
+        for pos in positions:
+            print(f'Average Cost: {round(pos.avgCost,2)}')
         ##### start a timer here, if over 10 seconds then subtract from wait timer at end of scan loop
         start_time = time.time()
         while not trade.isDone():
