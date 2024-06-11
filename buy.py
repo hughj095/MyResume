@@ -1,6 +1,7 @@
 import pandas as pd
 import config
 from ib_insync import *
+import time
 
 
 class Buy:
@@ -15,8 +16,14 @@ class Buy:
         trade = ib.placeOrder(stock, order)
         print(f'Buying {stock}, ${SHARES*config.strike_price}')
         ##### start a timer here, if over 10 seconds then subtract from wait timer at end of scan loop
+        start_time = time.time()
         while not trade.isDone():
-            ib.waitOnUpdate()
+            if time.time() - start_time > 60:
+                print("Timeout reached, cancelling order")
+                ib.cancelOrder(order)
+                break
+            # Sleep briefly to avoid tight loop
+            ib.sleep(1)
         print(f'Order Status: {trade.orderStatus.status}')
         account_summary = ib.accountSummary()
         for item in account_summary:

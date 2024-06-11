@@ -2,9 +2,8 @@
 import datetime
 import pandas as pd
 import numpy as np
-from twilio.rest import Client
-from twilio.http.http_client import TwilioHttpClient
 from ib_insync import *
+from twilio.rest import Client
 from technicals import Technicals  # custom class
 import config
 
@@ -55,19 +54,18 @@ def scan():
 # summary and notifications
 def send_text():
     account_sid = config.TWILIO_ACCOUNT_SID
-    auth_token = config.TWILIO_AUTH_TOKEN
-    proxy_client = TwilioHttpClient()   
+    auth_token = config.TWILIO_AUTH_TOKEN 
     client = Client(account_sid, auth_token)
     account_summary = ib.accountSummary()
     for item in account_summary:
         if item.tag == 'AvailableFunds':
-            BUDGET_ib = item.value
-    message = client.messages.create(
-        body= f"BUDGET_ib total after close today is ${BUDGET_ib}",
+            BUDGET_ib = float(item.value)
+    message = client.messages \
+        .create(
+        body= f"Total after close today is ${BUDGET_ib:,.2f}",
         from_='+18334029267',
         to='+18453723892'
         )
-    message.sid
 
 # initialize
 current_time = datetime.datetime.now().time()

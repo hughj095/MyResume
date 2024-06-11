@@ -1,4 +1,5 @@
 from ib_insync import *
+import time
 
 class Sell:
     def sell_stock(sell_ticker, ib, df):
@@ -11,9 +12,14 @@ class Sell:
                 order = MarketOrder('SELL', SHARES)
                 trade = ib.placeOrder(stock, order)
                 print(f'Selling {stock}, ${SHARES * df.iloc[2,4]}')
-                #### timer here to subtract from minute timer after scan
+                start_time = time.time()
                 while not trade.isDone():
-                    ib.waitOnUpdate()
+                    if time.time() - start_time > 60:
+                        print("Timeout reached, cancelling order")
+                        ib.cancelOrder(order)
+                        break
+                    # Sleep briefly to avoid tight loop
+                    ib.sleep(1)
                 total = SHARES * df.iloc[2,4]
                 print(f'sold {sell_ticker}') 
                 held = False
