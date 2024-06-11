@@ -18,9 +18,9 @@ class Sell:
                         print("Timeout reached, cancelling order")
                         ib.cancelOrder(order)
                         break
-                    # Sleep briefly to avoid tight loop
                     ib.sleep(1)
                 total = SHARES * df.iloc[2,4]
+                #### Print sold ticker if sold was executed
                 print(f'sold {sell_ticker}') 
                 held = False
             elif len(pos.contract.symbol) == 0:
@@ -29,5 +29,4 @@ class Sell:
         for item in account_summary:
             if item.tag == 'AvailableFunds':
                 print(f'{item.account}: Available Funds = {item.value} {item.currency}')
-                BUDGET_ib = item.value
-        print(f'BUDGET_ib is ${BUDGET_ib}.')  
+                BUDGET_ib = item.value  

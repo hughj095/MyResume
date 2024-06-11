@@ -34,6 +34,7 @@ def scan():
         if item.tag == 'AvailableFunds':
             BUDGET_ib = float(item.value)
     stock_dataframes = {}
+    print('pulling data')
     for symbol in df_stocks['stocks']:
         stock_data = fetch_new_data(symbol)
         stock_dataframes[symbol] = stock_data
@@ -70,10 +71,12 @@ def send_text():
 # initialize
 current_time = datetime.datetime.now().time()
 print(current_time)
-while current_time < datetime.time(15, 54) and current_time > datetime.time(9, 30):  
+while current_time < datetime.time(15, 54) and current_time >= datetime.time(9, 30):  
     scan()
     current_time = datetime.datetime.now().time()
     print(current_time)
-print('out of time')
 if current_time >= datetime.time(15,54):
     send_text()
+    print("that's all folks")
+elif current_time < datetime.time(9,30):
+    print('too early')

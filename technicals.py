@@ -1,8 +1,10 @@
 import pandas as pd
 import numpy as np
+import datetime
 from buy import Buy # custom class
 import config # config file for global variables
 from sell import Sell # custom class
+
 
 class Technicals:
     def technicals(df, ib, stock_dataframes, BUDGET_ib):
@@ -40,19 +42,18 @@ class Technicals:
                     ):
                         df.iloc[i,9] = "break"
         df.to_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\df.csv', index=False)      
-        print('saved df in technicals')
         df = df[len(df)-5:len(df)]
         df = df.reset_index(drop=True)
+        sell_ticker = df.iloc[2,8]
+        current_time = datetime.datetime.now().time()
         if df.iloc[2,9] == 'support':
             config.strike_price = df.iloc[2,4]
             if BUDGET_ib < 100:
                  print('low on budget')
-            SHARES = np.floor(BUDGET_ib/18/config.strike_price)
-            buy = True
-            buy_time = df.iloc[len(df)-3,0] 
+            SHARES = np.floor(BUDGET_ib/25/config.strike_price)
             Buy.buy_stock(SHARES, df, ib, BUDGET_ib)
+        elif current_time > datetime.time(15, 54):
+             Sell.sell_stock(sell_ticker, ib, df)
         else:
             if df.iloc[2,9] == 'resistance' and df.iloc[2,10] == '':
-                sell_ticker = df.iloc[2,8]
                 Sell.sell_stock(sell_ticker, ib, df)
-                pass
