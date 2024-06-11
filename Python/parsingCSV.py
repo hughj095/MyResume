@@ -1,26 +1,19 @@
 import csv
 
 # Path to the CSV file
-csv_file_path = r'C:\Users\johnm\OneDrive\Desktop\fortune100.csv'
+csv_file_path = r'C:\Users\johnm\OneDrive\Desktop\fortune100_stock_symbols.csv'
 
-# List to store ticker symbols
-ticker_symbols = []
+import pandas as pd
 
-# Open the CSV file and read its contents
-with open(csv_file_path, mode='r', newline='') as csvfile:
-    csvreader = csv.DictReader(csvfile)
-    
-    # Loop through each row in the CSV
-    for row in csvreader:
-        # Extract the ticker symbol and add it to the list
-        ticker_symbols.append(row['Ticker'])
+# Load the new CSV file
+file_path = r'C:\Users\johnm\OneDrive\Desktop\fortune100_stock_symbols.csv'
+df = pd.read_csv(file_path)
 
-with open(csv_file_path, mode='w', newline='') as csvfile:
-    csvwriter = csv.writer(csvfile)
-    
-    # Write the header
-    csvwriter.writerow(['Ticker'])
-    
-    # Write the ticker symbols
-    for ticker in ticker_symbols:
-        csvwriter.writerow([ticker])
+# Remove anything right of a comma, including the comma
+df['Stock Symbol'] = df['Stock Symbol'].str.split(',').str[0]
+
+# Save the modified DataFrame to a new CSV file
+output_path = r'C:\Users\johnm\OneDrive\Desktop\fortune100_stock_symbols.csv'
+df.to_csv(output_path, index=False)
+
+print(f"Modified file saved to {output_path}")
