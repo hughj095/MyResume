@@ -1,5 +1,9 @@
 # Portfolio
 
+# Machine Learning Projects
+Multiple techniques of machine learning.  Under Python/Machine Learning folders.  My favorites are multi-linear regression and NLP, which specifically derive insights from multi-dimensional data and text review data respectively.  
+
+
 # Web Scraping Projects
 Under the Python folder, please see the Selenium Folder for "NBA Scores and Line Scraper.py".  This file showcases my use of XPaths to scrape live NBA score and time data into Pandas dataframes, and combines them with live score line bet amounts from RISportsBet.com.  Ultimately predicting a score and a bet amount based on a projected score window.
 
