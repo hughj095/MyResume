@@ -15,7 +15,8 @@ class Technicals:
                     df.iloc[i,4] >= df.iloc[i - 1,4]
                     and df.iloc[i,4] >= df.iloc[i - 2,4]
                     and df.iloc[i,4] >= df.iloc[i + 1,4]
-                    and (i < len(df)-2 and df.iloc[i,4] >= df.iloc[i + 2,4])
+                    and df.iloc[i,4] >= df.iloc[i + 2,4]
+                    and i < len(df)-2 
                 ):
                     df.iloc[i, 9] = "resistance"
         for i in range(len(df)-1):   
@@ -41,9 +42,10 @@ class Technicals:
                     and count > 1
                     ):
                         df.iloc[i,9] = "break"
-        df.to_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\df.csv', index=False)      
         df = df[len(df)-5:len(df)]
         df = df.reset_index(drop=True)
+        df['volume'] = df['volume']
+        df['VMA_20'] = df['volume'].rolling(window=20).mean()    
         sell_ticker = df.iloc[2,8]
         current_time = datetime.datetime.now().time()
         if df.iloc[2,9] == 'support':
