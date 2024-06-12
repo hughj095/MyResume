@@ -11,17 +11,22 @@ ib = IB()
 ib.connect('127.0.0.1', 7497, clientId=1)  # Change port for real money and clientId if needed  
 
 # Define the stock you want to trade
-'''stock = Stock('DELL', 'SMART', 'USD')
+'''positions = ib.positions()
+for pos in positions:
 
-# Define the order
-order = MarketOrder('SELL', 419)
+    stock = Stock(pos.contract.symbol, 'SMART', 'USD')
 
-# Place the order
-trade = ib.placeOrder(stock, order)
+    # Define the order
+    order = MarketOrder('SELL', pos.position)
 
-# Wait for the order to be filled
-while not trade.isDone():
-    ib.waitOnUpdate()'''
+    # Place the order
+    trade = ib.placeOrder(stock, order)
+
+    # Wait for the order to be filled
+    while not trade.isDone():
+        ib.waitOnUpdate()
+
+    print(f'sold {pos.contract.symbol}')'''
 
 #df = pd.DataFrame(columns=['Time','Ticker','Bid','Close','Ask'])
 #ib.reqMarketDataType(3)

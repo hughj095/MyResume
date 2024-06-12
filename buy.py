@@ -5,7 +5,7 @@ import time
 
 
 class Buy:
-    def buy_stock(SHARES, df, ib, BUDGET_ib):
+    def buy_stock(SHARES, df, ib, BUDGET_ib, sell_ticker):
         total = config.strike_price*SHARES
         if total >= BUDGET_ib:
             print('out of money')
@@ -15,9 +15,6 @@ class Buy:
         order = MarketOrder('BUY', SHARES)   
         trade = ib.placeOrder(stock, order)
         print(f'Buying {stock}, ${config.strike_price}, ${float(SHARES*config.strike_price)}')
-        positions = ib.positions()
-        for pos in positions:
-            print(f'Average Cost: {round(pos.avgCost,2)}')
         ##### start a timer here, if over 10 seconds then subtract from wait timer at end of scan loop
         start_time = time.time()
         while not trade.isDone():

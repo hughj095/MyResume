@@ -5,6 +5,7 @@ import numpy as np
 from ib_insync import *
 from twilio.rest import Client
 from technicals import Technicals  # custom class
+from fifty_two_week import Refresh52Week # custom class
 import config
 
 ib = IB()
@@ -75,6 +76,17 @@ while current_time < datetime.time(15, 54) and current_time >= datetime.time(9, 
     current_time = datetime.datetime.now().time()
     print(current_time)
 if current_time >= datetime.time(15,54):
+    positions = ib.positions()
+    for pos in positions:
+        stock = Stock(pos.contract.symbol, 'SMART', 'USD')
+        order = MarketOrder('SELL', pos.position)
+        trade = ib.placeOrder(stock, order)
+        while not trade.isDone():
+            ib.waitOnUpdate()
+        print(f'sold {pos.contract.symbol}')
+current_time = datetime.datetime.now().time()
+if current_time >= datetime.time(16,00):
+    Refresh52Week.main()
     send_text()
     print("that's all folks")
 elif current_time < datetime.time(9,30):
