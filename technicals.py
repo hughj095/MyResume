@@ -7,7 +7,7 @@ from sell import Sell # custom class
 
 
 class Technicals:
-    def technicals(df, ib, stock_dataframes, BUDGET_ib):
+    def technicals(df, ib, BUDGET_ib):
         if len(df) > 0:
             df['close'] = df['close'].astype(float)
             df['Resistance/Support'] = ''   # column 9

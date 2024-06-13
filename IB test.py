@@ -45,11 +45,11 @@ print(df)'''
 print(f'Order Status: {trade.orderStatus.status}')'''
 
 # Request account summary
-account_summary = ib.accountSummary()
+'''account_summary = ib.accountSummary()
 # Print available funds (TotalCashValue)
 for item in account_summary:
     if item.tag == 'AvailableFunds':
-        print(f'{item.account}: Available Funds = {item.value} {item.currency}')
+        print(f'{item.account}: Available Funds = {item.value} {item.currency}')'''
 
 ### CURRENT POSITIONS
 positions = ib.positions()

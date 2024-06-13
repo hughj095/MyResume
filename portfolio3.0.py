@@ -81,23 +81,23 @@ while current_time < datetime.time(15, 50) and current_time >= datetime.time(9, 
 # EOD Sell
 if current_time >= datetime.time(15,50):
     positions = ib.positions()
-    ## While len(pos) > 0 then keep trying to sell
-    for pos in positions:
-        stock = Stock(pos.contract.symbol, 'SMART', 'USD')
-        order = MarketOrder('SELL', pos.position)
-        trade = ib.placeOrder(stock, order)
-        start_time = time.time()
-        while not trade.isDone():
-            if time.time() - start_time > 90:
-                print("Timeout reached, cancelling order")
-                ib.cancelOrder(order)
-                ## Function to split order into chuncks
-                break
-            ib.sleep(1)
-        print(f'sold {pos.contract.symbol}')
-current_time = datetime.datetime.now().time()
+    while len(positions) > 0:
+        for pos in positions:
+            stock = Stock(pos.contract.symbol, 'SMART', 'USD')
+            order = MarketOrder('SELL', pos.position)
+            trade = ib.placeOrder(stock, order)
+            start_time = time.time()
+            while not trade.isDone():
+                if time.time() - start_time > 60:
+                    print("Timeout reached, cancelling order")
+                    ib.cancelOrder(order)
+                    ## Function to split order into chuncks
+                    break
+                ib.sleep(1)
+            print(f'sold {pos.contract.symbol}')
 
 # Refresh 52 Week list and call send_text()
+current_time = datetime.datetime.now().time()
 if current_time >= datetime.time(15,50):
     Refresh52Week.main() # goes to fifty_two_week.py in folder
     send_text()
