@@ -13,7 +13,7 @@ class Technicals:
             df['Resistance/Support'] = ''   # column 9
             for i in range(len(df)-1):
                 if (
-                        i < len(df)-2 
+                        i >= 2 and i < len(df)-2 
                         and df.iloc[i,4] >= df.iloc[i - 1,4]
                         and df.iloc[i,4] >= df.iloc[i - 2,4]
                         and df.iloc[i,4] >= df.iloc[i + 1,4]
@@ -38,7 +38,6 @@ class Technicals:
                     if (
                         df.iloc[i,9] == 'resistance'
                         and df.iloc[j,9] == 'resistance'
-                        and df.iloc[j,9] == ''
                         and df.iloc[i,3] > df.iloc[j,3] 
                         and count > 1
                         ):

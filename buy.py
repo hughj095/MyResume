@@ -5,7 +5,7 @@ import time
 
 
 class Buy:
-    def buy_stock(SHARES, df, ib, BUDGET_ib, sell_ticker):
+    def buy_stock(SHARES, df, ib, BUDGET_ib):
         total = config.strike_price*SHARES
         if total >= BUDGET_ib:
             print('out of money')
@@ -29,5 +29,4 @@ class Buy:
             if item.tag == 'AvailableFunds':
                 print(f'Available Funds = {item.value} {item.currency}')
                 BUDGET_ib = item.value
-        held = True
         print('finished buy')
