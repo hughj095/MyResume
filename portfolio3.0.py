@@ -3,13 +3,14 @@ import datetime
 import pandas as pd
 import numpy as np
 from ib_insync import *
+import time
 from twilio.rest import Client
 from technicals import Technicals  # custom class
 from fifty_two_week import Refresh52Week # custom class
 import config
 
 ib = IB()
-ib.connect('127.0.0.1', 7497, clientId=1)
+ib.connect('127.0.0.1', 7497, clientId=2)
 ib.reqMarketDataType(3)  # Delayed data, change to 1 for live prices
 held = False
 
@@ -29,7 +30,7 @@ def fetch_new_data(symbol):
 # calls to fetch data, apply technical analysis, and summarizes total and positions 
     # before and after returning from buy and sell functions 
 def scan():
-    df_stocks = pd.read_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\fortune100_stock_symbols.csv')
+    df_stocks = pd.read_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\52weekTrue.csv')
     account_summary = ib.accountSummary()
     for item in account_summary:
         if item.tag == 'AvailableFunds':
@@ -51,7 +52,7 @@ def scan():
         print(f'Account: {pos.account}, Symbol: {pos.contract.symbol},' +
           f'Position: {round(pos.position,0)}, Average Cost: {round(pos.avgCost,2)},' +
           f'Value: {round(pos.avgCost * pos.position,2)}')
-    #ib.sleep(60)
+    ib.sleep(60)
 
 # sends text of portfolio sum to my phone
 def send_text():
@@ -72,21 +73,32 @@ def send_text():
 # initialize
 current_time = datetime.datetime.now().time()
 print(current_time)
-while current_time < datetime.time(15, 54) and current_time >= datetime.time(9, 30):  
+while current_time < datetime.time(15, 50) and current_time >= datetime.time(9, 30):  
     scan()
     current_time = datetime.datetime.now().time()
     print(current_time)
-if current_time >= datetime.time(15,54):
+
+# EOD Sell
+if current_time >= datetime.time(15,50):
     positions = ib.positions()
+    ## While len(pos) > 0 then keep trying to sell
     for pos in positions:
         stock = Stock(pos.contract.symbol, 'SMART', 'USD')
         order = MarketOrder('SELL', pos.position)
         trade = ib.placeOrder(stock, order)
+        start_time = time.time()
         while not trade.isDone():
-            ib.waitOnUpdate()
+            if time.time() - start_time > 90:
+                print("Timeout reached, cancelling order")
+                ib.cancelOrder(order)
+                ## Function to split order into chuncks
+                break
+            ib.sleep(1)
         print(f'sold {pos.contract.symbol}')
 current_time = datetime.datetime.now().time()
-if current_time >= datetime.time(16,00):
+
+# Refresh 52 Week list and call send_text()
+if current_time >= datetime.time(15,50):
     Refresh52Week.main() # goes to fifty_two_week.py in folder
     send_text()
     print("that's all folks")

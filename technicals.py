@@ -14,19 +14,19 @@ class Technicals:
             for i in range(len(df)-1):
                 if (
                         i >= 2 and i < len(df)-2 
+                        and df.iloc[i - 1,4] >= df.iloc[i - 2,4]
                         and df.iloc[i,4] >= df.iloc[i - 1,4]
-                        and df.iloc[i,4] >= df.iloc[i - 2,4]
                         and df.iloc[i,4] >= df.iloc[i + 1,4]
-                        and df.iloc[i,4] >= df.iloc[i + 2,4]
+                        and df.iloc[i + 1,4] >= df.iloc[i + 2,4]
                     ):
                         df.iloc[i, 9] = "resistance"
             for i in range(len(df)-1):   
                 if (
                         i >= 2 and i < len(df) - 2
+                        and df.iloc[i - 1,4] <= df.iloc[i - 2,4]
                         and df.iloc[i,4] <= df.iloc[i - 1,4]
-                        and df.iloc[i,4] <= df.iloc[i - 2,4]
                         and df.iloc[i,4] <= df.iloc[i + 1,4]
-                        and df.iloc[i,4] <= df.iloc[i + 2,4]
+                        and df.iloc[i + 1,4] <= df.iloc[i + 2,4]
                     ):
                         df.iloc[i, 9] = "support"
             df['Break'] = '' # column 9
@@ -38,7 +38,7 @@ class Technicals:
                     if (
                         df.iloc[i,9] == 'resistance'
                         and df.iloc[j,9] == 'resistance'
-                        and df.iloc[i,3] > df.iloc[j,3] 
+                        and df.iloc[i,4] > df.iloc[j,4] 
                         and count > 1
                         ):
                             df.iloc[i,9] = "break"
@@ -52,9 +52,9 @@ class Technicals:
                 config.strike_price = df.iloc[2,4]
                 if BUDGET_ib < 100:
                     print('low on budget')
-                SHARES = np.floor(BUDGET_ib/30/config.strike_price)
-                Buy.buy_stock(SHARES, df, ib, BUDGET_ib, sell_ticker) # goes to buy.py
-            elif current_time > datetime.time(15, 54):
+                SHARES = np.floor(BUDGET_ib/13/config.strike_price)
+                Buy.buy_stock(SHARES, df, ib, BUDGET_ib) # goes to buy.py
+            elif current_time > datetime.time(15, 50):
                 Sell.sell_stock(sell_ticker, ib, df) # goes to sell.py
             else:
                 if df.iloc[2,9] == 'resistance' and df.iloc[2,10] == '':

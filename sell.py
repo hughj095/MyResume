@@ -11,18 +11,17 @@ class Sell:
                 stock = Stock(f'{sell_ticker}', 'SMART', 'USD')
                 order = MarketOrder('SELL', SHARES)
                 trade = ib.placeOrder(stock, order)
-                print(f'Selling {stock}, ${SHARES * df.iloc[2,4]}')
                 start_time = time.time()
                 while not trade.isDone():
-                    if time.time() - start_time > 60:
+                    if time.time() - start_time > 90:
                         print("Timeout reached, cancelling order")
                         ib.cancelOrder(order)
+                        ## Function to split order into chuncks
                         break
                     ib.sleep(1)
-                total = SHARES * df.iloc[2,4]
-                #### Print sold ticker if sold was executed
-                print(f'sold {sell_ticker}') 
-                held = False
+                for fill in trade.fills:
+                    print(f"Selling {sell_ticker}, Net: {(fill.execution.price - pos.avgCost)*SHARES}")
+                    print(f'sold {sell_ticker}') 
             elif len(pos.contract.symbol) == 0:
                 print('position not held, tried to sell')
         account_summary = ib.accountSummary()

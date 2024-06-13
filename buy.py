@@ -20,6 +20,7 @@ class Buy:
             if time.time() - start_time > 90:
                 print("Timeout reached, cancelling order")
                 ib.cancelOrder(order)
+                ## Function to split order into chuncks
                 break
             # Sleep briefly to avoid tight loop
             ib.sleep(1)
