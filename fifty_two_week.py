@@ -20,7 +20,7 @@ class Refresh52Week:
         #df['52_week_high'] = df['high'].rolling(window=252).max()
         current_price = df.iloc[-1]['close']  # Assuming last row is current price
         high_price = df.iloc[-1]['52_week_high']
-        is_at_high = (current_price >= high_price*0.99)
+        is_at_high = (current_price >= high_price*0.98)
         return is_at_high
 
     # Function to process CSV file
@@ -52,3 +52,5 @@ class Refresh52Week:
             Refresh52Week.process_csv(csv_file, ib)
         else:
             print(f"File not found: {csv_file}")
+
+Refresh52Week.main()
