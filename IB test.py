@@ -59,11 +59,11 @@ for pos in positions:
           f'Value: {round(pos.avgCost * pos.position,2)}')
 
 ### TRANSACTION DETAIL
-executions = ib.reqExecutions(ExecutionFilter())
+'''executions = ib.reqExecutions(ExecutionFilter())
 for e in executions:
     print(f'Account: {e.execution.acctNumber}, Symbol: {e.contract.symbol}, '
           f'Side: {e.execution.side}, Shares: {e.execution.shares}, '
-          f'Price: {e.execution.price}, Time: {e.execution.time}')
+          f'Price: {e.execution.price}, Time: {e.execution.time}')'''
     
 '''def onTick(ticker):
     print(f"Bid: {ticker.bid}, Ask: {ticker.ask}, Last: {ticker.last}")''''''
