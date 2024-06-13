@@ -15,7 +15,7 @@ held = False
 
 # functions
 
-# fetch new data
+# fetches new data
 def fetch_new_data(symbol):
     tickerSymbol = Stock(f'{symbol}', 'SMART', 'USD') 
     ticker = ib.reqHistoricalData(contract = tickerSymbol, endDateTime = '', durationStr='1 D', 
@@ -26,7 +26,8 @@ def fetch_new_data(symbol):
     df['Stock'] = tickerSymbol.symbol
     return df
 
-# scan
+# calls to fetch data, apply technical analysis, and summarizes total and positions 
+    # before and after returning from buy and sell functions 
 def scan():
     df_stocks = pd.read_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\fortune100_stock_symbols.csv')
     account_summary = ib.accountSummary()
@@ -40,7 +41,7 @@ def scan():
         stock_dataframes[symbol] = stock_data
     print('starting technicals')
     for ticker, df in stock_dataframes.items():
-        Technicals.technicals(df, ib, stock_dataframes, BUDGET_ib)
+        Technicals.technicals(df, ib, stock_dataframes, BUDGET_ib)  # goes to technicals.py in folder
     for item in account_summary:
         if item.tag == 'AvailableFunds':
             print(f'Available Funds = {item.value} {item.currency}')
@@ -52,7 +53,7 @@ def scan():
           f'Value: {round(pos.avgCost * pos.position,2)}')
     #ib.sleep(60)
 
-# summary and notifications
+# sends text of portfolio sum to my phone
 def send_text():
     account_sid = config.TWILIO_ACCOUNT_SID
     auth_token = config.TWILIO_AUTH_TOKEN 
@@ -86,7 +87,7 @@ if current_time >= datetime.time(15,54):
         print(f'sold {pos.contract.symbol}')
 current_time = datetime.datetime.now().time()
 if current_time >= datetime.time(16,00):
-    Refresh52Week.main()
+    Refresh52Week.main() # goes to fifty_two_week.py in folder
     send_text()
     print("that's all folks")
 elif current_time < datetime.time(9,30):

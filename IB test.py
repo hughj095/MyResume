@@ -1,10 +1,7 @@
 ### MUST BE LOGGED ONTO THE IB GETWAY ON THE DESKTOP
 
-
-import time
 from ib_insync import *
 import pandas as pd
-import datetime
 
 # Connect to Interactive Brokers TWS or IB Gateway
 ib = IB()

@@ -1,3 +1,6 @@
+# This file can be run by itself to update the df/csv of stocks near their 52-week high (within 2%)
+# The class Refresh52Week is called from the portfolio3.0.py file to do the same
+
 from ib_insync import *
 import pandas as pd
 import os
@@ -53,4 +56,4 @@ class Refresh52Week:
         else:
             print(f"File not found: {csv_file}")
 
-Refresh52Week.main()
+Refresh52Week.main()  # allows to run file by itself

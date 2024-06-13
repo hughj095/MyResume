@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import datetime
 from buy import Buy # custom class
-import config # config file for global variables
+import config 
 from sell import Sell # custom class
 
 
@@ -54,9 +54,9 @@ class Technicals:
                 if BUDGET_ib < 100:
                     print('low on budget')
                 SHARES = np.floor(BUDGET_ib/30/config.strike_price)
-                Buy.buy_stock(SHARES, df, ib, BUDGET_ib, sell_ticker)
+                Buy.buy_stock(SHARES, df, ib, BUDGET_ib, sell_ticker) # goes to buy.py
             elif current_time > datetime.time(15, 54):
-                Sell.sell_stock(sell_ticker, ib, df)
+                Sell.sell_stock(sell_ticker, ib, df) # goes to sell.py
             else:
                 if df.iloc[2,9] == 'resistance' and df.iloc[2,10] == '':
                     Sell.sell_stock(sell_ticker, ib, df)

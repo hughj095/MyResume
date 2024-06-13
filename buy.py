@@ -15,7 +15,6 @@ class Buy:
         order = MarketOrder('BUY', SHARES)   
         trade = ib.placeOrder(stock, order)
         print(f'Buying {stock}, ${config.strike_price}, ${float(SHARES*config.strike_price)}')
-        ##### start a timer here, if over 10 seconds then subtract from wait timer at end of scan loop
         start_time = time.time()
         while not trade.isDone():
             if time.time() - start_time > 90:
