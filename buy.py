@@ -5,7 +5,7 @@ import time
 
 
 class Buy:
-    def buy_stock(SHARES, df, ib, BUDGET_ib):
+    def buy_stock(SHARES, df, ib, BUDGET_ib, clock):
         total = config.strike_price*SHARES
         if total >= BUDGET_ib:
             print('out of money')
@@ -24,6 +24,7 @@ class Buy:
                 break
             # Sleep briefly to avoid tight loop
             ib.sleep(1)
+            clock += 1
         print(f'Order Status: {trade.orderStatus.status}')
         account_summary = ib.accountSummary()
         for item in account_summary:
@@ -31,3 +32,4 @@ class Buy:
                 print(f'Available Funds = {item.value} {item.currency}')
                 BUDGET_ib = item.value
         print('finished buy')
+        return clock

@@ -39,7 +39,7 @@ MET,False
 ADM,False
 DOW,False
 RTX,False
-BBY,True
+BBY,False
 PFE,False
 GE,False
 TGT,False
@@ -48,7 +48,7 @@ GS,False
 MS,False
 DE,False
 HCA,True
-ORCL,True
+ORCL,False
 TMO,False
 MRK,False
 KO,False
@@ -75,6 +75,6 @@ MO,False
 EXC,False
 TRV,False
 OKE,False
-WDC,True
+WDC,False
 BAX,False
 ARW,False

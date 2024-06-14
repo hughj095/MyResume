@@ -2,7 +2,7 @@ from ib_insync import *
 import time
 
 class Sell:
-    def sell_stock(sell_ticker, ib, df):
+    def sell_stock(sell_ticker, ib, df, clock):
         positions = ib.positions()
         for pos in positions:
             if pos.contract.symbol == sell_ticker:
@@ -19,6 +19,7 @@ class Sell:
                         ## Function to split order into chuncks
                         break
                     ib.sleep(1)
+                    clock += 1
                 for fill in trade.fills:
                     print(f"Selling {sell_ticker}, Net: {(fill.execution.price - pos.avgCost)*SHARES}")
                     print(f'sold {sell_ticker}') 
@@ -28,4 +29,5 @@ class Sell:
         for item in account_summary:
             if item.tag == 'AvailableFunds':
                 print(f'{item.account}: Available Funds = {item.value} {item.currency}')
-                BUDGET_ib = item.value  
+                BUDGET_ib = item.value
+        return clock

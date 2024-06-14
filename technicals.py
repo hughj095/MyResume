@@ -48,14 +48,16 @@ class Technicals:
             df['VMA_20'] = df['volume'].rolling(window=20).mean()    
             sell_ticker = df.iloc[2,8]
             current_time = datetime.datetime.now().time()
+            clock = 0
             if df.iloc[2,9] == 'support':
                 config.strike_price = df.iloc[2,4]
                 if BUDGET_ib < 100:
                     print('low on budget')
                 SHARES = np.floor(BUDGET_ib/13/config.strike_price)
-                Buy.buy_stock(SHARES, df, ib, BUDGET_ib) # goes to buy.py
+                Buy.buy_stock(SHARES, df, ib, BUDGET_ib, clock) # goes to buy.py
             elif current_time > datetime.time(15, 50):
-                Sell.sell_stock(sell_ticker, ib, df) # goes to sell.py
+                Sell.sell_stock(sell_ticker, ib, df, clock) # goes to sell.py
             else:
                 if df.iloc[2,9] == 'resistance' and df.iloc[2,10] == '':
-                    Sell.sell_stock(sell_ticker, ib, df)
+                    Sell.sell_stock(sell_ticker, ib, df, clock)
+            return clock

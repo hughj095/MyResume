@@ -41,8 +41,9 @@ def scan():
         stock_data = fetch_new_data(symbol)
         stock_dataframes[symbol] = stock_data
     print('starting technicals')
+    clock = 0
     for ticker, df in stock_dataframes.items():
-        Technicals.technicals(df, ib, stock_dataframes, BUDGET_ib)  # goes to technicals.py in folder
+        Technicals.technicals(df, ib, BUDGET_ib, clock)  # goes to technicals.py in folder
     for item in account_summary:
         if item.tag == 'AvailableFunds':
             print(f'Available Funds = {item.value} {item.currency}')
@@ -52,7 +53,8 @@ def scan():
         print(f'Account: {pos.account}, Symbol: {pos.contract.symbol},' +
           f'Position: {round(pos.position,0)}, Average Cost: {round(pos.avgCost,2)},' +
           f'Value: {round(pos.avgCost * pos.position,2)}')
-    ib.sleep(60)
+    if clock > 0 and clock < 60:
+        ib.sleep(60-clock)
 
 # sends text of portfolio sum to my phone
 def send_text():
@@ -81,20 +83,21 @@ while current_time < datetime.time(15, 50) and current_time >= datetime.time(9, 
 # EOD Sell
 if current_time >= datetime.time(15,50):
     positions = ib.positions()
-    while len(positions) > 0:
+    if len(positions) > 0:
         for pos in positions:
-            stock = Stock(pos.contract.symbol, 'SMART', 'USD')
-            order = MarketOrder('SELL', pos.position)
-            trade = ib.placeOrder(stock, order)
-            start_time = time.time()
-            while not trade.isDone():
-                if time.time() - start_time > 60:
-                    print("Timeout reached, cancelling order")
-                    ib.cancelOrder(order)
-                    ## Function to split order into chuncks
-                    break
-                ib.sleep(1)
-            print(f'sold {pos.contract.symbol}')
+            if pos.position > 0:
+                stock = Stock(pos.contract.symbol, 'SMART', 'USD')
+                order = MarketOrder('SELL', pos.position)
+                trade = ib.placeOrder(stock, order)
+                start_time = time.time()
+                while not trade.isDone():
+                    if time.time() - start_time > 60:
+                        print("Timeout reached, cancelling order")
+                        ib.cancelOrder(order)
+                        ## Function to split order into chuncks
+                        break
+                    ib.sleep(1)
+                print(f'sold {pos.contract.symbol}')
 
 # Refresh 52 Week list and call send_text()
 current_time = datetime.datetime.now().time()
