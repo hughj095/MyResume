@@ -55,6 +55,7 @@ def scan():
     if clock > 0 and clock < 60:
         ib.sleep(60-clock)
 
+# sell at end of day
 def endOfDaySell(ib):
     positions = ib.positions()
     if len(positions) > 0:
@@ -72,7 +73,6 @@ def endOfDaySell(ib):
                         break
                     ib.sleep(1)
                 print(f'sold {pos.contract.symbol}')
-
 
 # sends text of portfolio sum to my phone
 def send_text():
