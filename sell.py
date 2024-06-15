@@ -16,8 +16,7 @@ class Sell:
                     if time.time() - start_time > 60:
                         print("Timeout reached, cancelling order")
                         ib.cancelOrder(order)
-                        ## Function to split order into chuncks
-                        Sell.chuncking_sell(ib, SHARES, sell_ticker)
+                        Sell.chuncking_sell(ib, SHARES, sell_ticker)  # goes to chuncking function
                         break
                     ib.sleep(1)
                     clock += 1
