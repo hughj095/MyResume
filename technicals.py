@@ -4,6 +4,7 @@ import datetime
 from buy import Buy # custom class
 import config 
 from sell import Sell # custom class
+from stoploss import StopLoss # custom class
 
 
 class Technicals:
@@ -55,9 +56,14 @@ class Technicals:
                     print('low on budget')
                 SHARES = np.floor(BUDGET_ib/13/config.strike_price)
                 Buy.buy_stock(SHARES, df, ib, BUDGET_ib, clock) # goes to buy.py
-            elif current_time > datetime.time(15, 50):
+            positions = ib.positions()
+            for pos in positions:
+                if sell_ticker == pos.contract.symbol:
+                    owned_shares = pos.position
+            if current_time > datetime.time(15, 50) and owned_shares > 0:
                 Sell.sell_stock(sell_ticker, ib, df, clock) # goes to sell.py
-            else:
-                if df.iloc[2,9] == 'resistance' and df.iloc[2,10] == '':
-                    Sell.sell_stock(sell_ticker, ib, df, clock)
+            if df.iloc[2,9] == 'resistance' and df.iloc[2,10] == '' and owned_shares > 0:
+                Sell.sell_stock(sell_ticker, ib, df, clock)
+            if StopLoss.checkforstoploss(ib, sell_ticker):
+                Sell.sell_stock(sell_ticker, ib, df, clock)
             return clock
