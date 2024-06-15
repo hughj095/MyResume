@@ -55,7 +55,7 @@ def scan():
     if clock > 0 and clock < 60:
         ib.sleep(60-clock)
 
-# sell at end of day
+# snvb   k    b    ell at end of day
 def endOfDaySell(ib):
     positions = ib.positions()
     if len(positions) > 0:
