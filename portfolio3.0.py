@@ -1,18 +1,17 @@
 # imports and variables
 import datetime
 import pandas as pd
-import numpy as np
 from ib_insync import *
 import time
 from twilio.rest import Client
 from technicals import Technicals  # custom class
 from fifty_two_week import Refresh52Week # custom class
+from sell import Sell # custom class
 import config
 
 ib = IB()
 ib.connect('127.0.0.1', 7497, clientId=2)
 ib.reqMarketDataType(3)  # Delayed data, change to 1 for live prices
-held = False
 
 # functions
 
@@ -56,6 +55,25 @@ def scan():
     if clock > 0 and clock < 60:
         ib.sleep(60-clock)
 
+def endOfDaySell(ib):
+    positions = ib.positions()
+    if len(positions) > 0:
+        for pos in positions:
+            if pos.position > 0:
+                stock = Stock(pos.contract.symbol, 'SMART', 'USD')
+                order = MarketOrder('SELL', pos.position)
+                trade = ib.placeOrder(stock, order)
+                start_time = time.time()
+                while not trade.isDone():
+                    if time.time() - start_time > 60:
+                        print("Timeout reached, cancelling order")
+                        ib.cancelOrder(order)
+                        Sell.chuncking_sell(ib, SHARES = pos.position, sell_ticker = pos.contract.symbol)
+                        break
+                    ib.sleep(1)
+                print(f'sold {pos.contract.symbol}')
+
+
 # sends text of portfolio sum to my phone
 def send_text():
     account_sid = config.TWILIO_ACCOUNT_SID
@@ -79,25 +97,8 @@ while current_time < datetime.time(15, 50) and current_time >= datetime.time(9, 
     scan()
     current_time = datetime.datetime.now().time()
     print(current_time)
-
-# EOD Sell
-if current_time >= datetime.time(15,50):
-    positions = ib.positions()
-    if len(positions) > 0:
-        for pos in positions:
-            if pos.position > 0:
-                stock = Stock(pos.contract.symbol, 'SMART', 'USD')
-                order = MarketOrder('SELL', pos.position)
-                trade = ib.placeOrder(stock, order)
-                start_time = time.time()
-                while not trade.isDone():
-                    if time.time() - start_time > 60:
-                        print("Timeout reached, cancelling order")
-                        ib.cancelOrder(order)
-                        ## Function to split order into chuncks
-                        break
-                    ib.sleep(1)
-                print(f'sold {pos.contract.symbol}')
+if current_time >= datetime.time(15,50) and current_time < datetime.time(16,00):
+    endOfDaySell(ib)
 
 # Refresh 52 Week list and call send_text()
 current_time = datetime.datetime.now().time()

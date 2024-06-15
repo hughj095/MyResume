@@ -45,25 +45,30 @@ class Technicals:
                             df.iloc[i,9] = "break"
             df = df[len(df)-5:len(df)]
             df = df.reset_index(drop=True)
-            df['volume'] = df['volume']
-            df['VMA_20'] = df['volume'].rolling(window=20).mean()    
+            ## Volume indicator check
+            df['VMA_20'] = df['volume'].rolling(window=20).mean()
+            if df.loc[2,'VMA_20'] < 3 * df.loc[2,'volume']:
+                 volume_indic = True    
             sell_ticker = df.iloc[2,8]
             current_time = datetime.datetime.now().time()
             clock = 0
-            if df.iloc[2,9] == 'support':
+            positions = ib.positions()
+            for pos in positions:
+                if sell_ticker == pos.contract.symbol:
+                    owned_shares = pos.positions
+            owned_tickers = [position.contract.symbol for position in positions]
+            if df.iloc[2,9] == 'support' and sell_ticker not in owned_tickers:
                 config.strike_price = df.iloc[2,4]
                 if BUDGET_ib < 100:
                     print('low on budget')
                 SHARES = np.floor(BUDGET_ib/13/config.strike_price)
                 Buy.buy_stock(SHARES, df, ib, BUDGET_ib, clock) # goes to buy.py
-            positions = ib.positions()
-            for pos in positions:
-                if sell_ticker == pos.contract.symbol:
-                    owned_shares = pos.position
+            elif volume_indic == True and sell_ticker not in owned_tickers: 
+                Buy.buy_stock(SHARES, df, ib, BUDGET_ib, clock) # goes to buy.py
             if current_time > datetime.time(15, 50) and owned_shares > 0:
                 Sell.sell_stock(sell_ticker, ib, df, clock) # goes to sell.py
-            if df.iloc[2,9] == 'resistance' and df.iloc[2,10] == '' and owned_shares > 0:
+            elif df.iloc[2,9] == 'resistance' and df.iloc[2,10] == '' and owned_shares > 0:
                 Sell.sell_stock(sell_ticker, ib, df, clock)
-            if StopLoss.checkforstoploss(ib, sell_ticker):
+            elif StopLoss.checkforstoploss(ib, sell_ticker):
                 Sell.sell_stock(sell_ticker, ib, df, clock)
             return clock

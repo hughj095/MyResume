@@ -17,7 +17,7 @@ class Sell:
                         print("Timeout reached, cancelling order")
                         ib.cancelOrder(order)
                         ## Function to split order into chuncks
-                        Sell.chuncking_sell(SHARES, sell_ticker, ib)
+                        Sell.chuncking_sell(ib, SHARES, sell_ticker)
                         break
                     ib.sleep(1)
                     clock += 1
@@ -33,7 +33,7 @@ class Sell:
                 BUDGET_ib = item.value
         return clock
     
-    def chuncking_sell(SHARES, sell_ticker, ib):
+    def chuncking_sell(ib, SHARES, sell_ticker):
         full_chunk_orders = SHARES // 100
         remaining_shares = SHARES % 100
         for _ in range(full_chunk_orders):
