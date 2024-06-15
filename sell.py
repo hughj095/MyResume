@@ -13,10 +13,11 @@ class Sell:
                 trade = ib.placeOrder(stock, order)
                 start_time = time.time()
                 while not trade.isDone():
-                    if time.time() - start_time > 90:
+                    if time.time() - start_time > 60:
                         print("Timeout reached, cancelling order")
                         ib.cancelOrder(order)
                         ## Function to split order into chuncks
+                        Sell.chuncking_sell(SHARES, sell_ticker, ib)
                         break
                     ib.sleep(1)
                     clock += 1
@@ -31,3 +32,23 @@ class Sell:
                 print(f'{item.account}: Available Funds = {item.value} {item.currency}')
                 BUDGET_ib = item.value
         return clock
+    
+    def chuncking_sell(SHARES, sell_ticker, ib):
+        full_chunk_orders = SHARES // 100
+        remaining_shares = SHARES % 100
+        for _ in range(full_chunk_orders):
+            stock = Stock(f'{sell_ticker}', 'SMART', 'USD')
+            order = MarketOrder('SELL', 100)
+            trade = ib.placeOrder(stock, order)
+            ib.sleep(1)
+            start_time = time.time()
+            while not trade.isDone():
+                if time.time() - start_time > 60:
+                    print("Timeout reached, cancelling order")
+                    ib.cancelOrder(order)
+                    print('failed to chunck sell 100')
+                    break
+                ib.sleep(1)
+        stock = Stock(f'{sell_ticker}', 'SMART', 'USD')
+        order = MarketOrder('SELL', remaining_shares)
+        trade = ib.placeOrder(stock, order)
