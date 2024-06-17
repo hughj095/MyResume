@@ -64,6 +64,7 @@ class Technicals:
                 SHARES = np.floor(BUDGET_ib/13/config.strike_price)
                 Buy.buy_stock(SHARES, df, ib, BUDGET_ib, clock) # goes to buy.py
             elif volume_indic == True and sell_ticker not in owned_tickers: 
+                print('high volume flag')
                 Buy.buy_stock(SHARES, df, ib, BUDGET_ib, clock) # goes to buy.py
             if current_time > datetime.time(15, 50) and owned_shares > 0:
                 Sell.sell_stock(sell_ticker, ib, df, clock) # goes to sell.py

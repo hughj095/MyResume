@@ -107,7 +107,7 @@ date = datetime.date.today()
 if current_time >= datetime.time(15,50):
     Refresh52Week.main() # goes to fifty_two_week.py in folder
     send_text()
-    # report update
+    # report update (date)
     print("that's all folks")
 elif current_time < datetime.time(9,30):
     print('too early')

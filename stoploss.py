@@ -12,5 +12,6 @@ class StopLoss:
                 ib.sleep(2)
                 current_price = ticker.last if ticker.last else ticker.close
                 if current_price < 0.995*pos.avgCost:
+                    print('stop loss order true')
                     return True
 
