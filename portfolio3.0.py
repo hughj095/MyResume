@@ -55,7 +55,7 @@ def scan():
     if clock > 0 and clock < 60:
         ib.sleep(60-clock)
 
-# snvb   k    b    ell at end of day
+# sell at end of day
 def endOfDaySell(ib):
     positions = ib.positions()
     if len(positions) > 0:
@@ -100,11 +100,14 @@ while current_time < datetime.time(15, 50) and current_time >= datetime.time(9, 
 if current_time >= datetime.time(15,50) and current_time < datetime.time(16,00):
     endOfDaySell(ib)
 
+
 # Refresh 52 Week list and call send_text()
 current_time = datetime.datetime.now().time()
+date = datetime.date.today()
 if current_time >= datetime.time(15,50):
     Refresh52Week.main() # goes to fifty_two_week.py in folder
     send_text()
+    # report update
     print("that's all folks")
 elif current_time < datetime.time(9,30):
     print('too early')
