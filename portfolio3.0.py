@@ -10,7 +10,7 @@ from sell import Sell # custom class
 import config
 
 ib = IB()
-ib.connect('127.0.0.1', 7497, clientId=2)
+ib.connect('127.0.0.1', 7497, clientId=1)
 ib.reqMarketDataType(3)  # Delayed data, change to 1 for live prices
 
 # functions
@@ -52,7 +52,7 @@ def scan():
         print(f'Account: {pos.account}, Symbol: {pos.contract.symbol},' +
           f'Position: {round(pos.position,0)}, Average Cost: {round(pos.avgCost,2)},' +
           f'Value: {round(pos.avgCost * pos.position,2)}')
-    if clock > 0 and clock < 60:
+    if clock > 0 and clock < 60:  ## TIMER NOT WORKING
         ib.sleep(60-clock)
 
 # sell at end of day

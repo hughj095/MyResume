@@ -33,7 +33,7 @@ class Sell:
         return clock
     
     def chuncking_sell(ib, SHARES, sell_ticker):
-        full_chunk_orders = SHARES // 100
+        full_chunk_orders = int(round(SHARES,0) // 100)
         remaining_shares = SHARES % 100
         for _ in range(full_chunk_orders):
             stock = Stock(f'{sell_ticker}', 'SMART', 'USD')

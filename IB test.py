@@ -9,10 +9,10 @@ ib = IB()
 ib.connect('127.0.0.1', 7497, clientId=1)  # Change port for real money and clientId if needed  
 
 # Define the stock you want to trade
-positions = ib.positions()
-#for pos in positions:
+'''positions = ib.positions()
+# for pos in positions:
 
-'''stock = Stock('ORCL', 'SMART', 'USD')
+stock = Stock('ORCL', 'SMART', 'USD')
 
 # Define the order
 order = MarketOrder('SELL', 400)
@@ -26,14 +26,14 @@ while not trade.isDone():
     if time.time() - start_time > 60:
         print("Timeout reached, cancelling order")
         ib.cancelOrder(order)
-        ## Function to split order into chuncks
-        break
-    ib.sleep(1)
-#print(f'sold {pos.contract.symbol}')'''
+    ## Function to split order into chuncks
+    break
+    ib.sleep(1)'''
+# print(f'sold {pos.contract.symbol}')
 
-open_orders = ib.reqOpenOrders()
+'''open_orders = ib.reqOpenOrders()
 for order in open_orders:
-     print(order)
+     print(order)'''
 
 #df = pd.DataFrame(columns=['Time','Ticker','Bid','Close','Ask'])
 #ib.reqMarketDataType(3)

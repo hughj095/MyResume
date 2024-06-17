@@ -8,7 +8,7 @@ from stoploss import StopLoss # custom class
 
 
 class Technicals:
-    def technicals(df, ib, BUDGET_ib):
+    def technicals(df, ib, BUDGET_ib, clock):
         if len(df) > 0:
             df['close'] = df['close'].astype(float)
             df['Resistance/Support'] = ''   # column 9
@@ -47,16 +47,21 @@ class Technicals:
             df = df.reset_index(drop=True)
             ## Volume indicator check
             df['VMA_20'] = df['volume'].rolling(window=20).mean()
-            if df.loc[2,'VMA_20'] < 3 * df.loc[2,'volume']:
-                 volume_indic = True    
-            sell_ticker = df.iloc[2,8]
+            if len(df) < 5:
+                pass
+            elif df.iloc[2,11] < 3 * df.iloc[2,5]:
+                volume_indic = True
+            else: volume_indic = False   
+            sell_ticker = df.iloc[0,8]
             current_time = datetime.datetime.now().time()
             clock = 0
             positions = ib.positions()
             for pos in positions:
                 if sell_ticker == pos.contract.symbol:
-                    owned_shares = pos.positions
+                    owned_shares = pos.position
+                else: owned_shares = 0
             owned_tickers = [position.contract.symbol for position in positions]
+            ### DONT BUY IF LOWER THAN THE LAST STOP LOSS
             if df.iloc[2,9] == 'support' and sell_ticker not in owned_tickers:
                 config.strike_price = df.iloc[2,4]
                 if BUDGET_ib < 100:
