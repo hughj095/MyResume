@@ -77,4 +77,5 @@ class Technicals:
                 Sell.sell_stock(sell_ticker, ib, df, clock)
             elif StopLoss.checkforstoploss(ib, sell_ticker):
                 Sell.sell_stock(sell_ticker, ib, df, clock)
+            # rising stop loss here
             return clock
