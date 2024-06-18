@@ -17,4 +17,8 @@ class StopLoss:
     
     def trailingstoploss(ib, sell_ticker, highfrombuy):
         pass
+        # avg cost per ticker
+        # append high from buy
+        # if price is 50% between avg cost and high from buy
+        # then sell
 
