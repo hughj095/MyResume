@@ -45,6 +45,9 @@ class Technicals:
                             df.iloc[i,9] = "break"
             df = df[len(df)-5:len(df)]
             df = df.reset_index(drop=True)
+            
+            # highfrombuy here for trailing stoploss
+            
             ## Volume indicator check
             df['VMA_20'] = df['volume'].rolling(window=20).mean()
             if len(df) < 5:
