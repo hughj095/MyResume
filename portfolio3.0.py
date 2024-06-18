@@ -93,11 +93,11 @@ def send_text():
 # initialize
 current_time = datetime.datetime.now().time()
 print(current_time)
-while current_time < datetime.time(15, 50) and current_time >= datetime.time(9, 30):  
+while current_time < datetime.time(15, 40) and current_time >= datetime.time(9, 30):  
     scan()
     current_time = datetime.datetime.now().time()
     print(current_time)
-if current_time >= datetime.time(15,50) and current_time < datetime.time(16,00):
+if current_time >= datetime.time(15,40) and current_time < datetime.time(16,00):
     endOfDaySell(ib)
 
 

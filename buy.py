@@ -17,7 +17,7 @@ class Buy:
         print(f'Buying {stock}, ${config.strike_price}, ${float(SHARES*config.strike_price)}')
         start_time = time.time()
         while not trade.isDone():
-            if time.time() - start_time > 90:
+            if time.time() - start_time > 30:
                 print("Timeout reached, cancelling order")
                 ib.cancelOrder(order)
                 ## Function to split order into chuncks

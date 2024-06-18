@@ -15,10 +15,16 @@ class StopLoss:
                     print('stop loss order true')
                     return True
     
-    def trailingstoploss(ib, sell_ticker, highfrombuy):
-        pass
-        # avg cost per ticker
-        # append high from buy
-        # if price is 50% between avg cost and high from buy
-        # then sell
+    def trailingstoploss(positions, sell_ticker, highafterbuy, df):
+        # get current price
+        current_price = df.iloc[len(df)-1,4]
+        # avg cost
+        for pos in positions:
+            if (
+                sell_ticker == pos.contract.symbol
+                and highafterbuy - current_price > 0
+                and highafterbuy - current_price 
+                ):
+                    Sell.sell_stock()
+
 

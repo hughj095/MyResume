@@ -14,11 +14,14 @@ class Report:
         df_transactions['Net'] = df_transactions['SLD'] - df_transactions['BOT']
         # Total for day
         total = sum(df_transactions['Net'])
-        # Diff vs previous day
-        # YTD Net
-        # put into Excel
+        # save to existing excel and tab title is date
         excel_path = r'C:\Users\johnm\OneDrive\Desktop\MyResume\transactions.xlsx'
         writer = pd.ExcelWriter(excel_path, engine='openpyxl', mode='a')
+        # access previous days tab
+        # Diff vs previous day
+        # YTD Net
+  
+        
 
 ib = IB()
 ib.connect('127.0.0.1', 7497, clientId=3)
