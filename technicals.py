@@ -46,8 +46,6 @@ class Technicals:
             df = df[len(df)-5:len(df)]
             df = df.reset_index(drop=True)
             
-            # highfrombuy here for trailing stoploss
-            
             ## Volume indicator check
             df['VMA_20'] = df['volume'].rolling(window=20).mean()
             if len(df) < 5:
@@ -76,6 +74,7 @@ class Technicals:
                 Buy.buy_stock(SHARES, df, ib, BUDGET_ib, clock) # goes to buy.py
             if current_time > datetime.time(15, 50) and owned_shares > 0:
                 Sell.sell_stock(sell_ticker, ib, df, clock) # goes to sell.py
+            # elif check trailing stoploss
             elif df.iloc[2,9] == 'resistance' and df.iloc[2,10] == '' and owned_shares > 0:
                 Sell.sell_stock(sell_ticker, ib, df, clock)
             elif StopLoss.checkforstoploss(ib, sell_ticker):
