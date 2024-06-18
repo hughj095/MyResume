@@ -104,7 +104,7 @@ if current_time >= datetime.time(15,40) and current_time < datetime.time(16,00):
 # Refresh 52 Week list and call send_text()
 current_time = datetime.datetime.now().time()
 date = datetime.date.today()
-if current_time >= datetime.time(15,50):
+if current_time >= datetime.time(15,40):
     Refresh52Week.main() # goes to fifty_two_week.py in folder
     send_text()
     # report update (date)

@@ -1,6 +1,4 @@
 Stock Symbol,52_week_high
-AAPL,True
-GOOGL,True
 MCK,True
 COST,True
 MSFT,True
@@ -8,7 +6,8 @@ BAC,True
 PG,True
 BBY,True
 HON,True
+HCA,True
 ORCL,True
-HPE,True
 SNX,True
+GD,True
 WDC,True

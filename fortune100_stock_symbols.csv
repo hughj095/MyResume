@@ -1,10 +1,10 @@
 Stock Symbol,52_week_high
 AMZN,False
 XOM,False
-AAPL,True
+AAPL,False
 CVS,False
 UNH,False
-GOOGL,True
+GOOGL,False
 MCK,True
 COST,True
 CI,False
@@ -47,7 +47,7 @@ HON,True
 GS,False
 MS,False
 DE,False
-HCA,False
+HCA,True
 ORCL,True
 TMO,False
 MRK,False
@@ -61,14 +61,14 @@ TSN,False
 MMM,False
 DAL,False
 CTSH,False
-HPE,True
+HPE,False
 NUE,False
 BMY,False
 SNX,True
 EPD,False
 UAL,False
 ET,False
-GD,False
+GD,True
 AVT,False
 GLP,False
 MO,False

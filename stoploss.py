@@ -23,7 +23,8 @@ class StopLoss:
             if (
                 sell_ticker == pos.contract.symbol
                 and highafterbuy - current_price > 0
-                and highafterbuy - current_price 
+                and current_price - pos.avgCost
+                and (highafterbuy - current_price) > (current_price - pos.avgCost)
                 ):
                     Sell.sell_stock()
 
