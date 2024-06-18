@@ -14,4 +14,7 @@ class StopLoss:
                 if current_price < 0.995*pos.avgCost:
                     print('stop loss order true')
                     return True
+    
+    def trailingstoploss(ib, sell_ticker, highfrombuy):
+        pass
 

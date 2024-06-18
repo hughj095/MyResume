@@ -1,16 +1,15 @@
 import pandas as pd
 from ib_insync import *
-from datetime import datetime, timedelta
+from datetime import timedelta
+import datetime
 
 class Report:
     def report(ib, date):
         executions = ib.reqExecutions(ExecutionFilter())
         df_transactions = pd.DataFrame(executions)
-        # adjust IB time to my time (less 6 hours)
-        datetime.strptime(df_transactions['time'], '%Y-%m-%d %H:%M:%S')
-        df_transactions['time'] = df_transactions['time'] - timedelta(hours=6)
+        df_transactions['time'] = df_transactions['time'] - timedelta(hours=4)
         # summarize by ticker with columns Bought and Sold, reset index
-        df_transactions = df_transactions.groupby('Ticker').resetindex()
+        df_transactions = df_transactions.groupby('contract')
         # Net for day by ticker
         df_transactions['Net'] = df_transactions['SLD'] - df_transactions['BOT']
         # Total for day
