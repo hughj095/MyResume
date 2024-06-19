@@ -12,7 +12,7 @@ ib.connect('127.0.0.1', 7497, clientId=1)  # Change port for real money and clie
 #positions = ib.positions()
 '''for pos in positions:'''
 
-stock = Stock('COST', 'SMART', 'USD')
+'''stock = Stock('COST', 'SMART', 'USD')
 
 # Define the order
 order = MarketOrder('BUY', 80)
@@ -28,13 +28,13 @@ while not trade.isDone():
         ib.cancelOrder(order)
     ## Function to split order into chuncks
     ib.sleep(1)
-'''for fill in trade.fills:
+''''''for fill in trade.fills:
     print(f"Selling {pos.contract.symbol}, Net: {(fill.execution.price - pos.avgCost)*pos.position}")
 print(f'sold {pos.contract.symbol}')'''
 
-open_orders = ib.reqOpenOrders()
+'''open_orders = ib.reqOpenOrders()
 for order in open_orders:
-     print(order)
+     print(order)'''
 
 #df = pd.DataFrame(columns=['Time','Ticker','Bid','Close','Ask'])
 #ib.reqMarketDataType(3)

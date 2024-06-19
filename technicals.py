@@ -70,7 +70,7 @@ class Technicals:
                     owned_shares = pos.position
                 else: owned_shares = 0
             owned_tickers = [position.contract.symbol for position in positions]
-            ### DONT BUY IF LOWER THAN THE LAST STOP LOSS
+            ### DONT BUY IF LOWER THAN THE LAST STOP LOSS (HPE)
             if df.iloc[2,9] == 'support' and sell_ticker not in owned_tickers and len(df) > 4:
                 config.strike_price = df.iloc[2,4]
                 if BUDGET_ib < 100:
@@ -82,7 +82,6 @@ class Technicals:
                 Buy.buy_stock(SHARES, df, ib, BUDGET_ib, clock) # goes to buy.py
             if current_time > datetime.time(15, 40) and owned_shares > 0:
                 Sell.sell_stock(sell_ticker, ib, df, clock) # goes to sell.py
-            # elif check trailing stoploss
             elif df.iloc[2,9] == 'resistance' and df.iloc[2,10] == '' and owned_shares > 0:
                 Sell.sell_stock(sell_ticker, ib, df, clock)
             elif StopLoss.checkforstoploss(ib, sell_ticker):
