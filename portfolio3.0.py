@@ -90,8 +90,8 @@ def send_text():
         to='+18453723892'
         )
 
+# Refresh 52 Week list and call send_text()
 def mopUp():
-    # Refresh 52 Week list and call send_text()
     current_time = datetime.datetime.now().time()
     date = datetime.date.today()
     if current_time >= datetime.time(15,40):
@@ -113,6 +113,6 @@ while current_time < datetime.time(15, 40) and current_time >= datetime.time(9, 
 if current_time >= datetime.time(15,40) and current_time < datetime.time(16,00):
     endOfDaySell(ib)
     mopUp()
-    
+
 
 
