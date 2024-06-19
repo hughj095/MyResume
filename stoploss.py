@@ -15,7 +15,7 @@ class StopLoss:
                     print('stop loss order true')
                     return True
     
-    def trailingstoploss(positions, sell_ticker, highafterbuy, df):
+    def trailingstoploss(positions, sell_ticker, highafterbuy, df, ib, clock):
         # get current price
         current_price = df.iloc[len(df)-1,4]
         # avg cost
@@ -26,6 +26,6 @@ class StopLoss:
                 and current_price - pos.avgCost
                 and (highafterbuy - current_price) > (current_price - pos.avgCost)
                 ):
-                    Sell.sell_stock()
+                    Sell.sell_stock(sell_ticker, ib, df, clock)
 
 

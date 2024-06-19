@@ -49,7 +49,7 @@ class Technicals:
                 if df[i]['Resistance/Support'] == 'support' and len(df) > 4:
                     price_column = df.loc[i:, 'close']
                     highafterbuy = price_column.max()
-                    StopLoss.trailingstoploss(positions, sell_ticker, highafterbuy)
+                    StopLoss.trailingstoploss(positions, sell_ticker, highafterbuy, ib, clock)
                     break
                 break'''
             df = df[len(df)-5:len(df)]
