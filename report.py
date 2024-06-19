@@ -2,6 +2,7 @@ import pandas as pd
 from ib_insync import *
 from datetime import timedelta
 import datetime
+import openpyxl
 
 class Report:
     def report(ib, date):
@@ -18,6 +19,12 @@ class Report:
         excel_path = r'C:\Users\johnm\OneDrive\Desktop\MyResume\transactions.xlsx'
         writer = pd.ExcelWriter(excel_path, engine='openpyxl', mode='a')
         # access previous days tab
+        workbook = openpyxl.load_workbook(excel_path)
+        sheet_name = '{yesterdays_date}'
+        # Check if the sheet exists
+        if sheet_name in workbook.sheetnames:
+            sheet = workbook[sheet_name]
+            # get previous day's closing net total
         # Diff vs previous day
         # YTD Net
   

@@ -44,14 +44,15 @@ class Technicals:
                         and len(df) > 10
                         ):
                             df.iloc[i,9] = "break"
-            # high after buy here
-            '''for i in range(len(df)-1, -1, -1):
-                if df[i]['Resistance/Support'] == 'support' and len(df) > 4:
+            ## Trailing Stoploss check
+            for i in range(len(df)-1, -1, -1):
+                if df[i]['Resistance/Support'] == 'support' and len(df) > 15:
                     price_column = df.loc[i:, 'close']
+                    highafterbuy_index = price_column.idxmax()
                     highafterbuy = price_column.max()
-                    StopLoss.trailingstoploss(positions, sell_ticker, highafterbuy, ib, clock)
+                    StopLoss.trailingstoploss(positions, df, sell_ticker, highafterbuy, highafterbuy_index, ib, clock, i)
                     break
-                break'''
+                break
             df = df[len(df)-5:len(df)]
             df = df.reset_index(drop=True)
             ## Volume indicator check
