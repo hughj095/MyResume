@@ -106,6 +106,7 @@ current_time = datetime.datetime.now().time()
 date = datetime.date.today()
 if current_time >= datetime.time(15,40):
     Refresh52Week.main() # goes to fifty_two_week.py in folder
+    ## creates df summary and copies to Azure cloud db
     send_text()
     # report update (date)
     print("that's all folks")
