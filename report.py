@@ -20,14 +20,18 @@ class Report:
         writer = pd.ExcelWriter(excel_path, engine='openpyxl', mode='a')
         # access previous days tab
         workbook = openpyxl.load_workbook(excel_path)
-        sheet_name = '{yesterdays_date}'
+        yesterday = date - datetime.timedelta(days=1)
+        sheet_name = f'{yesterday}'
         # Check if the sheet exists
         if sheet_name in workbook.sheetnames:
             sheet = workbook[sheet_name]
-            # get previous day's closing net total
+        df_yesterday = pd.DataFrame(sheet)
+        # get previous day's closing net total
+        yesterday_total = df_yesterday.iloc[len(df_yesterday),10] # whichever column has the total
         # Diff vs previous day
+        daily_net = 1 / (total - yesterday_total)
         # YTD Net
-  
+        
         
 
 ib = IB()
