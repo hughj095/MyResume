@@ -90,6 +90,19 @@ def send_text():
         to='+18453723892'
         )
 
+def mopUp():
+    # Refresh 52 Week list and call send_text()
+    current_time = datetime.datetime.now().time()
+    date = datetime.date.today()
+    if current_time >= datetime.time(15,40):
+        Refresh52Week.main() # goes to fifty_two_week.py in folder
+        ## creates df summary and copies to Azure cloud db
+        send_text()
+        # report update (date)
+        print("that's all folks")
+    elif current_time < datetime.time(9,30):
+        print('too early')
+
 # initialize
 current_time = datetime.datetime.now().time()
 print(current_time)
@@ -99,16 +112,7 @@ while current_time < datetime.time(15, 40) and current_time >= datetime.time(9, 
     print(current_time)
 if current_time >= datetime.time(15,40) and current_time < datetime.time(16,00):
     endOfDaySell(ib)
+    mopUp()
+    
 
 
-# Refresh 52 Week list and call send_text()
-current_time = datetime.datetime.now().time()
-date = datetime.date.today()
-if current_time >= datetime.time(15,40):
-    Refresh52Week.main() # goes to fifty_two_week.py in folder
-    ## creates df summary and copies to Azure cloud db
-    send_text()
-    # report update (date)
-    print("that's all folks")
-elif current_time < datetime.time(9,30):
-    print('too early')
