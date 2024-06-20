@@ -18,4 +18,4 @@ class Upload_To_SQL:
 
         # Upload (df.to_sql)
         table_name = 'your_table_name'
-        df.to_sql(table_name, engine, if_exists='replace', index=False)
+        df.to_sql(table_name, engine, if_exists='replace', index=False) # could also use if_exists='append'
