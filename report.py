@@ -9,6 +9,21 @@ class Report:
         executions = ib.reqExecutions(ExecutionFilter())
         df_transactions = pd.DataFrame(executions)
         df_transactions['time'] = df_transactions['time'] - timedelta(hours=4)
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         # summarize by ticker with columns Bought and Sold, reset index
         df_transactions = df_transactions.groupby('contract')
         # Net for day by ticker

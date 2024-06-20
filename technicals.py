@@ -12,6 +12,7 @@ class Technicals:
         if len(df) > 0:
             df['close'] = df['close'].astype(float)
             df['Resistance/Support'] = ''   # column 9
+            # Time the following for loop against a vectorized operation: 
             for i in range(len(df)-1):
                 if (
                         i >= 2 and i < len(df)-2 
@@ -76,7 +77,7 @@ class Technicals:
                 # loop through csv to check if stock was stop lossed
             if df.iloc[2,9] == 'support' and sell_ticker not in owned_tickers and len(df) > 4:
                 config.strike_price = df.iloc[2,4]
-                if BUDGET_ib < 100:
+                if BUDGET_ib < 100000:
                     print('low on budget')
                 SHARES = np.floor(BUDGET_ib/13/config.strike_price)
                 Buy.buy_stock(SHARES, df, ib, BUDGET_ib, clock) # goes to buy.py

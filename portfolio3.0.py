@@ -69,7 +69,7 @@ def endOfDaySell(ib):
                     if time.time() - start_time > 60:
                         print("Timeout reached, cancelling order")
                         ib.cancelOrder(order)
-                        Sell.chuncking_sell(ib, SHARES = pos.position, sell_ticker = pos.contract.symbol)
+                        #Sell.chuncking_sell(ib, SHARES = pos.position, sell_ticker = pos.contract.symbol)
                         break
                     ib.sleep(1)
                 print(f'sold {pos.contract.symbol}')
@@ -98,7 +98,6 @@ def mopUp():
         Refresh52Week.main() # goes to fifty_two_week.py in folder
         ## creates df summary and copies to Azure cloud db
         send_text()
-        # report update (date)
         print("that's all folks")
     elif current_time < datetime.time(9,30):
         print('too early')
