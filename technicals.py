@@ -46,7 +46,7 @@ class Technicals:
                             df.iloc[i,9] = "break"
             ## Trailing Stoploss check
             for i in range(len(df)-1, -1, -1):
-                if df[i]['Resistance/Support'] == 'support' and len(df) > 15:
+                if df.loc[i,'Resistance/Support'] == 'support' and len(df) > 15:
                     price_column = df.loc[i:, 'close']
                     highafterbuy_index = price_column.idxmax()
                     highafterbuy = price_column.max()
@@ -72,6 +72,8 @@ class Technicals:
                 else: owned_shares = 0
             owned_tickers = [position.contract.symbol for position in positions]
             ### DONT BUY IF LOWER THAN THE LAST STOP LOSS (HPE)
+                ## append to 52weekTrue.csv if stock was stop lossed and clear at end of day
+                # loop through csv to check if stock was stop lossed
             if df.iloc[2,9] == 'support' and sell_ticker not in owned_tickers and len(df) > 4:
                 config.strike_price = df.iloc[2,4]
                 if BUDGET_ib < 100:
