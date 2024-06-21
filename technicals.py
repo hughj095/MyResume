@@ -94,4 +94,5 @@ class Technicals:
                 for ticker, i in df_stocks['Stock Symbol'], df_stocks['Stop Loss Today']:
                      if ticker == sell_ticker:
                           df_stocks.loc[ticker, i] = True
+                          df_stocks.to_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\ingest_to_sql.py')
             return clock

@@ -32,7 +32,7 @@ class Sell:
                 BUDGET_ib = item.value
         return clock
     
-    def chuncking_sell(ib, SHARES, sell_ticker):
+    '''def chuncking_sell(ib, SHARES, sell_ticker):
         full_chunk_orders = int(round(SHARES,0) // 100)
         remaining_shares = SHARES % 100
         for _ in range(full_chunk_orders):
@@ -50,4 +50,4 @@ class Sell:
                 ib.sleep(1)
         stock = Stock(f'{sell_ticker}', 'SMART', 'USD')
         order = MarketOrder('SELL', remaining_shares)
-        trade = ib.placeOrder(stock, order)
+        trade = ib.placeOrder(stock, order)'''

@@ -1,10 +1,11 @@
 import sqlalchemy
 from sqlalchemy import create_engine
+import config
 
 class Upload_To_SQL:
-    def upload():
+    def upload(df_transactions):
         # Replace these with your actual database details
-        server = 'your_server.database.windows.net'
+        server = config.server
         database = 'your_database'
         username = 'your_username'
         password = 'your_password'
@@ -17,5 +18,5 @@ class Upload_To_SQL:
         engine = create_engine(connection_string)
 
         # Upload (df.to_sql)
-        table_name = 'your_table_name'
-        df.to_sql(table_name, engine, if_exists='replace', index=False) # could also use if_exists='append'
+        table_name = 'executions'
+        df_transactions.to_sql(table_name, engine, if_exists='replace', index=False) # could also use if_exists='append'
