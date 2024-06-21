@@ -29,9 +29,10 @@ class StopLoss:
                 ):
                     print('Trailing Stoploss activated')
                     Sell.sell_stock(sell_ticker, ib, df, clock)
-                    for ticker, i in df_stocks['Stock Symbol'], df_stocks['Stop Loss Today']:
-                     if ticker == sell_ticker:
-                          df_stocks.loc[ticker, i] = True
-                          df_stocks.to_csv('C:\Users\johnm\OneDrive\Desktop\MyResume\ingest_to_sql.py')
+                    for ticker, stop_loss_today in zip(df_stocks['Stock Symbol'], df_stocks['Stop Loss Today']):
+                        if ticker == sell_ticker:
+                            # Update the 'Stop Loss Today' column for the row matching sell_ticker
+                            df_stocks.loc[df_stocks['Stock Symbol'] == ticker, 'Stop Loss Today'] = True
+                    df_stocks.to_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\52weekTrue.csv')
             
 

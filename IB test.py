@@ -9,28 +9,28 @@ ib = IB()
 ib.connect('127.0.0.1', 7497, clientId=1)  # Change port for real money and clientId if needed  
 
 # Define the stock you want to trade
-#positions = ib.positions()
-'''for pos in positions:'''
+positions = ib.positions()
+for pos in positions:
 
-'''stock = Stock('COST', 'SMART', 'USD')
+    stock = Stock(pos.contract.symbol, 'SMART', 'USD')
 
-# Define the order
-order = MarketOrder('BUY', 80)
+    # Define the order
+    order = MarketOrder('SELL', pos.position)
 
-# Place the order
-trade = ib.placeOrder(stock, order)
+    # Place the order
+    trade = ib.placeOrder(stock, order)
 
-# Wait for the order to be filled
-start_time = time.time()
-while not trade.isDone():
-    if time.time() - start_time > 20:
-        print("Timeout reached, cancelling order")
-        ib.cancelOrder(order)
-    ## Function to split order into chuncks
-    ib.sleep(1)
-''''''for fill in trade.fills:
-    print(f"Selling {pos.contract.symbol}, Net: {(fill.execution.price - pos.avgCost)*pos.position}")
-print(f'sold {pos.contract.symbol}')'''
+    # Wait for the order to be filled
+    start_time = time.time()
+    while not trade.isDone():
+        if time.time() - start_time > 20:
+            print("Timeout reached, cancelling order")
+            ib.cancelOrder(order)
+        ## Function to split order into chuncks
+        ib.sleep(1)
+    for fill in trade.fills:
+        print(f"Selling {pos.contract.symbol}, Net: {(fill.execution.price - pos.avgCost)*pos.position}")
+    print(f'sold {pos.contract.symbol}')
 
 '''open_orders = ib.reqOpenOrders()
 for order in open_orders:

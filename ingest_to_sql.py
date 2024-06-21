@@ -3,12 +3,12 @@ from sqlalchemy import create_engine
 import config
 
 class Upload_To_SQL:
-    def upload(df_transactions):
+    def upload(df_transactions, df_daily):
         # Replace these with your actual database details
         server = config.server
-        database = 'your_database'
-        username = 'your_username'
-        password = 'your_password'
+        database = config.database
+        username = config.username
+        password = config.password
         driver = 'ODBC Driver 17 for SQL Server'
 
         # Connection string
@@ -18,5 +18,8 @@ class Upload_To_SQL:
         engine = create_engine(connection_string)
 
         # Upload (df.to_sql)
-        table_name = 'executions'
+        table_name = 'executions' # could be dbo.executions
         df_transactions.to_sql(table_name, engine, if_exists='replace', index=False) # could also use if_exists='append'
+
+        table_name = 'portfolio_total' # could be dbo.executions
+        df_daily.to_sql(table_name, engine, if_exists='replace', index=False) # could also use if_exists='append'

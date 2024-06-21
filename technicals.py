@@ -73,9 +73,12 @@ class Technicals:
                 else: owned_shares = 0
             owned_tickers = [position.contract.symbol for position in positions]
             stop_loss_flag = False
-            for ticker, i in df_stocks['Stock Symbol'], df_stocks['Stop Loss Today']:
-                if ticker == sell_ticker and i == True:
-                     stop_loss_flag = True
+            for index, row in df_stocks.iterrows():
+                ticker = row['Stock Symbol']
+                stop_loss_today = row['Stop Loss Today']
+                if ticker == sell_ticker and stop_loss_today == True:
+                    stop_loss_flag = True
+                    break  # Exit the loop early if condition is met
             if df.iloc[2,9] == 'support' and sell_ticker not in owned_tickers and len(df) > 4 and stop_loss_flag == False:
                 config.strike_price = df.iloc[2,4]
                 if BUDGET_ib < 100000:
@@ -87,12 +90,13 @@ class Technicals:
                 Buy.buy_stock(SHARES, df, ib, BUDGET_ib, clock) # goes to buy.py
             if current_time > datetime.time(15, 40) and owned_shares > 0:
                 Sell.sell_stock(sell_ticker, ib, df, clock) # goes to sell.py
-            elif df.iloc[2,9] == 'resistance' and df.iloc[2,10] == '' and owned_shares > 0:
-                Sell.sell_stock(sell_ticker, ib, df, clock)
+            #elif df.iloc[2,9] == 'resistance' and df.iloc[2,10] == '' and owned_shares > 0:
+                #Sell.sell_stock(sell_ticker, ib, df, clock)
             elif StopLoss.checkforstoploss(ib, sell_ticker):
                 Sell.sell_stock(sell_ticker, ib, df, clock)
-                for ticker, i in df_stocks['Stock Symbol'], df_stocks['Stop Loss Today']:
-                     if ticker == sell_ticker:
-                          df_stocks.loc[ticker, i] = True
-                          df_stocks.to_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\ingest_to_sql.py')
+                for ticker, stop_loss_today in zip(df_stocks['Stock Symbol'], df_stocks['Stop Loss Today']):
+                    if ticker == sell_ticker:
+                        # Update the 'Stop Loss Today' column for the row matching sell_ticker
+                        df_stocks.loc[df_stocks['Stock Symbol'] == ticker, 'Stop Loss Today'] = True
+                df_stocks.to_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\52weekTrue.csv')
             return clock

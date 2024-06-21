@@ -4,7 +4,7 @@ XOM,False,False
 AAPL,False,False
 CVS,False,False
 UNH,False,False
-GOOGL,False,False
+GOOGL,True,False
 MCK,True,False
 COST,True,False
 CI,False,False
@@ -39,7 +39,7 @@ MET,False,False
 ADM,False,False
 DOW,False,False
 RTX,False,False
-BBY,True,False
+BBY,False,False
 PFE,False,False
 GE,False,False
 TGT,False,False
@@ -48,7 +48,7 @@ GS,False,False
 MS,False,False
 DE,False,False
 HCA,True,False
-ORCL,True,False
+ORCL,False,False
 TMO,False,False
 MRK,False,False
 KO,False,False

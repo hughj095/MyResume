@@ -1,12 +1,11 @@
 Stock Symbol,52_week_high,Stop Loss Today
+GOOGL,True,False
 MCK,True,False
 COST,True,False
 T,True,False
 MSFT,True,False
-BAC,True,False
+BAC,True,True
 PG,True,False
-BBY,True,False
 HON,True,False
 HCA,True,False
-ORCL,True,False
 GD,True,False

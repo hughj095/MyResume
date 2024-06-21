@@ -95,17 +95,15 @@ def mopUp():
     current_time = datetime.datetime.now().time()
     date = datetime.date.today()
     if current_time >= datetime.time(15,40):
-        Refresh52Week.main() # goes to fifty_two_week.py in folder
+        Refresh52Week.main() 
         ## Report.report() # includes upload()
-        send_text()
+        send_text() ## include total portfolio value from Report
         print("that's all folks")
-    elif current_time < datetime.time(9,30):
-        print('too early')
 
 # initialize
 current_time = datetime.datetime.now().time()
 print(current_time)
-while current_time < datetime.time(15, 40) and current_time >= datetime.time(9, 30):  
+while current_time < datetime.time(15, 40) and current_time >= datetime.time(9, 18):  
     scan()
     current_time = datetime.datetime.now().time()
     print(current_time)
