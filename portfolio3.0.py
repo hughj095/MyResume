@@ -96,7 +96,7 @@ def mopUp():
     date = datetime.date.today()
     if current_time >= datetime.time(15,40):
         Refresh52Week.main() # goes to fifty_two_week.py in folder
-        ## creates df summary and copies to Azure cloud db
+        ## Report.report() # includes upload()
         send_text()
         print("that's all folks")
     elif current_time < datetime.time(9,30):
