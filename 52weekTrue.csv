@@ -1,13 +1,12 @@
-Stock Symbol,52_week_high
-MCK,True
-COST,True
-MSFT,True
-BAC,True
-PG,True
-BBY,True
-HON,True
-HCA,True
-ORCL,True
-SNX,True
-GD,True
-WDC,True
+Stock Symbol,52_week_high,Stop Loss Today
+MCK,True,False
+COST,True,False
+T,True,False
+MSFT,True,False
+BAC,True,False
+PG,True,False
+BBY,True,False
+HON,True,False
+HCA,True,False
+ORCL,True,False
+GD,True,False

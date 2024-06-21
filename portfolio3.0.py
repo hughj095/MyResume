@@ -42,7 +42,7 @@ def scan():
     print('starting technicals')
     clock = 0
     for ticker, df in stock_dataframes.items():
-        Technicals.technicals(df, ib, BUDGET_ib, clock)  # goes to technicals.py in folder
+        Technicals.technicals(df, ib, BUDGET_ib, clock, df_stocks)  # goes to technicals.py in folder
     for item in account_summary:
         if item.tag == 'AvailableFunds':
             print(f'Available Funds = {item.value} {item.currency}')

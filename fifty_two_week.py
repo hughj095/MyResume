@@ -39,6 +39,7 @@ class Refresh52Week:
             except Exception as e:
                 print(f"Error fetching data for {ticker}: {e}")
                 df.loc[index, '52_week_high'] = False  # Assuming not at high on error
+        df['Stop Loss Today'] = False
         # Save updated DataFrame back to CSV
         df.to_csv(file_path, index=False)
         high_tickers = df[df['52_week_high'] == True]
@@ -56,4 +57,4 @@ class Refresh52Week:
         else:
             print(f"File not found: {csv_file}")
 
-#Refresh52Week.main()  # allows to run file by itself
+Refresh52Week.main()  # allows to run file by itself
