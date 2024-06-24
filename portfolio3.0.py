@@ -44,10 +44,8 @@ def scan():
     clock = 0
     for ticker, df in stock_dataframes.items():
         Technicals.technicals(df, ib, BUDGET_ib, clock, df_stocks)  # goes to technicals.py in folder
-    for item in account_summary:
-        if item.tag == 'AvailableFunds':
-            print(f'Available Funds = {item.value} {item.currency}')
-            BUDGET_ib = item.value
+    total_portfolio_value = 0
+    print(f'Total Value: {calculateTotal(total_portfolio_value)}')
     positions = ib.positions()
     for pos in positions:
         print(f'Account: {pos.account}, Symbol: {pos.contract.symbol},' +
@@ -74,6 +72,20 @@ def endOfDaySell(ib):
                         break
                     ib.sleep(1)
                 print(f'sold {pos.contract.symbol}')
+
+# calc total portfolio value to display after scan round
+def calculateTotal(total_portfolio_value):
+    portfolio = ib.portfolio
+    account_summary = ib.accountSummary
+    for position in portfolio:
+        market_value = position.marketValue()
+        total_portfolio_value += market_value
+    cash_balance = 0
+    for item in account_summary:
+        if item.tag == 'CashBalance':
+            cash_balance += float(item.value)
+    total_portfolio_value += cash_balance
+    return total_portfolio_value
 
 # sends text of portfolio sum to my phone
 def send_text(total_portfolio_value):
