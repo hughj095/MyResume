@@ -11,7 +11,7 @@ from report import Report # custom class
 import config
 
 ib = IB()
-ib.connect('127.0.0.1', 7497, clientId=1)
+ib.connect('127.0.0.1', 7497, clientId=2)
 ib.reqMarketDataType(3)  # Delayed data, change to 1 for live prices
 
 # functions
@@ -21,6 +21,7 @@ def fetch_new_data(symbol):
     tickerSymbol = Stock(f'{symbol}', 'SMART', 'USD') 
     ticker = ib.reqHistoricalData(contract = tickerSymbol, endDateTime = '', durationStr='1 D', 
                               barSizeSetting = '1 min', whatToShow='TRADES', useRTH=False, keepUpToDate=True)
+    ## If takes too long then skip to next ticker
     ib.sleep(1)
     ticker = ticker[-15:]
     df = pd.DataFrame([vars(bar) for bar in ticker])
@@ -45,7 +46,7 @@ def scan():
     for ticker, df in stock_dataframes.items():
         Technicals.technicals(df, ib, BUDGET_ib, clock, df_stocks)  # goes to technicals.py in folder
     total_portfolio_value = 0
-    print(f'Total Value: {calculateTotal(total_portfolio_value)}')
+    #print(f'Total Value: {calculateTotal(total_portfolio_value)}')
     positions = ib.positions()
     for pos in positions:
         print(f'Account: {pos.account}, Symbol: {pos.contract.symbol},' +
@@ -77,8 +78,8 @@ def endOfDaySell(ib):
 def calculateTotal(total_portfolio_value):
     portfolio = ib.portfolio
     account_summary = ib.accountSummary
-    for position in portfolio:
-        market_value = position.marketValue()
+    for pos in portfolio:
+        market_value = pos.marketValue()
         total_portfolio_value += market_value
     cash_balance = 0
     for item in account_summary:
@@ -109,7 +110,7 @@ def mopUp():
     date = datetime.date.today()
     if current_time >= datetime.time(15,40):
         Refresh52Week.main() 
-        Report.report() # includes upload()
+        total_portfolio_value = Report.report(ib, date) # includes upload()
         total_portfolio_value = send_text(total_portfolio_value) ## include total portfolio value from Report
         print("that's all folks")
 
@@ -120,7 +121,7 @@ while current_time < datetime.time(15, 40) and current_time >= datetime.time(9, 
     scan()
     current_time = datetime.datetime.now().time()
     print(current_time)
-if current_time >= datetime.time(15,40) and current_time < datetime.time(16,00):
+if current_time >= datetime.time(15,40) and current_time < datetime.time(20,00):
     endOfDaySell(ib)
     mopUp()
 

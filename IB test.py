@@ -9,7 +9,7 @@ ib = IB()
 ib.connect('127.0.0.1', 7497, clientId=1)  # Change port for real money and clientId if needed  
 
 # Define the stock you want to trade
-positions = ib.positions()
+'''positions = ib.positions()
 for pos in positions:
 
     stock = Stock(pos.contract.symbol, 'SMART', 'USD')
@@ -30,7 +30,7 @@ for pos in positions:
         ib.sleep(1)
     for fill in trade.fills:
         print(f"Selling {pos.contract.symbol}, Net: {(fill.execution.price - pos.avgCost)*pos.position}")
-    print(f'sold {pos.contract.symbol}')
+    print(f'sold {pos.contract.symbol}')'''
 
 '''open_orders = ib.reqOpenOrders()
 for order in open_orders:
