@@ -7,6 +7,7 @@ from twilio.rest import Client
 from technicals import Technicals  # custom class
 from fifty_two_week import Refresh52Week # custom class
 from sell import Sell # custom class
+from report import Report # custom class
 import config
 
 ib = IB()
@@ -96,7 +97,7 @@ def mopUp():
     date = datetime.date.today()
     if current_time >= datetime.time(15,40):
         Refresh52Week.main() 
-        ## Report.report() # includes upload()
+        Report.report() # includes upload()
         total_portfolio_value = send_text(total_portfolio_value) ## include total portfolio value from Report
         print("that's all folks")
 
