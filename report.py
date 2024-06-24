@@ -22,6 +22,7 @@ class Report:
         total_portfolio_value += cash_balance
         df_daily = pd.DataFrame(total_portfolio_value)
         Upload_To_SQL.upload(df_transactions, df_daily)
+        return total_portfolio_value
         
         
 

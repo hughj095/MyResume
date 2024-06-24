@@ -75,7 +75,7 @@ def endOfDaySell(ib):
                 print(f'sold {pos.contract.symbol}')
 
 # sends text of portfolio sum to my phone
-def send_text():
+def send_text(total_portfolio_value):
     account_sid = config.TWILIO_ACCOUNT_SID
     auth_token = config.TWILIO_AUTH_TOKEN 
     client = Client(account_sid, auth_token)
@@ -85,7 +85,7 @@ def send_text():
             BUDGET_ib = float(item.value)
     message = client.messages \
         .create(
-        body= f"Total after close today is ${BUDGET_ib:,.2f}",
+        body= f"Total after close today is ${total_portfolio_value:,.2f}",
         from_='+18334029267',
         to='+18453723892'
         )
@@ -97,7 +97,7 @@ def mopUp():
     if current_time >= datetime.time(15,40):
         Refresh52Week.main() 
         ## Report.report() # includes upload()
-        send_text() ## include total portfolio value from Report
+        total_portfolio_value = send_text(total_portfolio_value) ## include total portfolio value from Report
         print("that's all folks")
 
 # initialize
