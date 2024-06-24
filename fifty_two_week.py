@@ -57,4 +57,4 @@ class Refresh52Week:
         else:
             print(f"File not found: {csv_file}")
 
-Refresh52Week.main()  # allows to run file by itself
+#Refresh52Week.main()  # allows to run file by itself
