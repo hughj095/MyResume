@@ -49,12 +49,12 @@ class Refresh52Week:
     def main():
         # Connect to IB API (make sure IB Gateway or TWS is running)
         ib = IB()
-        #ib.connect('127.0.0.1', 7497, clientId=)
-        #ib.reqMarketDataType(3)  # Delayed data, change to 1 for live prices
+        ib.connect('127.0.0.1', 7497, clientId=1)
+        ib.reqMarketDataType(3)  # Delayed data, change to 1 for live prices
         csv_file = r'C:\Users\johnm\OneDrive\Desktop\MyResume\fortune100_stock_symbols.csv'
         if os.path.exists(csv_file):
             Refresh52Week.process_csv(csv_file, ib)
         else:
             print(f"File not found: {csv_file}")
 
-#Refresh52Week.main()  # allows to run file by itself
+Refresh52Week.main()  # allows to run file by itself
