@@ -14,5 +14,6 @@ class CheckMarket:
         df_market.to_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\52weekTrue.csv', if_exists = 'append', index=False)
         if df_market.loc[len(df_market)-1,0] > df_market.loc[len(df_market)-2,0]:
             market_bull = True
+            print('Bull Market')
         return market_bull
         

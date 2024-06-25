@@ -6,7 +6,7 @@ import time
 
 class Buy:
     def buy_stock(SHARES, df, ib, BUDGET_ib, clock):
-        total = config.strike_price*SHARES
+        total = df.iloc[2,4]*SHARES
         if total >= BUDGET_ib:
             print('out of money')
             return 'exited early'
@@ -14,7 +14,7 @@ class Buy:
         stock = Stock(f'{df.iloc[2,8]}', 'SMART', 'USD') 
         order = MarketOrder('BUY', SHARES)   
         trade = ib.placeOrder(stock, order)
-        print(f'Buying {stock}, ${config.strike_price}, ${float(SHARES*config.strike_price)}')
+        print(f'Buying {stock}, ${df.iloc[2,4]}, ${float(SHARES*df.iloc[2,4])}')
         start_time = time.time()
         while not trade.isDone():
             if time.time() - start_time > 30:
@@ -33,3 +33,18 @@ class Buy:
                 BUDGET_ib = item.value
         print('finished buy')
         return clock
+    
+    def buy_etf(ib, BUDGET_ib, market_bull, market_bear):
+        if market_bull == True:
+            stock = Stock('SPXL', 'SMART', 'USD')
+            order = MarketOrder('BUY', BUDGET_ib/6/146)  #include pull of SPXL price
+            trade = ib.placeOrder(stock, order)
+            start_time = time.time()
+            while not trade.isDone():
+                if time.time() - start_time > 20:
+                    print("Timeout reached, cancelling order")
+                    ib.cancelOrder(order)
+                ## Function to split order into chuncks
+                ib.sleep(1)
+            print('bought SPXL on bull market')
+            ## ADD TO 52weekTrue

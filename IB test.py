@@ -12,25 +12,25 @@ ib.connect('127.0.0.1', 7497, clientId=1)  # Change port for real money and clie
 '''positions = ib.positions()
 for pos in positions:
 
-    stock = Stock(pos.contract.symbol, 'SMART', 'USD')
+stock = Stock('HON', 'SMART', 'USD')
 
-    # Define the order
-    order = MarketOrder('SELL', pos.position)
+# Define the order
+order = MarketOrder('BUY', 318)
 
-    # Place the order
-    trade = ib.placeOrder(stock, order)
+# Place the order
+trade = ib.placeOrder(stock, order)
 
-    # Wait for the order to be filled
-    start_time = time.time()
-    while not trade.isDone():
-        if time.time() - start_time > 20:
-            print("Timeout reached, cancelling order")
-            ib.cancelOrder(order)
-        ## Function to split order into chuncks
-        ib.sleep(1)
-    for fill in trade.fills:
-        print(f"Selling {pos.contract.symbol}, Net: {(fill.execution.price - pos.avgCost)*pos.position}")
-    print(f'sold {pos.contract.symbol}')'''
+# Wait for the order to be filled
+start_time = time.time()
+while not trade.isDone():
+    if time.time() - start_time > 20:
+        print("Timeout reached, cancelling order")
+        ib.cancelOrder(order)
+    ## Function to split order into chuncks
+    ib.sleep(1)'''
+'''for fill in trade.fills:
+    print(f"Selling {pos.contract.symbol}, Net: {(fill.execution.price - pos.avgCost)*pos.position}")
+print(f'sold {pos.contract.symbol}')'''
 
 '''open_orders = ib.reqOpenOrders()
 for order in open_orders:

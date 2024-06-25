@@ -44,7 +44,7 @@ def scan():
     print('starting technicals')
     clock = 0
     for ticker, df in stock_dataframes.items():
-        Technicals.technicals(df, ib, BUDGET_ib, clock, df_stocks)  # goes to technicals.py in folder
+        clock = Technicals.technicals(df, ib, BUDGET_ib, clock, df_stocks)  # goes to technicals.py in folder
     total_portfolio_value = 0
     #print(f'Total Value: {calculateTotal(total_portfolio_value)}')
     positions = ib.positions()
@@ -52,7 +52,7 @@ def scan():
         print(f'Account: {pos.account}, Symbol: {pos.contract.symbol},' +
           f'Position: {round(pos.position,0)}, Average Cost: {round(pos.avgCost,2)},' +
           f'Value: {round(pos.avgCost * pos.position,2)}')
-    if clock > 0 and clock < 60:  ## TIMER NOT WORKING
+    if clock > 0 and clock < 60:
         ib.sleep(60-clock)
 
 # sell at end of day
@@ -109,7 +109,8 @@ def mopUp():
     current_time = datetime.datetime.now().time()
     date = datetime.date.today()
     if current_time >= datetime.time(15,40):
-        Refresh52Week.main() 
+        Refresh52Week.main()
+        ### DELETE ETFs from 52weekTrue
         total_portfolio_value = Report.report(ib, date) # includes upload()
         total_portfolio_value = send_text(total_portfolio_value) ## include total portfolio value from Report
         print("that's all folks")

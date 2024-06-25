@@ -23,13 +23,13 @@ VZ,False,False
 CNC,False,False
 PSX,False,False
 VLO,False,False
-BAC,True,False
+BAC,False,False
 DELL,False,False
 JNJ,False,False
 PG,True,False
 HUM,False,False
 WFC,False,False
-LMT,True,False
+LMT,False,False
 UPS,False,False
 INTC,False,False
 C,False,False
@@ -44,7 +44,7 @@ PFE,False,False
 GE,False,False
 TGT,False,False
 HON,True,False
-GS,True,False
+GS,False,False
 MS,False,False
 DE,False,False
 HCA,True,False
@@ -68,7 +68,7 @@ SNX,False,False
 EPD,False,False
 UAL,False,False
 ET,False,False
-GD,True,False
+GD,False,False
 AVT,False,False
 GLP,False,False
 MO,True,False
