@@ -1,5 +1,6 @@
 # imports and variables
 import datetime
+print(f'start imports {datetime.datetime.now()}')
 import pandas as pd
 from ib_insync import *
 import time
@@ -9,6 +10,7 @@ from fifty_two_week import Refresh52Week # custom class
 from sell import Sell # custom class
 from report import Report # custom class
 import config
+print(f'finished imports {datetime.datetime.now()}')
 
 ib = IB()
 ib.connect('127.0.0.1', 7497, clientId=2)
