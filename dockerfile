@@ -10,5 +10,8 @@ COPY . C:\Users\johnm\OneDrive\Desktop\MyResume
 # Make port 80 available to the world outside this container
 EXPOSE 80
 
+# Define environment variable
+ENV ClientID=2
+
 # Run app.py when the container launches
-CMD ["python", "app.py"]
+CMD ["python", "portfolio3.0_docker2.py"]
