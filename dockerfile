@@ -6,3 +6,9 @@ WORKDIR C:\Users\johnm\OneDrive\Desktop\MyResume
 
 # Copy the current directory contents into the container at /app
 COPY . C:\Users\johnm\OneDrive\Desktop\MyResume
+
+# Make port 80 available to the world outside this container
+EXPOSE 80
+
+# Run app.py when the container launches
+CMD ["python", "app.py"]
