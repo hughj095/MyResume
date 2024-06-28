@@ -25,7 +25,7 @@ class StopLoss:
                 and highafterbuy - current_price > 0
                 and current_price - pos.avgCost > 0
                 and (highafterbuy - current_price) > (current_price - pos.avgCost)
-                and highafterbuy_index > i + 15  # trailing stoploss starts 15 mins after buy, this is new
+                # and highafterbuy_index > i + 15  # trailing stoploss starts 15 mins after buy, this is new
                 ):
                     print('Trailing Stoploss activated')
                     Sell.sell_stock(sell_ticker, ib, df, clock)
@@ -33,6 +33,7 @@ class StopLoss:
                         if ticker == sell_ticker:
                             # Update the 'Stop Loss Today' column for the row matching sell_ticker
                             df_stocks.loc[df_stocks['Stock Symbol'] == ticker, 'Stop Loss Today'] = True
+                            df_stocks.loc[df_stocks['Stock Symbol'] == ticker, 'Stop Price'] = current_price
                     df_stocks.to_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\52weekTrue.csv', index = False)
         return clock
             

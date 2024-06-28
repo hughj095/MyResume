@@ -7,8 +7,18 @@ from ingest_to_sql import Upload_To_SQL
 class Report:
     def report(ib, date):
         executions = ib.reqExecutions(ExecutionFilter())
-        df_transactions = pd.DataFrame(executions)
-        df_transactions['time'] = df_transactions['time'] - timedelta(hours=4)
+        executions_data = []
+        for e in executions:
+            executions_data.append({
+                'Account': e.execution.acctNumber,
+                'Symbol': e.contract.symbol,
+                'Side': e.execution.side,
+                'Shares': e.execution.shares,
+                'Price': e.execution.price,
+                'Time': e.execution.time
+            })
+        df_transactions = pd.DataFrame(executions_data)
+        df_transactions['Time'] = pd.to_datetime(df_transactions['Time'])
         account_summary = ib.accountSummary()
         portfolio_items = ib.portfolio()
         total_portfolio_value = 0
@@ -21,9 +31,8 @@ class Report:
                 cash_balance += float(item.value)
         total_portfolio_value += cash_balance
         df_daily = pd.DataFrame([total_portfolio_value])
-        Upload_To_SQL.upload(df_transactions, df_daily)
+        Upload_To_SQL.upload(df_transactions, df_daily, ib)
         return total_portfolio_value
-        
         
 
 ib = IB()

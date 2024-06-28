@@ -2,7 +2,9 @@
 
 from ib_insync import *
 import pandas as pd
-import time
+import config
+from sqlalchemy import create_engine
+from sqlalchemy.types import DateTime
 
 # Connect to Interactive Brokers TWS or IB Gateway
 ib = IB()
@@ -10,12 +12,12 @@ ib.connect('127.0.0.1', 7497, clientId=1)  # Change port for real money and clie
 
 # Define the stock you want to trade
 '''positions = ib.positions()
-for pos in positions:
+for pos in positions:'''
 
-stock = Stock('HON', 'SMART', 'USD')
+'''stock = Stock(f'CRWD', 'SMART', 'USD')
 
 # Define the order
-order = MarketOrder('BUY', 318)
+order = MarketOrder('SELL', 315)
 
 # Place the order
 trade = ib.placeOrder(stock, order)
@@ -23,10 +25,10 @@ trade = ib.placeOrder(stock, order)
 # Wait for the order to be filled
 start_time = time.time()
 while not trade.isDone():
-    if time.time() - start_time > 20:
+    if time.time() - start_time > 300:
         print("Timeout reached, cancelling order")
         ib.cancelOrder(order)
-    ## Function to split order into chuncks
+## Function to split order into chuncks
     ib.sleep(1)'''
 '''for fill in trade.fills:
     print(f"Selling {pos.contract.symbol}, Net: {(fill.execution.price - pos.avgCost)*pos.position}")
@@ -71,10 +73,34 @@ for pos in positions:
 
 ### TRANSACTION DETAIL
 executions = ib.reqExecutions(ExecutionFilter())
+executions_data = []
 for e in executions:
-    print(f'Account: {e.execution.acctNumber}, Symbol: {e.contract.symbol}, '
-          f'Side: {e.execution.side}, Shares: {e.execution.shares}, '
-          f'Price: {e.execution.price}, Time: {e.execution.time}')
+    executions_data.append({
+        'Account': e.execution.acctNumber,
+        'Symbol': e.contract.symbol,
+        'Side': e.execution.side,
+        'Shares': e.execution.shares,
+        'Price': e.execution.price,
+        'Time': e.execution.time
+    })
+df_transactions = pd.DataFrame(executions_data)
+df_transactions['Time'] = pd.to_datetime(df_transactions['Time'])
+server = config.server
+database = config.database
+username = config.username
+password = config.password
+driver = 'ODBC Driver 17 for SQL Server'
+
+# Connection string
+connection_string = f'mssql+pyodbc://{username}:{password}@{server}/{database}?driver={driver}'
+
+# Create engine
+engine = create_engine(connection_string, connect_args={"connect_timeout": 60})
+
+# Upload (df.to_sql)
+table_name = 'executions' # could be dbo.executions
+df_transactions.to_sql(table_name, engine, if_exists='append', index=False, dtype={'Time': DateTime()})
+
     
 '''def onTick(ticker):
     print(f"Bid: {ticker.bid}, Ask: {ticker.ask}, Last: {ticker.last}")''''''

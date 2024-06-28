@@ -1,10 +1,11 @@
 import sqlalchemy
 from sqlalchemy import create_engine
+from sqlalchemy.types import DateTime
 import pyodbc
 import config
 
 class Upload_To_SQL:
-    def upload(df_transactions, df_daily):
+    def upload(df_transactions, df_daily, ib):
         # Replace these with your actual database details
         server = config.server
         database = config.database
@@ -19,8 +20,8 @@ class Upload_To_SQL:
         engine = create_engine(connection_string, connect_args={"connect_timeout": 60})
 
         # Upload (df.to_sql)
-        #table_name = 'executions' # could be dbo.executions
-        #df_transactions.to_sql(table_name, engine, if_exists='replace', index=False) # could also use if_exists='append'
-
+        table_name = 'executions' # could be dbo.executions
+        df_transactions.to_sql(table_name, engine, if_exists='append', index=False, dtype={'Time': DateTime()})
+        ib.sleep(30)
         table_name = 'portfolio_total' # could be dbo.executions
         df_daily.to_sql(table_name, engine, if_exists='replace', index=False) # could also use if_exists='append'

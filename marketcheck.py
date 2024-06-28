@@ -1,24 +1,41 @@
 from ib_insync import *
 import pandas as pd
-ib = IB()
 df_market = []
 class CheckMarket:
-    def check_market():
+    def check_market(ib):
         market_bull = False
-        djia_contract = Index(symbol='DJX', exchange='CBOE')
-        ticker = ib.reqMktData(djia_contract, '', False, False)
+        tickerSymbol = Stock('DIA', 'SMART', 'USD') 
+        ticker = ib.reqHistoricalData(contract = tickerSymbol, endDateTime = '', durationStr='1 D', 
+                              barSizeSetting = '1 min', whatToShow='TRADES', useRTH=False, keepUpToDate=True)
         ib.sleep(1)
-        print(f"DJIA Last Price: {ticker.last}")
+        df = pd.DataFrame([vars(bar) for bar in ticker])
         df_market = pd.read_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\df.csv')
-        df_market.append(ticker.last)
-        df_market.to_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\df.csv', if_exists = 'append', index=False)
-        if len(df_market > 3) and df_market.loc[len(df_market)-1,0] > df_market.loc[len(df_market)-2,0] > df_market.loc[len(df_market)-3,0]:
+        new_index = len(df_market)
+        df_market.loc[new_index,'DJIA'] = df.iloc[len(df)-1,4]
+        tickerSymbol = Stock('QQQ', 'SMART', 'USD') 
+        ticker = ib.reqHistoricalData(contract = tickerSymbol, endDateTime = '', durationStr='1 D', 
+                              barSizeSetting = '1 min', whatToShow='TRADES', useRTH=False, keepUpToDate=True)
+        ib.sleep(1)
+        df = pd.DataFrame([vars(bar) for bar in ticker])
+        df_market.loc[new_index,'NASDAQ'] = df.iloc[len(df)-1,4]
+        df_market = df_market.tail(3)
+        df_market.to_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\df.csv', mode='w', index=False)
+        if (
+            len(df_market) > 2 
+            and df_market.iloc[len(df_market)-1,0] > df_market.iloc[len(df_market)-2,0] > df_market.iloc[len(df_market)-3,0]
+            and df_market.iloc[len(df_market)-1,1] > df_market.iloc[len(df_market)-2,1] > df_market.iloc[len(df_market)-3,1]
+            ):
             market_bull = True
             market_bear = False
             print('Bull Market')
-        elif len(df_market > 3) and df_market.loc[len(df_market)-1,0] < df_market.loc[len(df_market)-2,0] < df_market.loc[len(df_market)-3,0]:
+        elif (
+            len(df_market) > 2 
+            and df_market.iloc[len(df_market)-1,0] < df_market.iloc[len(df_market)-2,0] < df_market.iloc[len(df_market)-3,0]
+            and df_market.iloc[len(df_market)-1,1] < df_market.iloc[len(df_market)-2,1] < df_market.iloc[len(df_market)-3,1]
+            ):
             market_bull = False
             market_bear = True
+            print('Bear Market')
         else: 
             market_bull = False
             market_bear = False

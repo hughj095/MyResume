@@ -1,16 +1,12 @@
-import pandas as pd
 import numpy as np
 import datetime
 from buy import Buy # custom class
-import config 
 from sell import Sell # custom class
 from stoploss import StopLoss # custom class
-from marketcheck import CheckMarket # custom class
 
 
 class Technicals:
-    def technicals(df, ib, BUDGET_ib, clock, df_stocks):
-        print(f'start technicals {datetime.datetime.now()}')
+    def technicals(df, ib, BUDGET_ib, clock, df_stocks, SHARES):
         if len(df) > 0:
             df['close'] = df['close'].astype(float)
             df['Resistance/Support'] = ''   # column 9
@@ -46,56 +42,46 @@ class Technicals:
                         and df.iloc[i,4] > df.iloc[j,4] 
                         and count > 1
                         ):
-                            df.iloc[i,9] = "break"
+                            df.iloc[i,10] = "break"
             ## Trailing Stoploss check
+            positions = ib.positions()
+            sell_ticker = df.iloc[0,8]
             for i in range(len(df)-1, -1, -1):
-                if df.loc[i,'Resistance/Support'] == 'support' and len(df) > 15:
-                    price_column = df.loc[i:, 'close']
+                if len(df) > 14:
+                    price_column = df['close']
                     highafterbuy_index = price_column.idxmax()
                     highafterbuy = price_column.max()
                     StopLoss.trailingstoploss(positions, df, sell_ticker, highafterbuy, highafterbuy_index, ib, clock, i, df_stocks)
                     break
                 break
+            df['VMA_20'] = df['volume'].rolling(window=20).mean()
             df = df[len(df)-5:len(df)]
+            SHARES = np.floor(SHARES/df.iloc[0,4])
             df = df.reset_index(drop=True)
             ## Volume indicator check
-            df['VMA_20'] = df['volume'].rolling(window=20).mean()
             if len(df) < 5:
                 volume_indic = False
                 pass
             elif df.iloc[2,11] < 3 * df.iloc[2,5]:
                 volume_indic = True
                 print('volume indicator TRUE')
-            else: volume_indic = False   
-            sell_ticker = df.iloc[0,8]
+            else: volume_indic = False
             current_time = datetime.datetime.now().time()
             clock = 0
-            positions = ib.positions()
             for pos in positions:
                 if sell_ticker == pos.contract.symbol:
                     owned_shares = pos.position
                 else: owned_shares = 0
             owned_tickers = [position.contract.symbol for position in positions]
+            # Lookup if stock was stop lossed today
             stop_loss_flag = False
             for index, row in df_stocks.iterrows():
                 ticker = row['Stock Symbol']
                 stop_loss_today = row['Stop Loss Today']
                 if ticker == sell_ticker and stop_loss_today == True:
                     stop_loss_flag = True
-                    break  # Exit the loop early if condition is met
-            now = datetime.datetime.now()
-            if now.minute == 0 or now.minute == 30 or now.minute == 15 or now.minute == 45: # check for bull/bear market every 15 mins
-                market_bull, market_bear = CheckMarket.check_market()
-                if market_bull == True:
-                    SHARES = np.floor(BUDGET_ib/(len(df_stocks)/2)/df.iloc[2,4])
-                    if 'SPLX' not in df_stocks['Stock Symbol']:
-                        df_stocks = df_stocks['Stock Symbol'].append('SPLX')
-                elif market_bear == True:
-                    SHARES = np.floor(BUDGET_ib/len(df_stocks)/df.iloc[2,4])
-                    if 'SDOW' not in df_stocks['Stock Symbol']:
-                        df_stocks = df_stocks['Stock Symbol'].append('SDOW')
-                else: SHARES = np.floor(BUDGET_ib/len(df_stocks)/df.iloc[2,4])
-            else: SHARES = np.floor(BUDGET_ib/len(df_stocks)/df.iloc[2,4])
+                    break
+            # BUY criteria
             if sell_ticker not in owned_tickers and len(df) > 4 and df.iloc[2,9] == 'support' and stop_loss_flag == False:
                 if BUDGET_ib < 100000:
                     print('low on budget')
@@ -104,6 +90,7 @@ class Technicals:
                 print('high volume flag')
                 SHARES = np.floor(BUDGET_ib/len(df_stocks)/df.iloc[2,4])
                 clock = Buy.buy_stock(SHARES, df, ib, BUDGET_ib, clock) # goes to buy.py
+            # SELL Criteria
             if current_time > datetime.time(15, 40) and owned_shares > 0:
                 Sell.sell_stock(sell_ticker, ib, df, clock) # goes to sell.py
             elif StopLoss.checkforstoploss(ib, sell_ticker, clock):
@@ -112,6 +99,6 @@ class Technicals:
                     if ticker == sell_ticker:
                         # Update the 'Stop Loss Today' column for the row matching sell_ticker
                         df_stocks.loc[df_stocks['Stock Symbol'] == ticker, 'Stop Loss Today'] = True
-                df_stocks.to_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\52weekTrue.csv')
-            print(f'finished technicals {datetime.datetime.now()}')
-            return clock, market_bull
+                        df_stocks.loc[df_stocks['Stock Symbol'] == ticker, 'Stop Price'] = df.iloc[len(df)-1,4]
+                df_stocks.to_csv(r'C:\Users\johnm\OneDrive\Desktop\MyResume\52weekTrue.csv', index=False)
+            return clock

@@ -1,11 +1,8 @@
 Stock Symbol,52_week_high,Stop Loss Today
+AMZN,True,False
 GOOGL,True,False
-MCK,True,False
 T,True,False
 MSFT,True,False
-PG,True,False
-HON,True,False
 HCA,True,False
-MRK,True,False
 KO,True,False
-MO,True,False
+CRWD,True,False

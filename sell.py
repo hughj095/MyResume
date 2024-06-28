@@ -13,13 +13,13 @@ class Sell:
                 trade = ib.placeOrder(stock, order)
                 start_time = time.time()
                 while not trade.isDone():
-                    if time.time() - start_time > 30:
+                    if time.time() - start_time > 40:
                         print("Timeout reached, cancelling order")
                         ib.cancelOrder(order)
                         #Sell.chuncking_sell(ib, SHARES, sell_ticker)  # goes to chuncking function
                         break
                     ib.sleep(1)
-                    clock += 1
+                    #clock[0] += 1
                 for fill in trade.fills:
                     print(f"Selling {sell_ticker}, Net: {(fill.execution.price - pos.avgCost)*SHARES}")
                     print(f'sold {sell_ticker}') 

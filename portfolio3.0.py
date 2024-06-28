@@ -7,9 +7,9 @@ import time
 from twilio.rest import Client
 from technicals import Technicals  # custom class
 from fifty_two_week import Refresh52Week # custom class
-from sell import Sell # custom class
 from report import Report # custom class
 import config
+from marketcheck import CheckMarket # custom class
 print(f'finished imports {datetime.datetime.now()}')
 
 ib = IB()
@@ -39,23 +39,42 @@ def scan():
         if item.tag == 'AvailableFunds':
             BUDGET_ib = float(item.value)
     stock_dataframes = {}
-    print('pulling data')
+    print(f'pulling data {datetime.datetime.now().time()}')
+    clock = 0
     for symbol in df_stocks['Stock Symbol']:
         stock_data = fetch_new_data(symbol)
         stock_dataframes[symbol] = stock_data
-    print('starting technicals')
-    clock = 0
+        clock += 1
+    print(f'start technicals {datetime.datetime.now().time()}')
+    # Check Market status bull or bear every 15 mins
+    now = datetime.datetime.now()
+    market_bull = False
+    market_bear = False
+    if now.minute in [0,15,30,35]:
+        market_bull, market_bear = CheckMarket.check_market(ib)
+        if market_bull == True:
+            SHARES = BUDGET_ib/(len(df_stocks)/2)
+            if 'SPXL' not in df_stocks['Stock Symbol']:
+                new_index = len(df_stocks)
+                df_stocks.loc[new_index,'Stock Symbol'] = 'SPXL'
+        elif market_bear == True:
+            SHARES = BUDGET_ib/len(df_stocks)
+            if 'SDOW' not in df_stocks['Stock Symbol']:
+                new_index = len(df_stocks)
+                df_stocks.loc[new_index,'Stock Symbol'] = 'SDOW'
+        else: SHARES = BUDGET_ib/len(df_stocks)
+    else: SHARES = BUDGET_ib/len(df_stocks)
+    timer = 0
     for ticker, df in stock_dataframes.items():
-        clock = Technicals.technicals(df, ib, BUDGET_ib, clock, df_stocks)  # goes to technicals.py in folder
-    total_portfolio_value = 0
-    #print(f'Total Value: {calculateTotal(total_portfolio_value)}')
+        clock = Technicals.technicals(df, ib, BUDGET_ib, clock, df_stocks, SHARES)  # goes to technicals.py in folder
+        timer += clock
+    print(f'finished technicals {datetime.datetime.now().time()}')
     positions = ib.positions()
     for pos in positions:
         print(f'Account: {pos.account}, Symbol: {pos.contract.symbol},' +
           f'Position: {round(pos.position,0)}, Average Cost: {round(pos.avgCost,2)},' +
           f'Value: {round(pos.avgCost * pos.position,2)}')
-    if clock > 0 and clock < 60:
-        ib.sleep(60-clock)
+    ib.sleep(60-timer)
 
 # sell at end of day
 def endOfDaySell(ib):
@@ -68,10 +87,9 @@ def endOfDaySell(ib):
                 trade = ib.placeOrder(stock, order)
                 start_time = time.time()
                 while not trade.isDone():
-                    if time.time() - start_time > 60:
+                    if time.time() - start_time > 90:
                         print("Timeout reached, cancelling order")
                         ib.cancelOrder(order)
-                        #Sell.chuncking_sell(ib, SHARES = pos.position, sell_ticker = pos.contract.symbol)
                         break
                     ib.sleep(1)
                 print(f'sold {pos.contract.symbol}')
@@ -112,7 +130,6 @@ def mopUp():
     date = datetime.date.today()
     if current_time >= datetime.time(15,40):
         Refresh52Week.main()
-        ### DELETE ETFs from 52weekTrue
         total_portfolio_value = Report.report(ib, date) # includes upload()
         total_portfolio_value = send_text(total_portfolio_value) ## include total portfolio value from Report
         print("that's all folks")
